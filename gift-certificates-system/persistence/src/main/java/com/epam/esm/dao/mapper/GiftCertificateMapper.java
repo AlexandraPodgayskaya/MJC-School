@@ -24,7 +24,7 @@ public class GiftCertificateMapper implements RowMapper<GiftCertificate> {
 		giftCertificate.setDuration(resultSet.getInt(ColumnName.COLUMN_DURATION));
 		giftCertificate.setCreateDate(resultSet.getObject(ColumnName.COLUMN_CREATE_DATE, LocalDateTime.class));
 		giftCertificate.setLastUpdateDate(resultSet.getObject(ColumnName.COLUMN_LAST_UPDATE_DATE, LocalDateTime.class));
-
+		giftCertificate.setDeleted(resultSet.getBoolean(ColumnName.COLUMN_DELETED));
 		return giftCertificate;
 	}
 }

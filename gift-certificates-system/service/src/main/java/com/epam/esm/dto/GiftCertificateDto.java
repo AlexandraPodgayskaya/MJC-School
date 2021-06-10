@@ -18,7 +18,7 @@ public class GiftCertificateDto {
 	private LocalDateTime createDate;
 	@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd'T'HH:mm:ss")
 	private LocalDateTime lastUpdateDate;
-	private List<String> tags;//TODO Set
+	private List<TagDto> tags;
 
 	public GiftCertificateDto() {
 	}
@@ -80,11 +80,11 @@ public class GiftCertificateDto {
 	}
 
 	// TODO
-	public List<String> getTags() {
+	public List<TagDto> getTags() {
 		return tags == null ? Collections.emptyList() : Collections.unmodifiableList(tags);
 	}
 
-	public void setTags(List<String> tags) {
+	public void setTags(List<TagDto> tags) {
 		this.tags = tags;
 	}
 
@@ -158,5 +158,4 @@ public class GiftCertificateDto {
 				+ ", duration=" + duration + ", createDate=" + createDate + ", lastUpdateDate=" + lastUpdateDate
 				+ ", tags=" + tags + "]";
 	}
-
 }

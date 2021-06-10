@@ -4,13 +4,9 @@ public class Tag {
 
 	private Long id;
 	private String name;
+	private boolean deleted;
 
 	public Tag() {
-	}
-
-	public Tag(Long id, String name) {
-		this.id = id;
-		this.name = name;
 	}
 
 	public Long getId() {
@@ -29,10 +25,19 @@ public class Tag {
 		this.name = name;
 	}
 
+	public boolean isDeleted() {
+		return deleted;
+	}
+
+	public void setDeleted(boolean deleted) {
+		this.deleted = deleted;
+	}
+
 	@Override
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
+		result = prime * result + (deleted ? 1231 : 1237);
 		result = prime * result + ((id == null) ? 0 : id.hashCode());
 		result = prime * result + ((name == null) ? 0 : name.hashCode());
 		return result;
@@ -47,6 +52,8 @@ public class Tag {
 		if (getClass() != obj.getClass())
 			return false;
 		Tag other = (Tag) obj;
+		if (deleted != other.deleted)
+			return false;
 		if (id == null) {
 			if (other.id != null)
 				return false;
@@ -62,6 +69,7 @@ public class Tag {
 
 	@Override
 	public String toString() {
-		return "Tag [id=" + id + ", name=" + name + "]";
+		return "Tag [id=" + id + ", name=" + name + ", deleted=" + deleted + "]";
 	}
+
 }

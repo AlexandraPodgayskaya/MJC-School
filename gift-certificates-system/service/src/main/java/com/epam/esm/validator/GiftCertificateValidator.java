@@ -1,13 +1,13 @@
 package com.epam.esm.validator;
 
-public final class GiftCertificateValidator {
+import org.springframework.stereotype.Component;
 
-	private static final int MIN_ID = 1;
+@Component
+public class GiftCertificateValidator {
 
-	private GiftCertificateValidator() {
-	}
+	private final int MIN_ID = 1;
 
-	public static boolean validateId(long id) {
+	public boolean validateId(long id) {
 		return id >= MIN_ID;
 	}
 

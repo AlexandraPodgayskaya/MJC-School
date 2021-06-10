@@ -19,24 +19,26 @@ import com.epam.esm.validator.TagValidator;
 public class TagServiceImpl implements TagService {
 
 	private final TagDao tagDao;
+	private final TagValidator tagValidator;
 	private final ModelMapper modelMapper;
 
 	@Autowired
-	public TagServiceImpl(TagDao tagDao, ModelMapper modelMapper) {
+	public TagServiceImpl(TagDao tagDao, TagValidator tagValidator, ModelMapper modelMapper) {
 		this.tagDao = tagDao;
+		this.tagValidator = tagValidator;
 		this.modelMapper = modelMapper;
 	}
 
 	// TODO @Transactional
 	@Override
 	public TagDto addTag(String tagName) throws IncorrectParameterValueException {
-		if (!TagValidator.validateName(tagName)) {
+		if (!tagValidator.validateName(tagName)) {
 			throw new IncorrectParameterValueException("tag name validation error",
 					ExceptionMessageKey.GIFT_CERTIFICATE_INCORRECT_DATA, tagName, ErrorCode.TAG.getCode());
 		}
 		Optional<Tag> tagOptional = tagDao.findByName(tagName);
-		Tag addedTag = tagOptional.orElseGet(() -> tagDao.add(tagName));
-		return modelMapper.map(addedTag, TagDto.class);
+		//Tag addedTag = tagOptional.orElseGet(() -> tagDao.add(tagName));
+		return null;//modelMapper.map(addedTag, TagDto.class);
 	}
 
 }

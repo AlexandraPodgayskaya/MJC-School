@@ -11,12 +11,12 @@ import org.springframework.stereotype.Service;
 import com.epam.esm.dao.GiftCertificateDao;
 import com.epam.esm.dao.GiftCertificateTagDao;
 import com.epam.esm.dto.GiftCertificateDto;
+import com.epam.esm.dto.TagDto;
 import com.epam.esm.entity.GiftCertificate;
 import com.epam.esm.entity.Tag;
 import com.epam.esm.exception.ErrorCode;
 import com.epam.esm.exception.IncorrectParameterValueException;
 import com.epam.esm.exception.ResourceNotFoundException;
-import com.epam.esm.exception.ServiceException;
 import com.epam.esm.service.GiftCertificateService;
 import com.epam.esm.util.ExceptionMessageKey;
 import com.epam.esm.validator.GiftCertificateValidator;
@@ -26,20 +26,23 @@ public class GiftCertificateServiceImpl implements GiftCertificateService {
 
 	private final GiftCertificateDao giftCertificateDao;
 	private final GiftCertificateTagDao giftCertificateTagDao;
+	private final GiftCertificateValidator giftCertificateValidator;
 	private final ModelMapper modelMapper;
 
 	@Autowired
 	public GiftCertificateServiceImpl(GiftCertificateDao giftCertificateDao,
-			GiftCertificateTagDao giftCertificateTagDao, ModelMapper modelMapper) {
+			GiftCertificateTagDao giftCertificateTagDao, GiftCertificateValidator giftCertificateValidator,
+			ModelMapper modelMapper) {
 		this.giftCertificateDao = giftCertificateDao;
 		this.giftCertificateTagDao = giftCertificateTagDao;
+		this.giftCertificateValidator = giftCertificateValidator;
 		this.modelMapper = modelMapper;
 	}
 
 	@Override
 	public GiftCertificateDto findGiftCertificateById(long id)
 			throws IncorrectParameterValueException, ResourceNotFoundException {
-		if (!GiftCertificateValidator.validateId(id)) {
+		if (!giftCertificateValidator.validateId(id)) {
 			throw new IncorrectParameterValueException("id validation error",
 					ExceptionMessageKey.GIFT_CERTIFICATE_INCORRECT_DATA, String.valueOf(id),
 					ErrorCode.GIFT_CERTIFICATE.getCode());
@@ -57,12 +60,13 @@ public class GiftCertificateServiceImpl implements GiftCertificateService {
 		return null;
 	}
 
-	// TODO entity without tag?
+	// TODO change
 	private GiftCertificateDto convertGiftCertificateAndSetTags(GiftCertificate giftCertificate) {
 		GiftCertificateDto giftCertificateDto = modelMapper.map(giftCertificate, GiftCertificateDto.class);
 		List<Tag> tags = giftCertificateTagDao.findTagsByCiftCertificateId(giftCertificate.getId());
-		List<String> tagNames = tags.stream().map(Tag::getName).collect(Collectors.toList());
-		giftCertificateDto.setTags(tagNames);
+		List<TagDto> tagsDto = tags.stream().map(tag -> modelMapper.map(tag, TagDto.class))
+				.collect(Collectors.toList());
+		giftCertificateDto.setTags(tagsDto);
 		return giftCertificateDto;
 	}
 

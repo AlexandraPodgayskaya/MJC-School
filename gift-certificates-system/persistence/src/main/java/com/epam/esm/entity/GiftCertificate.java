@@ -15,6 +15,7 @@ public class GiftCertificate {
 	private LocalDateTime createDate;
 	private LocalDateTime lastUpdateDate;
 	private List<Tag> tags; // TODO ?
+	private boolean deleted;
 
 	public GiftCertificate() {
 	}
@@ -84,11 +85,20 @@ public class GiftCertificate {
 		this.tags = tags;
 	}
 
+	public boolean isDeleted() {
+		return deleted;
+	}
+
+	public void setDeleted(boolean deleted) {
+		this.deleted = deleted;
+	}
+
 	@Override
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
 		result = prime * result + ((createDate == null) ? 0 : createDate.hashCode());
+		result = prime * result + (deleted ? 1231 : 1237);
 		result = prime * result + ((description == null) ? 0 : description.hashCode());
 		result = prime * result + duration;
 		result = prime * result + ((id == null) ? 0 : id.hashCode());
@@ -112,6 +122,8 @@ public class GiftCertificate {
 			if (other.createDate != null)
 				return false;
 		} else if (!createDate.equals(other.createDate))
+			return false;
+		if (deleted != other.deleted)
 			return false;
 		if (description == null) {
 			if (other.description != null)
@@ -152,7 +164,7 @@ public class GiftCertificate {
 	public String toString() {
 		return "GiftCertificate [id=" + id + ", name=" + name + ", description=" + description + ", price=" + price
 				+ ", duration=" + duration + ", createDate=" + createDate + ", lastUpdateDate=" + lastUpdateDate
-				+ ", tags=" + tags + "]";
+				+ ", tags=" + tags + ", deleted=" + deleted + "]";
 	}
 
 }

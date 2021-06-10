@@ -10,6 +10,7 @@ public final class ColumnName {
 	public static final String COLUMN_DURATION = "duration";
 	public static final String COLUMN_CREATE_DATE = "create_date";
 	public static final String COLUMN_LAST_UPDATE_DATE = "last_update_date";
+	public static final String COLUMN_DELETED = "deleted";
 
 	private ColumnName() {
 	}

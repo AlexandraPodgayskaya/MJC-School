@@ -17,6 +17,7 @@ public class TagMapper implements RowMapper<Tag> {
 		Tag tag = new Tag();
 		tag.setId(resultSet.getLong(ColumnName.COLUMN_ID));
 		tag.setName(resultSet.getString(ColumnName.COLUMN_NAME));
+		tag.setDeleted(resultSet.getBoolean(ColumnName.COLUMN_DELETED));
 		return tag;
 	}
 

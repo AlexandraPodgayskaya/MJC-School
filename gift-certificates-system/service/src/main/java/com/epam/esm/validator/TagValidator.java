@@ -1,15 +1,14 @@
 package com.epam.esm.validator;
 
 import org.apache.commons.lang3.StringUtils;
+import org.springframework.stereotype.Component;
 
-public final class TagValidator {
+@Component
+public class TagValidator {
 
-	private static final int MAX_LENGTH_NAME = 100;
+	private final int MAX_LENGTH_NAME = 100;
 
-	private TagValidator() {
-	}
-
-	public static boolean validateName(String tagName) {
+	public boolean validateName(String tagName) {
 		return (!StringUtils.isBlank(tagName) && tagName.length() <= MAX_LENGTH_NAME);
 	}
 

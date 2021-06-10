@@ -42,9 +42,9 @@ public class ExceptionController {
 	}
 
 	// TODO может устанавливать ExceptionMessageKey тут а параметры на сервисе
-	@ExceptionHandler(RuntimeException.class)
+	@ExceptionHandler(Exception.class)
 	@ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
-	public ExceptionDetails handleRuntimeException(RuntimeException exception, Locale locale) {
+	public ExceptionDetails handleRuntimeException(Exception exception, Locale locale) {
 		String errorMessage = createMessage(ExceptionMessageKey.INTERNAL_ERROR, exception.getMessage(), locale);
 		logger.error(HttpStatus.INTERNAL_SERVER_ERROR, exception);
 		return new ExceptionDetails(errorMessage, String.valueOf(HttpStatus.INTERNAL_SERVER_ERROR.value()));
