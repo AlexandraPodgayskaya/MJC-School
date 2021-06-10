@@ -1,0 +1,31 @@
+group 'com.epam.esm'
+version '1.0'
+
+subprojects {
+    apply plugin: 'java'
+
+    sourceCompatibility = '1.8'
+    targetCompatibility = '1.8'
+
+    ext {
+        springVersion = '5.3.7'
+        log4jVersion = '2.14.1'
+        junitVersion = '5.7.1'
+    }
+
+    repositories {
+        mavenCentral()
+    }
+
+    dependencies {
+        implementation "org.springframework:spring-core:$springVersion"
+        implementation "org.springframework:spring-context:$springVersion"
+        implementation 'com.fasterxml.jackson.core:jackson-databind:2.11.3'
+        implementation 'com.fasterxml.jackson.datatype:jackson-datatype-jsr310:2.11.3'
+        implementation "org.apache.logging.log4j:log4j-api:$log4jVersion"
+        implementation "org.apache.logging.log4j:log4j-core:$log4jVersion"
+        testImplementation "org.junit.jupiter:junit-jupiter-api:$junitVersion"
+        testImplementation "org.junit.jupiter:junit-jupiter-params:$junitVersion"
+        testRuntimeOnly "org.junit.jupiter:junit-jupiter-engine"
+    }
+}
