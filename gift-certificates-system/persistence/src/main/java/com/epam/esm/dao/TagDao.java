@@ -6,6 +6,8 @@ import com.epam.esm.entity.Tag;
 
 public interface TagDao {
 
+	void create (Tag tag);
+	Optional<Tag> findById(Long id);
 	Optional<Tag> findByName(String tagName);
 
 }

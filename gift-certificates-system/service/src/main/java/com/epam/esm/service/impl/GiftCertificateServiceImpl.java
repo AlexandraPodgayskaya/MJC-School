@@ -44,12 +44,12 @@ public class GiftCertificateServiceImpl implements GiftCertificateService {
 			throws IncorrectParameterValueException, ResourceNotFoundException {
 		if (!giftCertificateValidator.validateId(id)) {
 			throw new IncorrectParameterValueException("id validation error",
-					ExceptionMessageKey.GIFT_CERTIFICATE_INCORRECT_DATA, String.valueOf(id),
+					ExceptionMessageKey.INCORRECT_PARAMETER_VALUE, String.valueOf(id),
 					ErrorCode.GIFT_CERTIFICATE.getCode());
 		}
 		Optional<GiftCertificate> foundGiftCertificate = giftCertificateDao.findById(id);
 		return foundGiftCertificate.map(this::convertGiftCertificateAndSetTags)
-				.orElseThrow(() -> new ResourceNotFoundException("no gift certificate by this id",
+				.orElseThrow(() -> new ResourceNotFoundException("no gift certificate by id",
 						ExceptionMessageKey.GIFT_CERTIFICATE_NOT_FOUND_BY_ID, String.valueOf(id),
 						ErrorCode.GIFT_CERTIFICATE.getCode()));
 	}

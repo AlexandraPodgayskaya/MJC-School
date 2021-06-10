@@ -13,7 +13,7 @@ import com.epam.esm.entity.GiftCertificate;
 @Repository
 public class GiftCertificateDaoImpl implements GiftCertificateDao {
 
-	private static final String SELECT_GIFT_CERTIFICATE_BY_ID = "SELECT * FROM GIFT_CERTIFICATE WHERE ID = ? AND DELETED = FALSE";
+	private static final String SELECT_GIFT_CERTIFICATE_BY_ID_SQL = "SELECT * FROM GIFT_CERTIFICATE WHERE ID = ? AND DELETED = FALSE";
 
 	private final JdbcTemplate jdbcTemplate;
 	private final GiftCertificateMapper giftCertificateMapper;
@@ -26,6 +26,6 @@ public class GiftCertificateDaoImpl implements GiftCertificateDao {
 
 	@Override
 	public Optional<GiftCertificate> findById(Long id) {
-		return jdbcTemplate.queryForStream(SELECT_GIFT_CERTIFICATE_BY_ID, giftCertificateMapper, id).findFirst();
+		return jdbcTemplate.queryForStream(SELECT_GIFT_CERTIFICATE_BY_ID_SQL, giftCertificateMapper, id).findFirst();
 	}
 }

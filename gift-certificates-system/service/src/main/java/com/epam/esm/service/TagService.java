@@ -4,6 +4,8 @@ import com.epam.esm.dto.TagDto;
 
 public interface TagService {
 
-	public TagDto addTag(String tagName);
+	void createTag(TagDto tagDto);
+
+	TagDto findTagById(long id);
 
 }
