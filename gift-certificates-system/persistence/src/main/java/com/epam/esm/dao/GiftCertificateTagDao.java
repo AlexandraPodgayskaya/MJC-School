@@ -11,6 +11,8 @@ public interface GiftCertificateTagDao {
 
 	List<Tag> findTagsByCiftCertificateId(long giftCertificateId);
 
-	boolean deleteConnection(long id);
+	boolean deleteConnectionByGiftCertificateId(long id);
+
+	boolean deleteConnectionByTagId(long id);
 
 }

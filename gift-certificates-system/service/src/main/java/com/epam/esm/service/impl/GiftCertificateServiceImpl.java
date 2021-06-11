@@ -73,6 +73,17 @@ public class GiftCertificateServiceImpl implements GiftCertificateService {
 						ErrorCode.GIFT_CERTIFICATE.getCode()));
 	}
 
+	@Transactional
+	@Override
+	public void deleteGiftCertificate(long id) throws IncorrectParameterValueException, ResourceNotFoundException {
+		giftCertificateValidator.validateId(id);
+		if (!giftCertificateDao.delete(id)) {
+			throw new ResourceNotFoundException("no gift certificate to remove by id", ExceptionMessageKey.GIFT_CERTIFICATE_NOT_FOUND_BY_ID,
+					String.valueOf(id), ErrorCode.GIFT_CERTIFICATE.getCode());
+		}
+		giftCertificateTagDao.deleteConnectionByGiftCertificateId(id);
+	}
+
 	// TODO change
 	private GiftCertificateDto convertGiftCertificateAndSetTags(GiftCertificate giftCertificate) {
 		GiftCertificateDto giftCertificateDto = modelMapper.map(giftCertificate, GiftCertificateDto.class);

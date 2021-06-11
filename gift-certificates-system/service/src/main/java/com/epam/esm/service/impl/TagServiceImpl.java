@@ -63,12 +63,12 @@ public class TagServiceImpl implements TagService {
 
 	@Transactional
 	@Override
-	public void deleteTag(long id) throws ResourceNotFoundException {
+	public void deleteTag(long id) throws IncorrectParameterValueException, ResourceNotFoundException {
 		tagValidator.validateId(id);
 		if (!tagDao.delete(id)) {
 			throw new ResourceNotFoundException("no tag to remove by id", ExceptionMessageKey.TAG_NOT_FOUND_BY_ID,
 					String.valueOf(id), ErrorCode.TAG.getCode());
 		}
-		giftCertificateTagDao.deleteConnection(id);
+		giftCertificateTagDao.deleteConnectionByTagId(id);
 	}
 }

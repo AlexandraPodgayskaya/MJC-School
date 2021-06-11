@@ -2,6 +2,7 @@ package com.epam.esm.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -28,10 +29,16 @@ public class GiftCertificateController {
 	public GiftCertificateDto getGiftCertificateById(@PathVariable long id) {
 		return giftCertificateService.findGiftCertificateById(id);
 	}
-	
+
 	@PostMapping
-    @ResponseStatus(HttpStatus.CREATED)
-    public GiftCertificateDto createGiftCertificate(@RequestBody GiftCertificateDto giftCertificateDto) {
-        return giftCertificateService.createGiftCertificate(giftCertificateDto);
-    }
+	@ResponseStatus(HttpStatus.CREATED)
+	public GiftCertificateDto createGiftCertificate(@RequestBody GiftCertificateDto giftCertificateDto) {
+		return giftCertificateService.createGiftCertificate(giftCertificateDto);
+	}
+
+	@DeleteMapping("/{id}")
+	@ResponseStatus(HttpStatus.OK)
+	public void deleteGiftCertificate(@PathVariable long id) {
+		giftCertificateService.deleteGiftCertificate(id);
+	}
 }
