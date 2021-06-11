@@ -20,6 +20,9 @@ subprojects {
     dependencies {
         implementation "org.springframework:spring-core:$springVersion"
         implementation "org.springframework:spring-context:$springVersion"
+        implementation "org.springframework:spring-jdbc:$springVersion"
+        implementation "org.apache.commons:commons-dbcp2:2.8.0"
+        implementation 'org.modelmapper:modelmapper:2.4.4'
         implementation 'com.fasterxml.jackson.core:jackson-databind:2.11.3'
         implementation 'com.fasterxml.jackson.datatype:jackson-datatype-jsr310:2.11.3'
         implementation "org.apache.logging.log4j:log4j-api:$log4jVersion"
@@ -27,5 +30,9 @@ subprojects {
         testImplementation "org.junit.jupiter:junit-jupiter-api:$junitVersion"
         testImplementation "org.junit.jupiter:junit-jupiter-params:$junitVersion"
         testRuntimeOnly "org.junit.jupiter:junit-jupiter-engine"
+    }
+    
+    test {
+        useJUnitPlatform()
     }
 }
