@@ -51,7 +51,7 @@ public class GiftCertificateDaoImpl implements GiftCertificateDao {
 	}
 
 	@Override
-	public Optional<GiftCertificate> findById(Long id) {
+	public Optional<GiftCertificate> findById(long id) {
 		return jdbcTemplate.queryForStream(SELECT_GIFT_CERTIFICATE_BY_ID_SQL, giftCertificateMapper, id).findFirst();
 	}
 

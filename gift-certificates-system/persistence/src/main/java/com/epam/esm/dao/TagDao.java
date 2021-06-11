@@ -11,8 +11,10 @@ public interface TagDao {
 
 	List<Tag> findAll();
 
-	Optional<Tag> findById(Long id);
+	Optional<Tag> findById(long id);
 
 	Optional<Tag> findByName(String tagName);
+
+	boolean delete(long id);
 
 }

@@ -16,7 +16,8 @@ public class GiftCertificateTagDaoImpl implements GiftCertificateTagDao {
 
 	private static final String INSERT_GIFT_CERTIFICATE_TAG_CONNECTION_SQL = "INSERT INTO GIFT_CERTIFICATE_TAG_CONNECTION (GIFT_CERTIFICATE_ID, TAG_ID) VALUES (?, ?)";
 	private static final String SELECT_TAGS_BY_GIFT_CERTIFICATE_ID_SQL = "SELECT TAG.ID, TAG.NAME, TAG.DELETED FROM GIFT_CERTIFICATE_TAG_CONNECTION JOIN TAG ON GIFT_CERTIFICATE_TAG_CONNECTION.TAG_ID = TAG.ID WHERE GIFT_CERTIFICATE_ID = ? AND GIFT_CERTIFICATE_TAG_CONNECTION.DELETED = FALSE AND TAG.DELETED = FALSE";
-
+	private static final String DELETE_GIFT_CERTIFICATE_TAG_CONNECTION_SQL = "UPDATE GIFT_CERTIFICATE_TAG_CONNECTION SET DELETED = TRUE WHERE TAG_ID = ? AND DELETED = FALSE";
+	
 	private final JdbcTemplate jdbcTemplate;
 	private final TagMapper tagMapper;
 
@@ -35,6 +36,11 @@ public class GiftCertificateTagDaoImpl implements GiftCertificateTagDao {
 	@Override
 	public List<Tag> findTagsByCiftCertificateId(long giftCertificateId) {
 		return jdbcTemplate.query(SELECT_TAGS_BY_GIFT_CERTIFICATE_ID_SQL, tagMapper, giftCertificateId);
+	}
+
+	@Override
+	public boolean deleteConnection(long id) {
+		return jdbcTemplate.update(DELETE_GIFT_CERTIFICATE_TAG_CONNECTION_SQL, id) > 0;
 	}
 
 }

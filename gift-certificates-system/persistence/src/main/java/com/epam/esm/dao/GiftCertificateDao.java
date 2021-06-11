@@ -8,5 +8,5 @@ public interface GiftCertificateDao {
 
 	GiftCertificate create(GiftCertificate giftCertificate);
 
-	Optional<GiftCertificate> findById(Long id);
+	Optional<GiftCertificate> findById(long id);
 }

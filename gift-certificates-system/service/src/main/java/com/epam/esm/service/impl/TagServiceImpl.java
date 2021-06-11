@@ -7,7 +7,9 @@ import java.util.stream.Collectors;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
+import com.epam.esm.dao.GiftCertificateTagDao;
 import com.epam.esm.dao.TagDao;
 import com.epam.esm.dto.TagDto;
 import com.epam.esm.entity.Tag;
@@ -22,23 +24,25 @@ import com.epam.esm.validator.TagValidator;
 public class TagServiceImpl implements TagService {
 
 	private final TagDao tagDao;
+	private final GiftCertificateTagDao giftCertificateTagDao;
 	private final TagValidator tagValidator;
 	private final ModelMapper modelMapper;
 
 	@Autowired
-	public TagServiceImpl(TagDao tagDao, TagValidator tagValidator, ModelMapper modelMapper) {
+	public TagServiceImpl(TagDao tagDao, GiftCertificateTagDao giftCertificateTagDao, TagValidator tagValidator,
+			ModelMapper modelMapper) {
 		this.tagDao = tagDao;
+		this.giftCertificateTagDao = giftCertificateTagDao;
 		this.tagValidator = tagValidator;
 		this.modelMapper = modelMapper;
 	}
 
-	// TODO @Transactional
 	@Override
 	public TagDto createTag(TagDto tagDto) throws IncorrectParameterValueException {
 		tagValidator.validateName(tagDto.getName());
 		Optional<Tag> tagOptional = tagDao.findByName(tagDto.getName());
 		Tag createdTag = tagOptional.orElseGet(() -> tagDao.create(modelMapper.map(tagDto, Tag.class)));
-		tagDto.setId(createdTag.getId());//TODO or return modelMapper.map(tag. TagDto.class)
+		tagDto.setId(createdTag.getId());// TODO or return modelMapper.map(tag. TagDto.class)
 		return tagDto;
 	}
 
@@ -55,5 +59,16 @@ public class TagServiceImpl implements TagService {
 		return foundTag.map(tag -> modelMapper.map(tag, TagDto.class))
 				.orElseThrow(() -> new ResourceNotFoundException("no tag by id",
 						ExceptionMessageKey.TAG_NOT_FOUND_BY_ID, String.valueOf(id), ErrorCode.TAG.getCode()));
+	}
+
+	@Transactional
+	@Override
+	public void deleteTag(long id) throws ResourceNotFoundException {
+		tagValidator.validateId(id);
+		if (!tagDao.delete(id)) {
+			throw new ResourceNotFoundException("no tag to remove by id", ExceptionMessageKey.TAG_NOT_FOUND_BY_ID,
+					String.valueOf(id), ErrorCode.TAG.getCode());
+		}
+		giftCertificateTagDao.deleteConnection(id);
 	}
 }

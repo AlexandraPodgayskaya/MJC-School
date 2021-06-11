@@ -22,6 +22,7 @@ public class TagDaoImpl implements TagDao {
 	private static final String SELECT_ALL_TAGS_SQL = "SELECT * FROM TAG WHERE DELETED = FALSE";
 	private static final String SELECT_TAG_BY_ID_SQL = "SELECT * FROM TAG WHERE ID = ? AND DELETED = FALSE";
 	private static final String SELECT_TAG_BY_NAME_SQL = "SELECT * FROM TAG WHERE NAME = ? AND DELETED = FALSE";
+	private static final String DELETE_TAG_SQL = "UPDATE TAG SET DELETED = TRUE WHERE ID = ? AND DELETED = FALSE";
 
 	private final JdbcTemplate jdbcTemplate;
 	private final TagMapper tagMapper;
@@ -52,13 +53,18 @@ public class TagDaoImpl implements TagDao {
 	}
 
 	@Override
-	public Optional<Tag> findById(Long id) {
+	public Optional<Tag> findById(long id) {
 		return jdbcTemplate.queryForStream(SELECT_TAG_BY_ID_SQL, tagMapper, id).findFirst();
 	}
 
 	@Override
 	public Optional<Tag> findByName(String tagName) {
 		return jdbcTemplate.queryForStream(SELECT_TAG_BY_NAME_SQL, tagMapper, tagName).findFirst();
+	}
+
+	@Override
+	public boolean delete(long id) {
+		return jdbcTemplate.update(DELETE_TAG_SQL, id) > 0;
 	}
 
 }
