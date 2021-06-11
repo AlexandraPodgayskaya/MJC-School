@@ -8,11 +8,13 @@ import org.springframework.stereotype.Repository;
 
 import com.epam.esm.dao.GiftCertificateTagDao;
 import com.epam.esm.dao.mapper.TagMapper;
+import com.epam.esm.entity.GiftCertificate;
 import com.epam.esm.entity.Tag;
 
 @Repository
 public class GiftCertificateTagDaoImpl implements GiftCertificateTagDao {
 
+	private static final String INSERT_GIFT_CERTIFICATE_TAG_CONNECTION_SQL = "INSERT INTO GIFT_CERTIFICATE_TAG_CONNECTION (GIFT_CERTIFICATE_ID, TAG_ID) VALUES (?, ?)";
 	private static final String SELECT_TAGS_BY_GIFT_CERTIFICATE_ID_SQL = "SELECT TAG.ID, TAG.NAME, TAG.DELETED FROM GIFT_CERTIFICATE_TAG_CONNECTION JOIN TAG ON GIFT_CERTIFICATE_TAG_CONNECTION.TAG_ID = TAG.ID WHERE GIFT_CERTIFICATE_ID = ? AND GIFT_CERTIFICATE_TAG_CONNECTION.DELETED = FALSE AND TAG.DELETED = FALSE";
 
 	private final JdbcTemplate jdbcTemplate;
@@ -24,10 +26,12 @@ public class GiftCertificateTagDaoImpl implements GiftCertificateTagDao {
 		this.tagMapper = tagMapper;
 	}
 
-	/*
-	 * TODO jdbcTemplate.query(SELECT_TAGS_BY_GIFT_CERTIFICATE_ID, new Object[] {
-	 * giftCertificateId }, new int[] { Types.BIGINT }, tagMapper);
-	 */
+	@Override
+	public void createConnection(GiftCertificate giftCertificate) {
+		giftCertificate.getTags().forEach(tag -> jdbcTemplate.update(INSERT_GIFT_CERTIFICATE_TAG_CONNECTION_SQL,
+				giftCertificate.getId(), tag.getId()));
+	}
+
 	@Override
 	public List<Tag> findTagsByCiftCertificateId(long giftCertificateId) {
 		return jdbcTemplate.query(SELECT_TAGS_BY_GIFT_CERTIFICATE_ID_SQL, tagMapper, giftCertificateId);
