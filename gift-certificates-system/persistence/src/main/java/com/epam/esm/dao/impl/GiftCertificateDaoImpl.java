@@ -41,7 +41,7 @@ public class GiftCertificateDaoImpl implements GiftCertificateDao {
 			statement.setBigDecimal(3, giftCertificate.getPrice());
 			statement.setInt(4, giftCertificate.getDuration());
 			statement.setTimestamp(5, Timestamp.valueOf(giftCertificate.getCreateDate()));
-			statement.setTimestamp(5, Timestamp.valueOf(giftCertificate.getLastUpdateDate()));
+			statement.setTimestamp(6, Timestamp.valueOf(giftCertificate.getLastUpdateDate()));
 			return statement;
 		}, keyHolder);
 		if (keyHolder.getKey() != null) {

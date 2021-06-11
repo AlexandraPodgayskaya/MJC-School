@@ -9,6 +9,7 @@ import java.util.stream.Collectors;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.epam.esm.dao.GiftCertificateDao;
 import com.epam.esm.dao.GiftCertificateTagDao;
@@ -44,13 +45,13 @@ public class GiftCertificateServiceImpl implements GiftCertificateService {
 		this.modelMapper = modelMapper;
 	}
 
-	// TODO @Transactional
+	@Transactional
 	@Override
 	public GiftCertificateDto createGiftCertificate(GiftCertificateDto giftCertificateDto)
 			throws IncorrectParameterValueException {
 		giftCertificateValidator.validate(giftCertificateDto);
 		GiftCertificate giftCertificate = modelMapper.map(giftCertificateDto, GiftCertificate.class);
-		LocalDateTime currentTime = LocalDateTime.now(ZoneOffset.UTC); // TODO Zone?
+		LocalDateTime currentTime = LocalDateTime.now(); // TODO Zone?
 		giftCertificate.setCreateDate(currentTime);
 		giftCertificate.setLastUpdateDate(currentTime);
 		giftCertificateDao.create(giftCertificate);
