@@ -7,6 +7,7 @@ import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.MessageSource;
 import org.springframework.http.HttpStatus;
+import org.springframework.validation.BindException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
@@ -41,18 +42,29 @@ public class ExceptionController {
 		return new ExceptionDetails(errorMessage, HttpStatus.BAD_REQUEST.value() + exception.getErrorCode());
 	}
 
+	@ExceptionHandler(BindException.class) // TODO
+	@ResponseStatus(HttpStatus.BAD_REQUEST)
+	public ExceptionDetails handleIllegalArgumentException(BindException exception, Locale locale) {
+		String errorMessage = messageSource.getMessage(ExceptionMessageKey.INCORRECT_SORTING_PARAMETERS,
+				new Object[] {}, locale);
+		logger.error(HttpStatus.BAD_REQUEST, exception);
+		return new ExceptionDetails(errorMessage,
+				HttpStatus.BAD_REQUEST.value() + ErrorCode.GIFT_CERTIFICATE.getCode());
+	}
+
 	// TODO может устанавливать ExceptionMessageKey тут а параметры на сервисе
 	@ExceptionHandler(Exception.class)
 	@ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
-	public ExceptionDetails handleRuntimeException(Exception exception, Locale locale) {
+	public ExceptionDetails handleException(Exception exception, Locale locale) {
 		String errorMessage = createMessage(ExceptionMessageKey.INTERNAL_ERROR, exception.getMessage(), locale);
 		logger.error(HttpStatus.INTERNAL_SERVER_ERROR, exception);
 		return new ExceptionDetails(errorMessage, String.valueOf(HttpStatus.INTERNAL_SERVER_ERROR.value()));
 	}
 
+	// Хранить Map ключ сообщения - значение или лист ключей и перебирать лист
+	// отправлятьна создать сообщение, а потом join
 	private String createMessage(String exceptionMessageKey, String exceptionMessageParameter, Locale locale) {
-		String message = messageSource.getMessage(exceptionMessageKey, new Object[] {}, locale);
-		return String.format(message, exceptionMessageParameter);
+		return messageSource.getMessage(exceptionMessageKey, new String[] { exceptionMessageParameter }, locale);
 	}
 
 }

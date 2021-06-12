@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.epam.esm.dto.GiftCertificateDto;
+import com.epam.esm.dto.GiftCertificateSearchParametersDto;
 import com.epam.esm.service.GiftCertificateService;
 
 @RestController
@@ -26,6 +27,12 @@ public class GiftCertificateController {
 		this.giftCertificateService = giftCertificateService;
 	}
 
+	@GetMapping
+	public GiftCertificateSearchParametersDto getGiftCertificates(
+			GiftCertificateSearchParametersDto giftCertificateSearchParametersDto) {
+		return giftCertificateSearchParametersDto;
+	}
+
 	@GetMapping("/{id}")
 	public GiftCertificateDto getGiftCertificateById(@PathVariable long id) {
 		return giftCertificateService.findGiftCertificateById(id);
@@ -37,7 +44,6 @@ public class GiftCertificateController {
 		return giftCertificateService.createGiftCertificate(giftCertificateDto);
 	}
 
-	//TODO HttpStatus?
 	@PatchMapping("/{id}")
 	public GiftCertificateDto updateGiftCertificate(@PathVariable long id,
 			@RequestBody GiftCertificateDto giftCertificateDto) {

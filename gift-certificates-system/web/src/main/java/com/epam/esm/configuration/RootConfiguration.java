@@ -49,17 +49,17 @@ public class RootConfiguration {
 	}
 
 	@Bean
+	public TransactionManager transactionManager(DataSource dataSource) {
+		return new DataSourceTransactionManager(dataSource);
+	}
+
+	@Bean
 	public ModelMapper modelMapper() {
 		ModelMapper mapper = new ModelMapper();
 		// TODO разобраться
 		mapper.getConfiguration().setMatchingStrategy(MatchingStrategies.STRICT).setFieldMatchingEnabled(true)
 				.setSkipNullEnabled(true).setFieldAccessLevel(org.modelmapper.config.Configuration.AccessLevel.PRIVATE);
 		return mapper;
-	}
-
-	@Bean
-	public TransactionManager transactionManager(DataSource dataSource) {
-		return new DataSourceTransactionManager(dataSource);
 	}
 
 }
