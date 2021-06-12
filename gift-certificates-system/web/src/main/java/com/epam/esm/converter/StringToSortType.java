@@ -2,7 +2,7 @@ package com.epam.esm.converter;
 
 import org.springframework.core.convert.converter.Converter;
 
-import com.epam.esm.dto.SortType;
+import com.epam.esm.entity.SortType;
 
 public class StringToSortType implements Converter<String, SortType> {
 

@@ -1,4 +1,4 @@
-package com.epam.esm.dto;
+package com.epam.esm.entity;
 
 public enum OrderType {
 	ASC, DESC

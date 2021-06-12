@@ -1,5 +1,7 @@
 package com.epam.esm.controller;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -28,9 +30,9 @@ public class GiftCertificateController {
 	}
 
 	@GetMapping
-	public GiftCertificateSearchParametersDto getGiftCertificates(
+	public List<GiftCertificateDto> getGiftCertificates(
 			GiftCertificateSearchParametersDto giftCertificateSearchParametersDto) {
-		return giftCertificateSearchParametersDto;
+		return giftCertificateService.findGiftCertificates(giftCertificateSearchParametersDto);
 	}
 
 	@GetMapping("/{id}")

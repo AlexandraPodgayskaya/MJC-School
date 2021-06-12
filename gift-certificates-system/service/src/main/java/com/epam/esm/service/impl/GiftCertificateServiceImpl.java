@@ -13,8 +13,10 @@ import org.springframework.transaction.annotation.Transactional;
 import com.epam.esm.dao.GiftCertificateDao;
 import com.epam.esm.dao.GiftCertificateTagDao;
 import com.epam.esm.dto.GiftCertificateDto;
+import com.epam.esm.dto.GiftCertificateSearchParametersDto;
 import com.epam.esm.dto.TagDto;
 import com.epam.esm.entity.GiftCertificate;
+import com.epam.esm.entity.GiftCertificateSearchParameters;
 import com.epam.esm.entity.Tag;
 import com.epam.esm.exception.ErrorCode;
 import com.epam.esm.exception.IncorrectParameterValueException;
@@ -60,6 +62,29 @@ public class GiftCertificateServiceImpl implements GiftCertificateService {
 			giftCertificateTagDao.createConnection(giftCertificate);
 		}
 		return modelMapper.map(giftCertificate, GiftCertificateDto.class);
+	}
+
+	//TODO 4 метода - всё, имя тега, часть имени, имя тега и часть имени + сортировка
+	@Override
+	public List<GiftCertificateDto> findGiftCertificates(GiftCertificateSearchParametersDto searchParametersDto) {
+		GiftCertificateSearchParameters searchParameters = modelMapper.map(searchParametersDto,
+				GiftCertificateSearchParameters.class);
+		List<GiftCertificate> foundGiftCertificates = giftCertificateDao.findBySearchParameters(searchParameters) ;
+		/*if (searchParametersDto.getTagName() == null && searchParametersDto.getPartNameOrDescription() == null) {
+			foundGiftCertificates = giftCertificateDao.findAll(searchParameters);
+		} else {
+			foundGiftCertificates = searchParametersDto.getTagName() != null
+					? giftCertificateDao.findByTagName(searchParameters)
+					: giftCertificateDao.findByTagAndPartNameOrDescription(searchParameters);
+		}*/
+		return foundGiftCertificates.stream().map(this::convertGiftCertificateAndSetTags).collect(Collectors.toList());
+		/*
+		 * List<GiftCertificate> foundGiftCertificates = giftCertificateDao
+		 * .findBySearchParameters(modelMapper.map(giftCertificateSearchParametersDto,
+		 * GiftCertificateSearchParameters.class)); return
+		 * foundGiftCertificates.stream().map(this::convertGiftCertificateAndSetTags).
+		 * collect(Collectors.toList());
+		 */
 	}
 
 	@Override

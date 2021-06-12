@@ -1,16 +1,12 @@
-package com.epam.esm.dto;
+package com.epam.esm.entity;
 
-import com.epam.esm.entity.OrderType;
-import com.epam.esm.entity.SortType;
-
-public class GiftCertificateSearchParametersDto {
-
+public class GiftCertificateSearchParameters {
 	private String tagName;
 	private String partNameOrDescription;
 	private SortType sortType;
 	private OrderType orderType;
 
-	public GiftCertificateSearchParametersDto() {
+	public GiftCertificateSearchParameters() {
 	}
 
 	public String getTagName() {
@@ -64,7 +60,7 @@ public class GiftCertificateSearchParametersDto {
 			return false;
 		if (getClass() != obj.getClass())
 			return false;
-		GiftCertificateSearchParametersDto other = (GiftCertificateSearchParametersDto) obj;
+		GiftCertificateSearchParameters other = (GiftCertificateSearchParameters) obj;
 		if (orderType != other.orderType)
 			return false;
 		if (partNameOrDescription == null) {
@@ -84,8 +80,7 @@ public class GiftCertificateSearchParametersDto {
 
 	@Override
 	public String toString() {
-		return "GiftCertificateSearchParametersDto [tagName=" + tagName + ", partNameOrDescription="
+		return "GiftCertificateSearchParameters [tagName=" + tagName + ", partNameOrDescription="
 				+ partNameOrDescription + ", sortType=" + sortType + ", orderType=" + orderType + "]";
 	}
-
 }

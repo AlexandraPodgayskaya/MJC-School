@@ -3,7 +3,6 @@ version '1.0'
     
 dependencies {
     implementation project (':persistence')
-    implementation 'org.apache.commons:commons-lang3:3.10'
 }
 
 
