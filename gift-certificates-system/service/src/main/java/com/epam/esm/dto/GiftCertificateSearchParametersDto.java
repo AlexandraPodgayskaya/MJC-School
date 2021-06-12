@@ -1,8 +1,5 @@
 package com.epam.esm.dto;
 
-import com.epam.esm.entity.OrderType;
-import com.epam.esm.entity.SortType;
-
 public class GiftCertificateSearchParametersDto {
 
 	private String tagName;
@@ -87,5 +84,12 @@ public class GiftCertificateSearchParametersDto {
 		return "GiftCertificateSearchParametersDto [tagName=" + tagName + ", partNameOrDescription="
 				+ partNameOrDescription + ", sortType=" + sortType + ", orderType=" + orderType + "]";
 	}
-
+	
+	public enum SortType {
+		NAME, CREATE_DATE
+	}
+	
+	public enum OrderType {
+		ASC, DESC
+	}
 }

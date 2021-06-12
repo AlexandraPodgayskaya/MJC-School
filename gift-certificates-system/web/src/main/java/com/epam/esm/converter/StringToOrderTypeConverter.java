@@ -2,7 +2,7 @@ package com.epam.esm.converter;
 
 import org.springframework.core.convert.converter.Converter;
 
-import com.epam.esm.entity.OrderType;
+import com.epam.esm.dto.GiftCertificateSearchParametersDto.OrderType;
 
 public class StringToOrderTypeConverter implements Converter<String, OrderType> {
 
