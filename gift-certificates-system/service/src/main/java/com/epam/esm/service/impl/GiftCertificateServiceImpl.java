@@ -49,14 +49,16 @@ public class GiftCertificateServiceImpl implements GiftCertificateService {
 	public GiftCertificateDto createGiftCertificate(GiftCertificateDto giftCertificateDto)
 			throws IncorrectParameterValueException {
 		giftCertificateValidator.validate(giftCertificateDto);
-		List<TagDto> createdTags = createTags(giftCertificateDto.getTags());
-		giftCertificateDto.setTags(createdTags);
 		GiftCertificate giftCertificate = modelMapper.map(giftCertificateDto, GiftCertificate.class);
 		LocalDateTime currentTime = LocalDateTime.now();
 		giftCertificate.setCreateDate(currentTime);
 		giftCertificate.setLastUpdateDate(currentTime);
 		giftCertificateDao.create(giftCertificate);
-		giftCertificateTagDao.createConnection(giftCertificate);
+		if (!giftCertificateDto.getTags().isEmpty()) {
+			List<Tag> tags = createTags(giftCertificateDto.getTags());
+			giftCertificate.setTags(tags);
+			giftCertificateTagDao.createConnection(giftCertificate);
+		}
 		return modelMapper.map(giftCertificate, GiftCertificateDto.class);
 	}
 
@@ -75,14 +77,16 @@ public class GiftCertificateServiceImpl implements GiftCertificateService {
 	@Override
 	public GiftCertificateDto updateGiftCertificate(GiftCertificateDto giftCertificateDto) {
 		GiftCertificateDto foundGiftCertificateDto = findGiftCertificateById(giftCertificateDto.getId());
-		List<TagDto> createdTags = createTags(giftCertificateDto.getTags());
-		giftCertificateDto.setTags(createdTags);
 		updateFields(foundGiftCertificateDto, giftCertificateDto);
 		giftCertificateValidator.validate(foundGiftCertificateDto);
 		GiftCertificate updatedGiftCertificate = giftCertificateDao
 				.update(modelMapper.map(foundGiftCertificateDto, GiftCertificate.class));
-		giftCertificateTagDao.deleteConnectionByGiftCertificateId(updatedGiftCertificate.getId());
-		giftCertificateTagDao.createConnection(updatedGiftCertificate);
+		if (!giftCertificateDto.getTags().isEmpty()) {
+			List<Tag> tags = createTags(giftCertificateDto.getTags());
+			updatedGiftCertificate.setTags(tags);
+			giftCertificateTagDao.deleteConnectionByGiftCertificateId(updatedGiftCertificate.getId());
+			giftCertificateTagDao.createConnection(updatedGiftCertificate);
+		}
 		return modelMapper.map(updatedGiftCertificate, GiftCertificateDto.class);
 	}
 
@@ -98,8 +102,9 @@ public class GiftCertificateServiceImpl implements GiftCertificateService {
 		giftCertificateTagDao.deleteConnectionByGiftCertificateId(id);
 	}
 
-	private List<TagDto> createTags(List<TagDto> tagsToCreate) {
-		return tagsToCreate.stream().distinct().map(tag -> tagService.createTag(tag)).collect(Collectors.toList());
+	private List<Tag> createTags(List<TagDto> tagsToCreate) {
+		return tagsToCreate.stream().distinct().map(tag -> modelMapper.map(tagService.createTag(tag), Tag.class))
+				.collect(Collectors.toList());
 	}
 
 	// TODO change
@@ -125,11 +130,6 @@ public class GiftCertificateServiceImpl implements GiftCertificateService {
 		if (receivedGiftCertificate.getDuration() != 0) {
 			foundGiftCertificate.setDuration(receivedGiftCertificate.getDuration());
 		}
-
-		if (!receivedGiftCertificate.getTags().isEmpty()) {
-			foundGiftCertificate.setTags(receivedGiftCertificate.getTags());
-		}
-
 		foundGiftCertificate.setLastUpdateDate(LocalDateTime.now());
 	}
 }
