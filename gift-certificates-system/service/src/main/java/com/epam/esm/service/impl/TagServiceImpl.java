@@ -42,8 +42,7 @@ public class TagServiceImpl implements TagService {
 		tagValidator.validateName(tagDto.getName());
 		Optional<Tag> tagOptional = tagDao.findByName(tagDto.getName());
 		Tag createdTag = tagOptional.orElseGet(() -> tagDao.create(modelMapper.map(tagDto, Tag.class)));
-		tagDto.setId(createdTag.getId());// TODO or return modelMapper.map(tag. TagDto.class)
-		return tagDto;
+		return modelMapper.map(createdTag, TagDto.class);
 	}
 
 	@Override

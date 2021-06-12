@@ -7,6 +7,8 @@ public interface GiftCertificateService {
 	GiftCertificateDto createGiftCertificate(GiftCertificateDto giftCertificateDto);
 
 	GiftCertificateDto findGiftCertificateById(long id);
+	
+	GiftCertificateDto updateGiftCertificate (GiftCertificateDto giftCertificateDto);
 
 	void deleteGiftCertificate(long id);
 

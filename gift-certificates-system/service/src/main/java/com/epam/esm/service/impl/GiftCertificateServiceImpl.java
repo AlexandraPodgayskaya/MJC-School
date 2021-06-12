@@ -49,16 +49,14 @@ public class GiftCertificateServiceImpl implements GiftCertificateService {
 	public GiftCertificateDto createGiftCertificate(GiftCertificateDto giftCertificateDto)
 			throws IncorrectParameterValueException {
 		giftCertificateValidator.validate(giftCertificateDto);
+		List<TagDto> createdTags = createTags(giftCertificateDto.getTags());
+		giftCertificateDto.setTags(createdTags);
 		GiftCertificate giftCertificate = modelMapper.map(giftCertificateDto, GiftCertificate.class);
-		LocalDateTime currentTime = LocalDateTime.now(); // TODO Zone?
+		LocalDateTime currentTime = LocalDateTime.now();
 		giftCertificate.setCreateDate(currentTime);
 		giftCertificate.setLastUpdateDate(currentTime);
 		giftCertificateDao.create(giftCertificate);
-		List<Tag> tags = giftCertificateDto.getTags().stream().distinct()
-				.map(tag -> modelMapper.map(tagService.createTag(tag), Tag.class)).collect(Collectors.toList());
-		giftCertificate.setTags(tags);
 		giftCertificateTagDao.createConnection(giftCertificate);
-
 		return modelMapper.map(giftCertificate, GiftCertificateDto.class);
 	}
 
@@ -75,13 +73,33 @@ public class GiftCertificateServiceImpl implements GiftCertificateService {
 
 	@Transactional
 	@Override
+	public GiftCertificateDto updateGiftCertificate(GiftCertificateDto giftCertificateDto) {
+		GiftCertificateDto foundGiftCertificateDto = findGiftCertificateById(giftCertificateDto.getId());
+		List<TagDto> createdTags = createTags(giftCertificateDto.getTags());
+		giftCertificateDto.setTags(createdTags);
+		updateFields(foundGiftCertificateDto, giftCertificateDto);
+		giftCertificateValidator.validate(foundGiftCertificateDto);
+		GiftCertificate updatedGiftCertificate = giftCertificateDao
+				.update(modelMapper.map(foundGiftCertificateDto, GiftCertificate.class));
+		giftCertificateTagDao.deleteConnectionByGiftCertificateId(updatedGiftCertificate.getId());
+		giftCertificateTagDao.createConnection(updatedGiftCertificate);
+		return modelMapper.map(updatedGiftCertificate, GiftCertificateDto.class);
+	}
+
+	@Transactional
+	@Override
 	public void deleteGiftCertificate(long id) throws IncorrectParameterValueException, ResourceNotFoundException {
 		giftCertificateValidator.validateId(id);
 		if (!giftCertificateDao.delete(id)) {
-			throw new ResourceNotFoundException("no gift certificate to remove by id", ExceptionMessageKey.GIFT_CERTIFICATE_NOT_FOUND_BY_ID,
-					String.valueOf(id), ErrorCode.GIFT_CERTIFICATE.getCode());
+			throw new ResourceNotFoundException("no gift certificate to remove by id",
+					ExceptionMessageKey.GIFT_CERTIFICATE_NOT_FOUND_BY_ID, String.valueOf(id),
+					ErrorCode.GIFT_CERTIFICATE.getCode());
 		}
 		giftCertificateTagDao.deleteConnectionByGiftCertificateId(id);
+	}
+
+	private List<TagDto> createTags(List<TagDto> tagsToCreate) {
+		return tagsToCreate.stream().distinct().map(tag -> tagService.createTag(tag)).collect(Collectors.toList());
 	}
 
 	// TODO change
@@ -94,4 +112,24 @@ public class GiftCertificateServiceImpl implements GiftCertificateService {
 		return giftCertificateDto;
 	}
 
+	private void updateFields(GiftCertificateDto foundGiftCertificate, GiftCertificateDto receivedGiftCertificate) {
+		if (receivedGiftCertificate.getName() != null) {
+			foundGiftCertificate.setName(receivedGiftCertificate.getName());
+		}
+		if (receivedGiftCertificate.getDescription() != null) {
+			foundGiftCertificate.setDescription(receivedGiftCertificate.getDescription());
+		}
+		if (receivedGiftCertificate.getPrice() != null) {
+			foundGiftCertificate.setPrice(receivedGiftCertificate.getPrice());
+		}
+		if (receivedGiftCertificate.getDuration() != 0) {
+			foundGiftCertificate.setDuration(receivedGiftCertificate.getDuration());
+		}
+
+		if (!receivedGiftCertificate.getTags().isEmpty()) {
+			foundGiftCertificate.setTags(receivedGiftCertificate.getTags());
+		}
+
+		foundGiftCertificate.setLastUpdateDate(LocalDateTime.now());
+	}
 }

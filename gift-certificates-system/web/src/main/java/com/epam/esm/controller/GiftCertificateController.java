@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -34,6 +35,14 @@ public class GiftCertificateController {
 	@ResponseStatus(HttpStatus.CREATED)
 	public GiftCertificateDto createGiftCertificate(@RequestBody GiftCertificateDto giftCertificateDto) {
 		return giftCertificateService.createGiftCertificate(giftCertificateDto);
+	}
+
+	//TODO HttpStatus?
+	@PatchMapping("/{id}")
+	public GiftCertificateDto updateGiftCertificate(@PathVariable long id,
+			@RequestBody GiftCertificateDto giftCertificateDto) {
+		giftCertificateDto.setId(id);
+		return giftCertificateService.updateGiftCertificate(giftCertificateDto);
 	}
 
 	@DeleteMapping("/{id}")

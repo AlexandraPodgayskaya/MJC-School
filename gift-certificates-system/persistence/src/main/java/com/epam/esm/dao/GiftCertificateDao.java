@@ -10,5 +10,7 @@ public interface GiftCertificateDao {
 
 	Optional<GiftCertificate> findById(long id);
 
+	GiftCertificate update(GiftCertificate giftCertificate);
+
 	boolean delete(long id);
 }

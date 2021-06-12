@@ -20,6 +20,7 @@ public class GiftCertificateDaoImpl implements GiftCertificateDao {
 
 	private static final String INSERT_GIFT_CERTIFICATE_SQL = "INSERT INTO GIFT_CERTIFICATE (NAME, DESCRIPTION, PRICE, DURATION, CREATE_DATE, LAST_UPDATE_DATE) VALUES (?, ?, ?, ?, ?, ?)";
 	private static final String SELECT_GIFT_CERTIFICATE_BY_ID_SQL = "SELECT * FROM GIFT_CERTIFICATE WHERE ID = ? AND DELETED = FALSE";
+	private static final String UPDATE_GIFT_CERTIFICATE_SQL = "UPDATE GIFT_CERTIFICATE SET NAME = ?, DESCRIPTION = ?, PRICE = ?, DURATION = ?, LAST_UPDATE_DATE = ? WHERE ID = ? ";
 	private static final String DELETE_GIFT_CERTIFICATE_SQL = "UPDATE GIFT_CERTIFICATE SET DELETED = TRUE WHERE ID = ? AND DELETED = FALSE";
 
 	private final JdbcTemplate jdbcTemplate;
@@ -57,7 +58,16 @@ public class GiftCertificateDaoImpl implements GiftCertificateDao {
 	}
 
 	@Override
+	public GiftCertificate update(GiftCertificate giftCertificate) {
+		jdbcTemplate.update(UPDATE_GIFT_CERTIFICATE_SQL, giftCertificate.getName(), giftCertificate.getDescription(),
+				giftCertificate.getPrice(), giftCertificate.getDuration(), giftCertificate.getLastUpdateDate(),
+				giftCertificate.getId());
+		return giftCertificate;
+	}
+
+	@Override
 	public boolean delete(long id) {
 		return jdbcTemplate.update(DELETE_GIFT_CERTIFICATE_SQL, id) > 0;
 	}
+
 }
