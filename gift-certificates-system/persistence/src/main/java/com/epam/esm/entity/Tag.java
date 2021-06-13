@@ -9,6 +9,17 @@ public class Tag {
 	public Tag() {
 	}
 
+	public Tag(String name) {
+		this.name = name;
+	}
+
+	public Tag(Long id, String name, boolean deleted) {
+		super();
+		this.id = id;
+		this.name = name;
+		this.deleted = deleted;
+	}
+
 	public Long getId() {
 		return id;
 	}

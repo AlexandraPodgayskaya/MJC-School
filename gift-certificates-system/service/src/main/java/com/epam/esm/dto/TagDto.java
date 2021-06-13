@@ -8,6 +8,15 @@ public class TagDto {
 	public TagDto() {
 	}
 
+	public TagDto(String name) {
+		this.name = name;
+	}
+
+	public TagDto(Long id, String name) {
+		this.id = id;
+		this.name = name;
+	}
+
 	public Long getId() {
 		return id;
 	}
