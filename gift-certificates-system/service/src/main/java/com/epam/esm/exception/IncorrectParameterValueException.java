@@ -9,6 +9,10 @@ public class IncorrectParameterValueException extends RuntimeException {
 	private Map<String, String> parameters;
 	private String errorCode;
 
+	public IncorrectParameterValueException() {
+		super();
+	}
+
 	public IncorrectParameterValueException(String message, Map<String, String> parameters, String errorCode) {
 		super(message);
 		this.parameters = parameters;
