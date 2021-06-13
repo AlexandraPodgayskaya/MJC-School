@@ -23,7 +23,7 @@ import com.epam.esm.exception.IncorrectParameterValueException;
 import com.epam.esm.exception.ResourceNotFoundException;
 import com.epam.esm.service.GiftCertificateService;
 import com.epam.esm.service.TagService;
-import com.epam.esm.util.ExceptionMessageKey;
+import com.epam.esm.util.MessageKey;
 import com.epam.esm.validator.GiftCertificateValidator;
 
 @Service
@@ -64,27 +64,12 @@ public class GiftCertificateServiceImpl implements GiftCertificateService {
 		return modelMapper.map(giftCertificate, GiftCertificateDto.class);
 	}
 
-	//TODO 4 метода - всё, имя тега, часть имени, имя тега и часть имени + сортировка
 	@Override
 	public List<GiftCertificateDto> findGiftCertificates(GiftCertificateSearchParametersDto searchParametersDto) {
 		GiftCertificateSearchParameters searchParameters = modelMapper.map(searchParametersDto,
 				GiftCertificateSearchParameters.class);
-		List<GiftCertificate> foundGiftCertificates = giftCertificateDao.findBySearchParameters(searchParameters) ;
-		/*if (searchParametersDto.getTagName() == null && searchParametersDto.getPartNameOrDescription() == null) {
-			foundGiftCertificates = giftCertificateDao.findAll(searchParameters);
-		} else {
-			foundGiftCertificates = searchParametersDto.getTagName() != null
-					? giftCertificateDao.findByTagName(searchParameters)
-					: giftCertificateDao.findByTagAndPartNameOrDescription(searchParameters);
-		}*/
+		List<GiftCertificate> foundGiftCertificates = giftCertificateDao.findBySearchParameters(searchParameters);
 		return foundGiftCertificates.stream().map(this::convertGiftCertificateAndSetTags).collect(Collectors.toList());
-		/*
-		 * List<GiftCertificate> foundGiftCertificates = giftCertificateDao
-		 * .findBySearchParameters(modelMapper.map(giftCertificateSearchParametersDto,
-		 * GiftCertificateSearchParameters.class)); return
-		 * foundGiftCertificates.stream().map(this::convertGiftCertificateAndSetTags).
-		 * collect(Collectors.toList());
-		 */
 	}
 
 	@Override
@@ -94,7 +79,7 @@ public class GiftCertificateServiceImpl implements GiftCertificateService {
 		Optional<GiftCertificate> foundGiftCertificate = giftCertificateDao.findById(id);
 		return foundGiftCertificate.map(this::convertGiftCertificateAndSetTags)
 				.orElseThrow(() -> new ResourceNotFoundException("no gift certificate by id",
-						ExceptionMessageKey.GIFT_CERTIFICATE_NOT_FOUND_BY_ID, String.valueOf(id),
+						MessageKey.GIFT_CERTIFICATE_NOT_FOUND_BY_ID, String.valueOf(id),
 						ErrorCode.GIFT_CERTIFICATE.getCode()));
 	}
 
@@ -121,7 +106,7 @@ public class GiftCertificateServiceImpl implements GiftCertificateService {
 		giftCertificateValidator.validateId(id);
 		if (!giftCertificateDao.delete(id)) {
 			throw new ResourceNotFoundException("no gift certificate to remove by id",
-					ExceptionMessageKey.GIFT_CERTIFICATE_NOT_FOUND_BY_ID, String.valueOf(id),
+					MessageKey.GIFT_CERTIFICATE_NOT_FOUND_BY_ID, String.valueOf(id),
 					ErrorCode.GIFT_CERTIFICATE.getCode());
 		}
 		giftCertificateTagDao.deleteConnectionByGiftCertificateId(id);
@@ -132,7 +117,6 @@ public class GiftCertificateServiceImpl implements GiftCertificateService {
 				.collect(Collectors.toList());
 	}
 
-	// TODO change
 	private GiftCertificateDto convertGiftCertificateAndSetTags(GiftCertificate giftCertificate) {
 		GiftCertificateDto giftCertificateDto = modelMapper.map(giftCertificate, GiftCertificateDto.class);
 		List<Tag> tags = giftCertificateTagDao.findTagsByCiftCertificateId(giftCertificate.getId());

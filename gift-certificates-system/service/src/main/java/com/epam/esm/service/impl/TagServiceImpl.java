@@ -17,7 +17,7 @@ import com.epam.esm.exception.ErrorCode;
 import com.epam.esm.exception.IncorrectParameterValueException;
 import com.epam.esm.exception.ResourceNotFoundException;
 import com.epam.esm.service.TagService;
-import com.epam.esm.util.ExceptionMessageKey;
+import com.epam.esm.util.MessageKey;
 import com.epam.esm.validator.TagValidator;
 
 @Service
@@ -57,7 +57,7 @@ public class TagServiceImpl implements TagService {
 		Optional<Tag> foundTag = tagDao.findById(id);
 		return foundTag.map(tag -> modelMapper.map(tag, TagDto.class))
 				.orElseThrow(() -> new ResourceNotFoundException("no tag by id",
-						ExceptionMessageKey.TAG_NOT_FOUND_BY_ID, String.valueOf(id), ErrorCode.TAG.getCode()));
+						MessageKey.TAG_NOT_FOUND_BY_ID, String.valueOf(id), ErrorCode.TAG.getCode()));
 	}
 
 	@Transactional
@@ -65,7 +65,7 @@ public class TagServiceImpl implements TagService {
 	public void deleteTag(long id) throws IncorrectParameterValueException, ResourceNotFoundException {
 		tagValidator.validateId(id);
 		if (!tagDao.delete(id)) {
-			throw new ResourceNotFoundException("no tag to remove by id", ExceptionMessageKey.TAG_NOT_FOUND_BY_ID,
+			throw new ResourceNotFoundException("no tag to remove by id", MessageKey.TAG_NOT_FOUND_BY_ID,
 					String.valueOf(id), ErrorCode.TAG.getCode());
 		}
 		giftCertificateTagDao.deleteConnectionByTagId(id);

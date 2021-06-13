@@ -11,10 +11,10 @@ public class GiftCertificate {
 	private String name;
 	private String description;
 	private BigDecimal price;
-	private int duration; // TODO type?
+	private int duration;
 	private LocalDateTime createDate;
 	private LocalDateTime lastUpdateDate;
-	private List<Tag> tags; // TODO ?
+	private List<Tag> tags;
 	private boolean deleted;
 
 	public GiftCertificate() {
@@ -76,7 +76,6 @@ public class GiftCertificate {
 		this.lastUpdateDate = lastUpdateDate;
 	}
 
-	// TODO
 	public List<Tag> getTags() {
 		return tags == null ? Collections.emptyList() : Collections.unmodifiableList(tags);
 	}

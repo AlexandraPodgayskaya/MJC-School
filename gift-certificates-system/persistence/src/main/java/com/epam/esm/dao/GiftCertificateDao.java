@@ -14,13 +14,6 @@ public interface GiftCertificateDao {
 
 	Optional<GiftCertificate> findById(long id);
 
-	List<GiftCertificate> findAll(GiftCertificateSearchParameters giftCertificateSearchParameters);
-
-	List<GiftCertificate> findByTagName(GiftCertificateSearchParameters giftCertificateSearchParameters);
-
-	List<GiftCertificate> findByTagAndPartNameOrDescription(
-			GiftCertificateSearchParameters giftCertificateSearchParameters);
-
 	GiftCertificate update(GiftCertificate giftCertificate);
 
 	boolean delete(long id);

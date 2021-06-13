@@ -79,7 +79,6 @@ public class GiftCertificateDto {
 		this.lastUpdateDate = lastUpdateDate;
 	}
 
-	// TODO
 	public List<TagDto> getTags() {
 		return tags == null ? Collections.emptyList() : Collections.unmodifiableList(tags);
 	}

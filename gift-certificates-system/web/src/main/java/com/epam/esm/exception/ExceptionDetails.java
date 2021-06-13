@@ -1,6 +1,5 @@
 package com.epam.esm.exception;
 
-//TODO immutable or bean
 public final class ExceptionDetails {
 
 	private final String errorMessage;
