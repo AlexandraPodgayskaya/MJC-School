@@ -55,13 +55,13 @@ public class GiftCertificateServiceImpl implements GiftCertificateService {
 		LocalDateTime currentTime = LocalDateTime.now();
 		giftCertificate.setCreateDate(currentTime);
 		giftCertificate.setLastUpdateDate(currentTime);
-		giftCertificateDao.create(giftCertificate);
+		GiftCertificate createdGiftCertificate = giftCertificateDao.create(giftCertificate);
 		if (!giftCertificateDto.getTags().isEmpty()) {
 			List<Tag> tags = createTags(giftCertificateDto.getTags());
-			giftCertificate.setTags(tags);
-			giftCertificateTagDao.createConnection(giftCertificate);
+			createdGiftCertificate.setTags(tags);
+			giftCertificateTagDao.createConnection(createdGiftCertificate);
 		}
-		return modelMapper.map(giftCertificate, GiftCertificateDto.class);
+		return modelMapper.map(createdGiftCertificate, GiftCertificateDto.class);
 	}
 
 	@Override

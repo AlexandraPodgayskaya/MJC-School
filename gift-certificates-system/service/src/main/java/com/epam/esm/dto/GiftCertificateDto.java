@@ -23,6 +23,19 @@ public class GiftCertificateDto {
 	public GiftCertificateDto() {
 	}
 
+	public GiftCertificateDto(Long id, String name, String description, BigDecimal price, int duration,
+			LocalDateTime createDate, LocalDateTime lastUpdateDate, List<TagDto> tags) {
+		super();
+		this.id = id;
+		this.name = name;
+		this.description = description;
+		this.price = price;
+		this.duration = duration;
+		this.createDate = createDate;
+		this.lastUpdateDate = lastUpdateDate;
+		this.tags = tags;
+	}
+
 	public Long getId() {
 		return id;
 	}

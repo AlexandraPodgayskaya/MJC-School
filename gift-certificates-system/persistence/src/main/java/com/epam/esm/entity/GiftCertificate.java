@@ -5,6 +5,8 @@ import java.time.LocalDateTime;
 import java.util.Collections;
 import java.util.List;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+
 public class GiftCertificate {
 
 	private Long id;
@@ -12,12 +14,28 @@ public class GiftCertificate {
 	private String description;
 	private BigDecimal price;
 	private int duration;
+	@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd'T'HH:mm:ss")
 	private LocalDateTime createDate;
+	@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd'T'HH:mm:ss")
 	private LocalDateTime lastUpdateDate;
 	private List<Tag> tags;
 	private boolean deleted;
 
 	public GiftCertificate() {
+	}
+
+	public GiftCertificate(Long id, String name, String description, BigDecimal price, int duration,
+			LocalDateTime createDate, LocalDateTime lastUpdateDate, List<Tag> tags, boolean deleted) {
+		super();
+		this.id = id;
+		this.name = name;
+		this.description = description;
+		this.price = price;
+		this.duration = duration;
+		this.createDate = createDate;
+		this.lastUpdateDate = lastUpdateDate;
+		this.tags = tags;
+		this.deleted = deleted;
 	}
 
 	public Long getId() {

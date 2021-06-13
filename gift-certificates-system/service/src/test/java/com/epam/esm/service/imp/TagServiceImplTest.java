@@ -3,11 +3,11 @@ package com.epam.esm.service.imp;
 import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
-import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.ArgumentMatchers.anyLong;
+import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.ArgumentMatchers.isA;
-import static org.mockito.Mockito.doThrow;
 import static org.mockito.Mockito.doNothing;
+import static org.mockito.Mockito.doThrow;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
@@ -24,7 +24,6 @@ import org.modelmapper.convention.MatchingStrategies;
 
 import com.epam.esm.dao.GiftCertificateTagDao;
 import com.epam.esm.dao.TagDao;
-import com.epam.esm.dao.impl.TagDaoImpl;
 import com.epam.esm.dto.TagDto;
 import com.epam.esm.entity.Tag;
 import com.epam.esm.exception.IncorrectParameterValueException;
@@ -61,7 +60,7 @@ public class TagServiceImplTest {
 
 	@BeforeEach
 	public void init() {
-		tagDao = mock(TagDaoImpl.class);
+		tagDao = mock(TagDao.class);
 		giftCertificateTagDao = mock(GiftCertificateTagDao.class);
 		tagValidator = mock(TagValidator.class);
 		tagService = new TagServiceImpl(tagDao, giftCertificateTagDao, tagValidator, modelMapper);
@@ -90,13 +89,9 @@ public class TagServiceImplTest {
 		assertEquals(tagDto2, actual);
 	}
 
-	@Test // TODO (static and @BeforeAll)
+	@Test
 	public void createTagThrowIncorrectParameterValueExceptionTest() {
 		doThrow(new IncorrectParameterValueException()).when(tagValidator).validateName(anyString());
-		// TODO надо ли предопределять другое поведение mock когда знаю, что на
-		// валидаторе выполнение остановится
-		when(tagDao.findByName(anyString())).thenReturn(Optional.empty());
-		when(tagDao.create(isA(Tag.class))).thenReturn(tag1);
 		assertThrows(IncorrectParameterValueException.class, () -> tagService.createTag(tagDto3));
 	}
 
@@ -110,7 +105,7 @@ public class TagServiceImplTest {
 
 	@Test
 	public void findTagByIdPositiveTest() {
-		final long id = 1L;
+		final long id = 1;
 		doNothing().when(tagValidator).validateId(anyLong());
 		when(tagDao.findById(anyLong())).thenReturn(Optional.of(tag1));
 		TagDto actual = tagService.findTagById(id);
@@ -120,14 +115,13 @@ public class TagServiceImplTest {
 	@Test
 	public void findTagByIdThrowIncorrectParameterValueExceptionTest() {
 		final long id = 0;
-		doThrow(new IncorrectParameterValueException()).when(tagValidator).validateId(anyLong());// TODO
-		when(tagDao.findById(anyLong())).thenReturn(Optional.empty());
+		doThrow(new IncorrectParameterValueException()).when(tagValidator).validateId(anyLong());
 		assertThrows(IncorrectParameterValueException.class, () -> tagService.findTagById(id));
 	}
 
 	@Test
 	public void findTagByIdThrowResourceNotFoundExceptionTest() {
-		final long id = 5L;
+		final long id = 5;
 		doNothing().when(tagValidator).validateId(anyLong());
 		when(tagDao.findById(anyLong())).thenReturn(Optional.empty());
 		assertThrows(ResourceNotFoundException.class, () -> tagService.findTagById(id));
@@ -145,9 +139,7 @@ public class TagServiceImplTest {
 	@Test
 	public void deleteTagThrowIncorrectParameterValueExceptionTest() {
 		final long id = -5;
-		doThrow(new IncorrectParameterValueException()).when(tagValidator).validateId(anyLong());// TODO
-		when(tagDao.delete(anyLong())).thenReturn(Boolean.FALSE);
-		when(giftCertificateTagDao.deleteConnectionByTagId(anyLong())).thenReturn(Boolean.FALSE);
+		doThrow(new IncorrectParameterValueException()).when(tagValidator).validateId(anyLong());
 		assertThrows(IncorrectParameterValueException.class, () -> tagService.deleteTag(id));
 	}
 
@@ -156,7 +148,6 @@ public class TagServiceImplTest {
 		final long id = 10;
 		doNothing().when(tagValidator).validateId(anyLong());
 		when(tagDao.delete(anyLong())).thenReturn(Boolean.FALSE);
-		when(giftCertificateTagDao.deleteConnectionByTagId(anyLong())).thenReturn(Boolean.FALSE);
 		assertThrows(ResourceNotFoundException.class, () -> tagService.deleteTag(id));
 	}
 }
