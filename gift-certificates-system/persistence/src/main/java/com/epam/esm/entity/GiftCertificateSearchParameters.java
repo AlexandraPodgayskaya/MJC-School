@@ -9,6 +9,12 @@ public class GiftCertificateSearchParameters {
 	public GiftCertificateSearchParameters() {
 	}
 
+	public GiftCertificateSearchParameters(String tagName, String partNameOrDescription) {
+		super();
+		this.tagName = tagName;
+		this.partNameOrDescription = partNameOrDescription;
+	}
+
 	public String getTagName() {
 		return tagName;
 	}
@@ -83,11 +89,11 @@ public class GiftCertificateSearchParameters {
 		return "GiftCertificateSearchParameters [tagName=" + tagName + ", partNameOrDescription="
 				+ partNameOrDescription + ", sortType=" + sortType + ", orderType=" + orderType + "]";
 	}
-	
+
 	public enum SortType {
 		NAME, CREATE_DATE
 	}
-	
+
 	public enum OrderType {
 		ASC, DESC
 	}
