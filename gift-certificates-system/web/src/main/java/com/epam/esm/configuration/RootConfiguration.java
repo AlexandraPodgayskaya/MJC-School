@@ -30,7 +30,6 @@ public class RootConfiguration {
 	@Value("${db.poolsize}")
 	private int poolSize;
 
-	// TODO profile, add "dev"
 	@Profile("prod")
 	@Bean
 	public DataSource dataSource() {
@@ -56,7 +55,6 @@ public class RootConfiguration {
 	@Bean
 	public ModelMapper modelMapper() {
 		ModelMapper mapper = new ModelMapper();
-		// TODO разобраться
 		mapper.getConfiguration().setMatchingStrategy(MatchingStrategies.STRICT).setFieldMatchingEnabled(true)
 				.setSkipNullEnabled(true).setFieldAccessLevel(org.modelmapper.config.Configuration.AccessLevel.PRIVATE);
 		return mapper;

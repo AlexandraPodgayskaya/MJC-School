@@ -31,11 +31,4 @@ public class DispatcherServletInitializer extends AbstractAnnotationConfigDispat
 	protected String[] getServletMappings() {
 		return new String[] { "/" };
 	}
-
-	/*@Override TODO 
-	protected WebApplicationContext createServletApplicationContext() {
-		WebApplicationContext context = super.createServletApplicationContext();
-		((ConfigurableEnvironment) context.getEnvironment()).setActiveProfiles(PROD_PROFILE);
-		return context;
-	}*/
 }

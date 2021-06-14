@@ -1,11 +1,10 @@
 package com.epam.esm.dao.creator;
 
-import java.util.List;
-
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Component;
 
 import com.epam.esm.entity.GiftCertificateSearchParameters;
+import com.epam.esm.entity.GiftCertificateSearchQuery;
 
 @Component
 public class GiftCertificateQueryCreator {
@@ -16,16 +15,17 @@ public class GiftCertificateQueryCreator {
 	private static final String ZERO_OR_MORE_CHARACTERS = "%";
 	private static final String ORDER_BY = " ORDER BY ";
 
-	public String createQuery(GiftCertificateSearchParameters searchParameters, List<String> parametersList) {
+	public GiftCertificateSearchQuery createQuery(GiftCertificateSearchParameters searchParameters) {
+		GiftCertificateSearchQuery giftCertificateSearchQuery = new GiftCertificateSearchQuery();
 		StringBuilder query = new StringBuilder();
 		query.append(SELECT_GIFT_CERTIFICATES);
 		if (StringUtils.isNotBlank(searchParameters.getTagName())) {
 			query.append(TAG_NAME_CONDITION);
-			parametersList.add(searchParameters.getTagName());
+			giftCertificateSearchQuery.addParameter(searchParameters.getTagName());
 		}
 		if (StringUtils.isNotBlank(searchParameters.getPartNameOrDescription())) {
 			query.append(PART_NAME_OR_DESCRIPTION_CONDITION);
-			parametersList.add(
+			giftCertificateSearchQuery.addParameter(
 					ZERO_OR_MORE_CHARACTERS + searchParameters.getPartNameOrDescription() + ZERO_OR_MORE_CHARACTERS);
 		}
 		if (searchParameters.getSortType() != null) {
@@ -34,6 +34,7 @@ public class GiftCertificateQueryCreator {
 				query.append(StringUtils.SPACE + searchParameters.getOrderType());
 			}
 		}
-		return query.toString();
+		giftCertificateSearchQuery.setQuery(query.toString());
+		return giftCertificateSearchQuery;
 	}
 }

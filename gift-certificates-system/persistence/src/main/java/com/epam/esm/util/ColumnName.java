@@ -1,6 +1,5 @@
 package com.epam.esm.util;
 
-//TODO package util place
 public final class ColumnName {
 
 	public static final String COLUMN_ID = "id";

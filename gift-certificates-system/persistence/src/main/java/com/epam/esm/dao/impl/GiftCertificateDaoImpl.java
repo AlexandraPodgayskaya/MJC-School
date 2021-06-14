@@ -3,7 +3,6 @@ package com.epam.esm.dao.impl;
 import java.sql.PreparedStatement;
 import java.sql.Statement;
 import java.sql.Timestamp;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -18,6 +17,7 @@ import com.epam.esm.dao.creator.GiftCertificateQueryCreator;
 import com.epam.esm.dao.mapper.GiftCertificateMapper;
 import com.epam.esm.entity.GiftCertificate;
 import com.epam.esm.entity.GiftCertificateSearchParameters;
+import com.epam.esm.entity.GiftCertificateSearchQuery;
 
 @Repository
 public class GiftCertificateDaoImpl implements GiftCertificateDao {
@@ -62,9 +62,8 @@ public class GiftCertificateDaoImpl implements GiftCertificateDao {
 	@Override
 	public List<GiftCertificate> findBySearchParameters(
 			GiftCertificateSearchParameters giftCertificateSearchParameters) {
-		List<String> parametersList = new ArrayList<>();
-		String query = queryCreator.createQuery(giftCertificateSearchParameters, parametersList);
-		return jdbcTemplate.query(query, giftCertificateMapper, parametersList.toArray());
+		GiftCertificateSearchQuery query = queryCreator.createQuery(giftCertificateSearchParameters);
+		return jdbcTemplate.query(query.getQuery(), giftCertificateMapper, query.getParameters().toArray());
 	}
 
 	@Override

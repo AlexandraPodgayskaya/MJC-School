@@ -2,7 +2,6 @@ package com.epam.esm.exception;
 
 import java.util.Locale;
 
-import org.apache.commons.lang3.StringUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,7 +28,8 @@ public class ExceptionController {
 	@ExceptionHandler(ResourceNotFoundException.class)
 	@ResponseStatus(HttpStatus.NOT_FOUND)
 	public ExceptionDetails handleResourceNotFoundException(ResourceNotFoundException exception, Locale locale) {
-		String errorMessage = createMessage(exception.getMessageKey(), exception.getMessageParameter(), locale);
+		String errorMessage = messageSource.getMessage(exception.getMessageKey(),
+				new String[] { exception.getMessageParameter() }, locale);
 		logger.error(HttpStatus.NOT_FOUND, exception);
 		return new ExceptionDetails(errorMessage, HttpStatus.NOT_FOUND.value() + exception.getErrorCode());
 	}
@@ -37,18 +37,19 @@ public class ExceptionController {
 	@ExceptionHandler(IncorrectParameterValueException.class)
 	@ResponseStatus(HttpStatus.BAD_REQUEST)
 	public ExceptionDetails handleIncorrectDataException(IncorrectParameterValueException exception, Locale locale) {
-		String message = createMessage(MessageKey.INCORRECT_PARAMETER_VALUE, StringUtils.EMPTY, locale);
+		String message = messageSource.getMessage(MessageKey.INCORRECT_PARAMETER_VALUE, new String[] {}, locale);
 		StringBuilder builder = new StringBuilder();
 		builder.append(message);
-		exception.getParameters().forEach((name, value) -> builder.append(createMessage(name, value, locale)));
+		exception.getParameters().forEach(
+				(name, value) -> builder.append(messageSource.getMessage(name, new String[] { value }, locale)));
 		logger.error(HttpStatus.BAD_REQUEST, exception);
 		return new ExceptionDetails(builder.toString(), HttpStatus.BAD_REQUEST.value() + exception.getErrorCode());
 	}
 
-	@ExceptionHandler(BindException.class) // TODO
+	@ExceptionHandler(BindException.class)
 	@ResponseStatus(HttpStatus.BAD_REQUEST)
 	public ExceptionDetails handleBindException(BindException exception, Locale locale) {
-		String errorMessage = createMessage(MessageKey.INCORRECT_SORTING_PARAMETERS, StringUtils.EMPTY,
+		String errorMessage = messageSource.getMessage(MessageKey.INCORRECT_SORTING_PARAMETERS, new String[] {},
 				locale);
 		logger.error(HttpStatus.BAD_REQUEST, exception);
 		return new ExceptionDetails(errorMessage,
@@ -58,13 +59,9 @@ public class ExceptionController {
 	@ExceptionHandler(Exception.class)
 	@ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
 	public ExceptionDetails handleException(Exception exception, Locale locale) {
-		String errorMessage = createMessage(MessageKey.INTERNAL_ERROR, exception.getMessage(), locale);
+		String errorMessage = messageSource.getMessage(MessageKey.INTERNAL_ERROR,
+				new String[] { exception.getMessage() }, locale);
 		logger.error(HttpStatus.INTERNAL_SERVER_ERROR, exception);
 		return new ExceptionDetails(errorMessage, String.valueOf(HttpStatus.INTERNAL_SERVER_ERROR.value()));
 	}
-
-	private String createMessage(String exceptionMessageKey, String exceptionMessageParameter, Locale locale) {
-		return messageSource.getMessage(exceptionMessageKey, new String[] { exceptionMessageParameter }, locale);
-	}
-
 }
