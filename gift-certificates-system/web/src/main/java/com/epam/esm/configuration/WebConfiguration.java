@@ -19,7 +19,7 @@ import com.epam.esm.converter.StringToSortTypeConverter;
 public class WebConfiguration implements WebMvcConfigurer {
 	@Value("UTF-8")
 	private String encoding;
-	@Value("exception")
+	@Value("localization/exception")
 	private String fileName;
 
 	@Override

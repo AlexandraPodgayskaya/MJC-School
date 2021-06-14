@@ -12,6 +12,8 @@ import org.springframework.context.annotation.Profile;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.datasource.DataSourceTransactionManager;
+import org.springframework.jdbc.datasource.embedded.EmbeddedDatabaseBuilder;
+import org.springframework.jdbc.datasource.embedded.EmbeddedDatabaseType;
 import org.springframework.transaction.TransactionManager;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 
@@ -29,6 +31,10 @@ public class RootConfiguration {
 	private String password;
 	@Value("${db.poolsize}")
 	private int poolSize;
+	@Value("classpath:script/create_tables_script.sql")
+	private String createScript;
+	@Value("classpath:script/init_tables_script.sql")
+	private String initScript;
 
 	@Profile("prod")
 	@Bean
@@ -42,9 +48,23 @@ public class RootConfiguration {
 		return dataSource;
 	}
 
+	@Profile("prod")
 	@Bean
-	public JdbcTemplate jdbcTemplate() {
+	public JdbcTemplate jdbcTemplateProd() {
 		return new JdbcTemplate(dataSource());
+	}
+
+	@Profile("dev")
+	@Bean
+	public DataSource embeddedDataSource() {
+		return new EmbeddedDatabaseBuilder().setType(EmbeddedDatabaseType.H2).addScript(createScript)
+				.addScript(initScript).build();
+	}
+
+	@Profile("dev")
+	@Bean
+	public JdbcTemplate jdbcTemplateDev() {
+		return new JdbcTemplate(embeddedDataSource());
 	}
 
 	@Bean
