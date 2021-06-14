@@ -39,7 +39,6 @@ public class TagServiceImplTest {
 	private static TagValidator tagValidator;
 	private static ModelMapper modelMapper;
 	private static TagService tagService;
-
 	private static TagDto tagDto1;
 	private static TagDto tagDto2;
 	private static TagDto tagDto3;

@@ -100,7 +100,6 @@ public class GiftCertificateServiceImplTest {
 		giftCertificateDto4 = null;
 		giftCertificate1 = null;
 		giftCertificate2 = null;
-
 	}
 
 	@Test
