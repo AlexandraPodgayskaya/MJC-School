@@ -27,6 +27,7 @@ bin/
 tmp/
 Servers/
 JavaDoc/
+RemoteSystemsTempFiles/
 .metadata
 .classpath
 .project
