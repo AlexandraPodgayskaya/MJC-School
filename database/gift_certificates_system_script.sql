@@ -71,7 +71,7 @@ SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS;
 SET UNIQUE_CHECKS=@OLD_UNIQUE_CHECKS;
 
 INSERT INTO `gift_certificates_system`.`gift_certificate` (`id`, `name`, `description`, `price`, `duration`, `create_date`, `last_update_date`) VALUES ('1', 'Excursion', 'Excursion immersion in the gentry culture with a lunch of national dishes', '2999.99', '5', '2018-11-18T17:33:42.156.', '2018-11-20T17:33:42.156.');
-INSERT INTO `gift_certificates_system`.`gift_certificate` (`id`, `name`, `description`, `price`, `duration`, `create_date`, `last_update_date`) VALUES ('2', 'Diving with dolphins', 'Diving with dolphins - an incredible meeting with the underwater world and its inhabitants', '1500', '1', '2020-03-20 16:34:49', '2020-05-20 16:34:49');
+INSERT INTO `gift_certificates_system`.`gift_certificate` (`id`, `name`, `description`, `price`, `duration`, `create_date`, `last_update_date`) VALUES ('2', 'Diving with dolphins', 'Enjoy the underwater world and its inhabitants', '1500', '1', '2020-03-20 16:34:49', '2020-05-20 16:34:49');
 INSERT INTO `gift_certificates_system`.`gift_certificate` (`id`, `name`, `description`, `price`, `duration`, `create_date`, `last_update_date`) VALUES ('3', 'Horse ride', 'Horseback ride for lovers - a Hollywood-style date', '500', '2', '2017-05-22 12:46:31', '2020-03-20 16:34:49');
 INSERT INTO `gift_certificates_system`.`tag` (`id`, `name`) VALUES ('1', 'travel');
 INSERT INTO `gift_certificates_system`.`tag` (`id`, `name`) VALUES ('2', 'gift');

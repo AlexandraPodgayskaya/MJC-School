@@ -17,7 +17,7 @@ public class GiftCertificateQueryCreator {
 
 	private static final String SELECT_GIFT_CERTIFICATES = "SELECT * FROM GIFT_CERTIFICATE WHERE DELETED = FALSE ";
 	private static final String TAG_NAME_CONDITION = " AND ID IN (SELECT GIFT_CERTIFICATE_TAG_CONNECTION.GIFT_CERTIFICATE_ID FROM GIFT_CERTIFICATE_TAG_CONNECTION JOIN TAG ON GIFT_CERTIFICATE_TAG_CONNECTION.TAG_ID = TAG.ID WHERE TAG.NAME = ? AND TAG.DELETED = FALSE) ";
-	private static final String PART_NAME_OR_DESCRIPTION_CONDITION = " AND (GIFT_CERTIFICATE.NAME OR GIFT_CERTIFICATE.DESCRIPTION LIKE ? ) ";
+	private static final String PART_NAME_OR_DESCRIPTION_CONDITION = " AND (GIFT_CERTIFICATE.NAME LIKE ?  OR GIFT_CERTIFICATE.DESCRIPTION LIKE ? ) ";
 	private static final String ZERO_OR_MORE_CHARACTERS = "%";
 	private static final String ORDER_BY = " ORDER BY ";
 
@@ -37,6 +37,8 @@ public class GiftCertificateQueryCreator {
 		}
 		if (StringUtils.isNotBlank(searchParameters.getPartNameOrDescription())) {
 			query.append(PART_NAME_OR_DESCRIPTION_CONDITION);
+			giftCertificateSearchQuery.addParameter(
+					ZERO_OR_MORE_CHARACTERS + searchParameters.getPartNameOrDescription() + ZERO_OR_MORE_CHARACTERS);
 			giftCertificateSearchQuery.addParameter(
 					ZERO_OR_MORE_CHARACTERS + searchParameters.getPartNameOrDescription() + ZERO_OR_MORE_CHARACTERS);
 		}
