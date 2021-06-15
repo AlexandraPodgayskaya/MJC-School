@@ -1,5 +1,11 @@
 package com.epam.esm.util;
 
+/**
+ * Class presents keys by which messages will be taken from properties files
+ *
+ * @author Aleksandra Podgayskaya
+ * @version 1.0
+ */
 public final class MessageKey {
 
 	public static final String GIFT_CERTIFICATE_NOT_FOUND_BY_ID = "giftCertificate.notFoundById";
@@ -11,7 +17,7 @@ public final class MessageKey {
 	public static final String PARAMETER_ID = "parameter.id";
 	public static final String PARAMETER_DESCRIPTION = "parameter.description";
 	public static final String PARAMETER_PRICE = "parameter.price";
-	public static final String PARAMETER_DURATION = "parameter.duration"; 
+	public static final String PARAMETER_DURATION = "parameter.duration";
 
 	private MessageKey() {
 	}

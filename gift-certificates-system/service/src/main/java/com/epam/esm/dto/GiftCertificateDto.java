@@ -7,6 +7,13 @@ import java.util.List;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 
+/**
+ * Class is implementation of pattern DTO for transmission gift certificate
+ * entity between service and controller
+ *
+ * @author Aleksandra Podgayskaya
+ * @version 1.0
+ */
 public class GiftCertificateDto {
 
 	private Long id;

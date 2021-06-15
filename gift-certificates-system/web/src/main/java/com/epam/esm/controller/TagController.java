@@ -16,6 +16,12 @@ import org.springframework.web.bind.annotation.RestController;
 import com.epam.esm.dto.TagDto;
 import com.epam.esm.service.TagService;
 
+/**
+ * Class is an endpoint of the API which allows to perform CRD operations on tag
+ * 
+ * @author Aleksandra Podgayskaya
+ * @version 1.0
+ */
 @RestController
 @RequestMapping("/tags")
 public class TagController {
@@ -27,25 +33,47 @@ public class TagController {
 		this.tagService = tagService;
 	}
 
+	/**
+	 * Get all tags, processes GET requests at /tags
+	 * 
+	 * @return the list of all tags dto
+	 */
 	@GetMapping
 	public List<TagDto> getTags() {
 		return tagService.findAllTags();
 	}
 
+	/**
+	 * Get tag by id, processes GET requests at /tags/{id}
+	 * 
+	 * @param id the tag id which will be found
+	 * @return the found tag dto
+	 */
 	@GetMapping("/{id}")
 	public TagDto getTagById(@PathVariable long id) {
 		return tagService.findTagById(id);
 	}
 
+	/**
+	 * Add new tag, processes POST requests at /tags
+	 * 
+	 * @param tagDto the new tag which will be added
+	 * @return the new tag dto
+	 */
 	@PostMapping
 	@ResponseStatus(HttpStatus.CREATED)
 	public TagDto addTag(@RequestBody TagDto tagDto) {
 		return tagService.createTag(tagDto);
 	}
-	
+
+	/**
+	 * Delete tag by id, processes DELETE requests at /tags/{id}
+	 * 
+	 * @param id he tag id which will be deletedF
+	 */
 	@DeleteMapping("/{id}")
 	@ResponseStatus(HttpStatus.OK)
-    public void deleteTag(@PathVariable long id) {
-        tagService.deleteTag(id);
-    }
+	public void deleteTag(@PathVariable long id) {
+		tagService.deleteTag(id);
+	}
 }

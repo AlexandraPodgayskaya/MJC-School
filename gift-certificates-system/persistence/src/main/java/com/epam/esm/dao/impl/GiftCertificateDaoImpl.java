@@ -19,6 +19,13 @@ import com.epam.esm.entity.GiftCertificate;
 import com.epam.esm.entity.GiftCertificateSearchParameters;
 import com.epam.esm.entity.GiftCertificateSearchQuery;
 
+/**
+ * Class is implementation of interface {@link GiftCertificateDao} and intended
+ * to work with gift_certificate table
+ *
+ * @author Aleksandra Podgayskaya
+ * @version 1.0
+ */
 @Repository
 public class GiftCertificateDaoImpl implements GiftCertificateDao {
 

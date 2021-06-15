@@ -1,5 +1,11 @@
 package com.epam.esm.entity;
 
+/**
+ * Class consists parameters which are used to make selection to database.
+ *
+ * @author Aleksandra Podgayskaya
+ * @version 1.0
+ */
 public class GiftCertificateSearchParameters {
 	private String tagName;
 	private String partNameOrDescription;

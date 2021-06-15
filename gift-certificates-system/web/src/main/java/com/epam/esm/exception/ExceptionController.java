@@ -14,6 +14,12 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 
 import com.epam.esm.util.MessageKey;
 
+/**
+ * Class represents controller which handle all generated exceptions
+ *
+ * @author Aleksandra Podgayskaya
+ * @version 1.0
+ */
 @RestControllerAdvice
 public class ExceptionController {
 
@@ -25,6 +31,13 @@ public class ExceptionController {
 		this.messageSource = messageSource;
 	}
 
+	/**
+	 * Handle ResourceNotFoundException
+	 * 
+	 * @param exception the exception
+	 * @param locale    the locale of HTTP request
+	 * @return the exception details entity
+	 */
 	@ExceptionHandler(ResourceNotFoundException.class)
 	@ResponseStatus(HttpStatus.NOT_FOUND)
 	public ExceptionDetails handleResourceNotFoundException(ResourceNotFoundException exception, Locale locale) {
@@ -34,6 +47,13 @@ public class ExceptionController {
 		return new ExceptionDetails(errorMessage, HttpStatus.NOT_FOUND.value() + exception.getErrorCode());
 	}
 
+	/**
+	 * Handle IncorrectParameterValueException
+	 * 
+	 * @param exception the exception
+	 * @param locale    the locale of HTTP request
+	 * @return the exception details entity
+	 */
 	@ExceptionHandler(IncorrectParameterValueException.class)
 	@ResponseStatus(HttpStatus.BAD_REQUEST)
 	public ExceptionDetails handleIncorrectDataException(IncorrectParameterValueException exception, Locale locale) {
@@ -46,6 +66,13 @@ public class ExceptionController {
 		return new ExceptionDetails(builder.toString(), HttpStatus.BAD_REQUEST.value() + exception.getErrorCode());
 	}
 
+	/**
+	 * Handle BindException
+	 * 
+	 * @param exception the exception
+	 * @param locale    the locale of HTTP request
+	 * @return the exception details entity
+	 */
 	@ExceptionHandler(BindException.class)
 	@ResponseStatus(HttpStatus.BAD_REQUEST)
 	public ExceptionDetails handleBindException(BindException exception, Locale locale) {
@@ -56,6 +83,13 @@ public class ExceptionController {
 				HttpStatus.BAD_REQUEST.value() + ErrorCode.GIFT_CERTIFICATE.getCode());
 	}
 
+	/**
+	 * Handle all other Exceptions
+	 * 
+	 * @param exception the exception
+	 * @param locale    the locale of HTTP request
+	 * @return the exception details entity
+	 */
 	@ExceptionHandler(Exception.class)
 	@ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
 	public ExceptionDetails handleException(Exception exception, Locale locale) {

@@ -16,11 +16,24 @@ import com.epam.esm.exception.IncorrectParameterValueException;
 import com.epam.esm.util.MessageKey;
 import com.epam.esm.util.ValidValue;
 
+/**
+ * Class provides methods to validate fields of {@link GiftCertificateDto}.
+ *
+ * @author Aleksandra Podgayskaya
+ * @version 1.0
+ */
 @Component
 public class GiftCertificateValidator {
 
 	private static final Logger logger = LogManager.getLogger();
 
+	/**
+	 * Validate all fields of gift certificate
+	 * 
+	 * @param giftCertificateDto the gift certificate for validation
+	 * @throws IncorrectParameterValueException in case incorrect name, description,
+	 *                                          price or duration
+	 */
 	public void validate(GiftCertificateDto giftCertificateDto) throws IncorrectParameterValueException {
 
 		Map<String, String> incorrectParameters = new LinkedHashMap<>();
@@ -56,6 +69,12 @@ public class GiftCertificateValidator {
 		}
 	}
 
+	/**
+	 * Validate gift certificate id
+	 * 
+	 * @param id the gift certificate id for validation
+	 * @throws IncorrectParameterValueException in case incorrect id
+	 */
 	public void validateId(long id) throws IncorrectParameterValueException {
 		if (id < ValidValue.MIN_ID) {
 			Map<String, String> incorrectParameter = new HashMap<>();

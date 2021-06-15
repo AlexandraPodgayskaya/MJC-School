@@ -20,6 +20,13 @@ import com.epam.esm.service.TagService;
 import com.epam.esm.util.MessageKey;
 import com.epam.esm.validator.TagValidator;
 
+/**
+ * Class is implementation of interface {@link TagService} and intended to work
+ * with gift certificate
+ *
+ * @author Aleksandra Podgayskaya
+ * @version 1.0
+ */
 @Service
 public class TagServiceImpl implements TagService {
 
@@ -56,8 +63,8 @@ public class TagServiceImpl implements TagService {
 		tagValidator.validateId(id);
 		Optional<Tag> foundTag = tagDao.findById(id);
 		return foundTag.map(tag -> modelMapper.map(tag, TagDto.class))
-				.orElseThrow(() -> new ResourceNotFoundException("no tag by id",
-						MessageKey.TAG_NOT_FOUND_BY_ID, String.valueOf(id), ErrorCode.TAG.getCode()));
+				.orElseThrow(() -> new ResourceNotFoundException("no tag by id", MessageKey.TAG_NOT_FOUND_BY_ID,
+						String.valueOf(id), ErrorCode.TAG.getCode()));
 	}
 
 	@Transactional

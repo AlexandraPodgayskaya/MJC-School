@@ -1,5 +1,11 @@
 package com.epam.esm.util;
 
+/**
+ * Utility class of table column names
+ *
+ * @author Aleksandra Podgayskaya
+ * @version 1.0
+ */
 public final class ColumnName {
 
 	public static final String COLUMN_ID = "id";

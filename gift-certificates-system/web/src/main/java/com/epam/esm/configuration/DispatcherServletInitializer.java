@@ -5,6 +5,14 @@ import javax.servlet.ServletException;
 
 import org.springframework.web.servlet.support.AbstractAnnotationConfigDispatcherServletInitializer;
 
+/**
+ * Class is deployment descriptor. It is a configuration file for an artifact
+ * that is deployed to Tomcat.
+ *
+ * @author Aleksandra Podgayskaya
+ * @version 1.0
+ * @see AbstractAnnotationConfigDispatcherServletInitializer
+ */
 public class DispatcherServletInitializer extends AbstractAnnotationConfigDispatcherServletInitializer {
 
 	private static final String DEV_PROFILE = "dev";

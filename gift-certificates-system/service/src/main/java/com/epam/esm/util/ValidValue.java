@@ -2,6 +2,12 @@ package com.epam.esm.util;
 
 import java.math.BigDecimal;
 
+/**
+ * Class presents valid values for data validation
+ *
+ * @author Aleksandra Podgayskaya
+ * @version 1.0
+ */
 public final class ValidValue {
 
 	public static final int MIN_ID = 1;

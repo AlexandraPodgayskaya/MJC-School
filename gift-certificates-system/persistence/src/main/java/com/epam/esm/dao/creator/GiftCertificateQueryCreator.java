@@ -6,6 +6,12 @@ import org.springframework.stereotype.Component;
 import com.epam.esm.entity.GiftCertificateSearchParameters;
 import com.epam.esm.entity.GiftCertificateSearchQuery;
 
+/**
+ * Class designed to create query
+ *
+ * @author Aleksandra Podgayskaya
+ * @version 1.0
+ */
 @Component
 public class GiftCertificateQueryCreator {
 
@@ -15,6 +21,12 @@ public class GiftCertificateQueryCreator {
 	private static final String ZERO_OR_MORE_CHARACTERS = "%";
 	private static final String ORDER_BY = " ORDER BY ";
 
+	/**
+	 * Create query
+	 * 
+	 * @param searchParameters the gift certificate query parameters
+	 * @return the created query
+	 */
 	public GiftCertificateSearchQuery createQuery(GiftCertificateSearchParameters searchParameters) {
 		GiftCertificateSearchQuery giftCertificateSearchQuery = new GiftCertificateSearchQuery();
 		StringBuilder query = new StringBuilder();

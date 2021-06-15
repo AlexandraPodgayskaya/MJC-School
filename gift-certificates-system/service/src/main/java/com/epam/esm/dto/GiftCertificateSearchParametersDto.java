@@ -1,5 +1,12 @@
 package com.epam.esm.dto;
 
+/**
+ * Class is implementation of pattern DTO for transmission gift certificate
+ * search parameters between controller and service
+ *
+ * @author Aleksandra Podgayskaya
+ * @version 1.0
+ */
 public class GiftCertificateSearchParametersDto {
 
 	private String tagName;
@@ -84,11 +91,11 @@ public class GiftCertificateSearchParametersDto {
 		return "GiftCertificateSearchParametersDto [tagName=" + tagName + ", partNameOrDescription="
 				+ partNameOrDescription + ", sortType=" + sortType + ", orderType=" + orderType + "]";
 	}
-	
+
 	public enum SortType {
 		NAME, CREATE_DATE
 	}
-	
+
 	public enum OrderType {
 		ASC, DESC
 	}

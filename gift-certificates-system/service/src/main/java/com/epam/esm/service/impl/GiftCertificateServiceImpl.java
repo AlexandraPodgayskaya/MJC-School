@@ -26,6 +26,13 @@ import com.epam.esm.service.TagService;
 import com.epam.esm.util.MessageKey;
 import com.epam.esm.validator.GiftCertificateValidator;
 
+/**
+ * Class is implementation of interface {@link GiftCertificateService} and
+ * intended to work with gift certificate
+ *
+ * @author Aleksandra Podgayskaya
+ * @version 1.0
+ */
 @Service
 public class GiftCertificateServiceImpl implements GiftCertificateService {
 

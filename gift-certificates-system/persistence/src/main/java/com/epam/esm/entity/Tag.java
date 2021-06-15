@@ -1,5 +1,11 @@
 package com.epam.esm.entity;
 
+/**
+ * Class represents tag entity
+ *
+ * @author Aleksandra Podgayskaya
+ * @version 1.0
+ */
 public class Tag {
 
 	private Long id;

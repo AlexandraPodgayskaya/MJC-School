@@ -7,6 +7,12 @@ import java.util.List;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 
+/**
+ * Class represents gift_certificate entity
+ *
+ * @author Aleksandra Podgayskaya
+ * @version 1.0
+ */
 public class GiftCertificate {
 
 	private Long id;

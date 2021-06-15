@@ -4,6 +4,12 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+/**
+ * Class consists query and parameters to insert into it
+ *
+ * @author Aleksandra Podgayskaya
+ * @version 1.0
+ */
 public class GiftCertificateSearchQuery {
 	String query;
 	List<String> parameters;

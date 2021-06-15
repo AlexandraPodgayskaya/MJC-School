@@ -17,6 +17,12 @@ import org.springframework.jdbc.datasource.embedded.EmbeddedDatabaseType;
 import org.springframework.transaction.TransactionManager;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 
+/**
+ * Class contains spring configuration
+ *
+ * @author Aleksandra Podgayskaya
+ * @version 1.0
+ */
 @Configuration
 @EnableTransactionManagement
 @PropertySource("classpath:db.properties")
@@ -36,6 +42,11 @@ public class RootConfiguration {
 	@Value("classpath:script/init_tables_script.sql")
 	private String initScript;
 
+	/**
+	 * Create bean DataSource which will be used as data source in prod profile
+	 *
+	 * @return the data source
+	 */
 	@Profile("prod")
 	@Bean
 	public DataSource dataSource() {
@@ -48,12 +59,11 @@ public class RootConfiguration {
 		return dataSource;
 	}
 
-	@Profile("prod")
-	@Bean
-	public JdbcTemplate jdbcTemplateProd() {
-		return new JdbcTemplate(dataSource());
-	}
-
+	/**
+	 * Create bean DataSource which will be used as data source in dev profile
+	 *
+	 * @return the data source
+	 */
 	@Profile("dev")
 	@Bean
 	public DataSource embeddedDataSource() {
@@ -61,17 +71,34 @@ public class RootConfiguration {
 				.addScript(initScript).build();
 	}
 
-	@Profile("dev")
+	/**
+	 * Create bean JdbcTemplate which will be used for queries to database
+	 *
+	 * @param dataSource the data source
+	 * @return the jdbc template
+	 */
 	@Bean
-	public JdbcTemplate jdbcTemplateDev() {
-		return new JdbcTemplate(embeddedDataSource());
+	public JdbcTemplate jdbcTemplate(DataSource dataSource) {
+		return new JdbcTemplate(dataSource);
 	}
 
+	/**
+	 * Create bean TransactionManager which will be used to manage transactions
+	 *
+	 * @param dataSource the data source
+	 * @return the transaction manager
+	 */
 	@Bean
 	public TransactionManager transactionManager(DataSource dataSource) {
 		return new DataSourceTransactionManager(dataSource);
 	}
 
+	/**
+	 * Create bean ModelMapper which will be used to parse entity to dto and
+	 * opposite
+	 *
+	 * @return the model mapper
+	 */
 	@Bean
 	public ModelMapper modelMapper() {
 		ModelMapper mapper = new ModelMapper();
