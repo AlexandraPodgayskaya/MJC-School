@@ -41,26 +41,26 @@ public class GiftCertificateValidator {
 		String name = giftCertificateDto.getName();
 		if (StringUtils.isBlank(name) || name.length() > ValidValue.MAX_LENGTH_NAME) {
 			incorrectParameters.put(MessageKey.PARAMETER_NAME, name);
-			logger.debug("gift certificate name error");
+			logger.error("gift certificate name error");
 		}
 
 		String description = giftCertificateDto.getDescription();
 		if (StringUtils.isBlank(description) || description.length() > ValidValue.MAX_LENGTH_DESCRIPTION) {
 			incorrectParameters.put(MessageKey.PARAMETER_DESCRIPTION, description);
-			logger.debug("gift certificate description error");
+			logger.error("gift certificate description error");
 		}
 
 		BigDecimal price = giftCertificateDto.getPrice();
 		if (price == null || price.scale() > ValidValue.MAX_SCALE || price.compareTo(ValidValue.MIN_PRICE) < 0
 				|| price.compareTo(ValidValue.MAX_PRICE) > 0) {
 			incorrectParameters.put(MessageKey.PARAMETER_PRICE, price == null ? null : price.toString());
-			logger.debug("gift certificate price error");
+			logger.error("gift certificate price error");
 		}
 
 		int duration = giftCertificateDto.getDuration();
 		if (duration < ValidValue.MIN_DURATION || duration > ValidValue.MAX_DURATION) {
 			incorrectParameters.put(MessageKey.PARAMETER_DURATION, String.valueOf(duration));
-			logger.debug("gift certificate duration error");
+			logger.error("gift certificate duration error");
 		}
 
 		if (!incorrectParameters.isEmpty()) {
@@ -79,7 +79,7 @@ public class GiftCertificateValidator {
 		if (id < ValidValue.MIN_ID) {
 			Map<String, String> incorrectParameter = new HashMap<>();
 			incorrectParameter.put(MessageKey.PARAMETER_ID, String.valueOf(id));
-			logger.debug("id error");
+			logger.error("id error");
 			throw new IncorrectParameterValueException("id validation error", incorrectParameter,
 					ErrorCode.GIFT_CERTIFICATE.getCode());
 		}

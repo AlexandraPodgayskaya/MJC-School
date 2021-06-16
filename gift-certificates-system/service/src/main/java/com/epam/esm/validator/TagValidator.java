@@ -33,7 +33,7 @@ public class TagValidator {
 	 */
 	public void validateName(String tagName) throws IncorrectParameterValueException {
 		if (StringUtils.isBlank(tagName) || tagName.length() > ValidValue.MAX_LENGTH_NAME) {
-			logger.debug("tag name error");
+			logger.error("tag name error");
 			Map<String, String> incorrectParameter = new HashMap<>();
 			incorrectParameter.put(MessageKey.PARAMETER_NAME, tagName);
 			throw new IncorrectParameterValueException("tag name validation error", incorrectParameter,
@@ -49,7 +49,7 @@ public class TagValidator {
 	 */
 	public void validateId(long id) throws IncorrectParameterValueException {
 		if (id < ValidValue.MIN_ID) {
-			logger.debug("tag id error");
+			logger.error("tag id error");
 			Map<String, String> incorrectParameter = new HashMap<>();
 			incorrectParameter.put(MessageKey.PARAMETER_ID, String.valueOf(id));
 			throw new IncorrectParameterValueException("tag id validation error", incorrectParameter,
