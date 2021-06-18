@@ -5,7 +5,11 @@ import java.time.LocalDateTime;
 import java.util.Collections;
 import java.util.List;
 
+import com.epam.esm.dto.deserializer.DurationDeserializer;
+import com.epam.esm.dto.deserializer.IdDeserializer;
+import com.epam.esm.dto.deserializer.PriceDeserializer;
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 
 /**
  * Class is implementation of pattern DTO for transmission gift certificate
@@ -16,11 +20,14 @@ import com.fasterxml.jackson.annotation.JsonFormat;
  */
 public class GiftCertificateDto {
 
+	@JsonDeserialize(using = IdDeserializer.class)
 	private Long id;
 	private String name;
 	private String description;
+	@JsonDeserialize(using = PriceDeserializer.class)
 	private BigDecimal price;
-	private int duration;
+	@JsonDeserialize(using = DurationDeserializer.class)
+	private Integer duration;
 	@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd'T'HH:mm:ss")
 	private LocalDateTime createDate;
 	@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd'T'HH:mm:ss")
@@ -75,11 +82,11 @@ public class GiftCertificateDto {
 		this.price = price;
 	}
 
-	public int getDuration() {
+	public Integer getDuration() {
 		return duration;
 	}
 
-	public void setDuration(int duration) {
+	public void setDuration(Integer duration) {
 		this.duration = duration;
 	}
 
@@ -100,7 +107,7 @@ public class GiftCertificateDto {
 	}
 
 	public List<TagDto> getTags() {
-		return tags == null ? Collections.emptyList() : Collections.unmodifiableList(tags);
+		return tags == null ? null : Collections.unmodifiableList(tags);
 	}
 
 	public void setTags(List<TagDto> tags) {
@@ -113,7 +120,7 @@ public class GiftCertificateDto {
 		int result = 1;
 		result = prime * result + ((createDate == null) ? 0 : createDate.hashCode());
 		result = prime * result + ((description == null) ? 0 : description.hashCode());
-		result = prime * result + duration;
+		result = prime * result + ((duration == null) ? 0 : duration.hashCode());
 		result = prime * result + ((id == null) ? 0 : id.hashCode());
 		result = prime * result + ((lastUpdateDate == null) ? 0 : lastUpdateDate.hashCode());
 		result = prime * result + ((name == null) ? 0 : name.hashCode());
@@ -141,7 +148,10 @@ public class GiftCertificateDto {
 				return false;
 		} else if (!description.equals(other.description))
 			return false;
-		if (duration != other.duration)
+		if (duration == null) {
+			if (other.duration != null)
+				return false;
+		} else if (!duration.equals(other.duration))
 			return false;
 		if (id == null) {
 			if (other.id != null)

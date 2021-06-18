@@ -57,8 +57,8 @@ public class GiftCertificateValidator {
 			logger.error("gift certificate price error");
 		}
 
-		int duration = giftCertificateDto.getDuration();
-		if (duration < ValidValue.MIN_DURATION || duration > ValidValue.MAX_DURATION) {
+		Integer duration = giftCertificateDto.getDuration();
+		if (duration == null || duration < ValidValue.MIN_DURATION || duration > ValidValue.MAX_DURATION) {
 			incorrectParameters.put(MessageKey.PARAMETER_DURATION, String.valueOf(duration));
 			logger.error("gift certificate duration error");
 		}

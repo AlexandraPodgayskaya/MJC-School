@@ -7,7 +7,6 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
-import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
@@ -47,21 +46,18 @@ public class GiftCertificateDaoImplTest {
 	@BeforeAll
 	public static void setUp() {
 		giftCertificate = new GiftCertificate(null, "Cinema", "Best cinema in the city", new BigDecimal(100), 5,
-				LocalDateTime.of(2020, 12, 12, 12, 0, 0), LocalDateTime.of(2020, 12, 13, 12, 0, 0),
-				Collections.emptyList(), Boolean.FALSE);
+				LocalDateTime.of(2020, 12, 12, 12, 0, 0), LocalDateTime.of(2020, 12, 13, 12, 0, 0), Boolean.FALSE);
 		giftCertificate1 = new GiftCertificate(4L, "Cinema", "Best cinema in the city", new BigDecimal(100), 5,
-				LocalDateTime.of(2020, 12, 12, 12, 0, 0), LocalDateTime.of(2020, 12, 13, 12, 0, 0),
-				Collections.emptyList(), Boolean.FALSE);
+				LocalDateTime.of(2020, 12, 12, 12, 0, 0), LocalDateTime.of(2020, 12, 13, 12, 0, 0), Boolean.FALSE);
 		giftCertificate2 = new GiftCertificate(1L,
 				"XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX",
 				"You will like it", new BigDecimal(100), 10, LocalDateTime.of(2020, 12, 12, 12, 0, 0),
-				LocalDateTime.of(2020, 12, 13, 12, 0, 0), Collections.emptyList(), Boolean.FALSE);
+				LocalDateTime.of(2020, 12, 13, 12, 0, 0), Boolean.FALSE);
 		giftCertificate3 = new GiftCertificate(3L, "Horse ride", "Horseback ride for lovers - a Hollywood-style date",
 				new BigDecimal("500.00"), 2, LocalDateTime.of(2017, 05, 22, 12, 46, 31),
-				LocalDateTime.of(2020, 03, 20, 16, 34, 49), null, Boolean.FALSE);
+				LocalDateTime.of(2020, 03, 20, 16, 34, 49), Boolean.FALSE);
 		giftCertificate4 = new GiftCertificate(1L, "Travel to German", "You will like it", new BigDecimal("100.00"), 10,
-				LocalDateTime.of(2020, 12, 12, 12, 0, 0), LocalDateTime.of(2020, 12, 13, 12, 0, 0),
-				Collections.emptyList(), Boolean.FALSE);
+				LocalDateTime.of(2020, 12, 12, 12, 0, 0), LocalDateTime.of(2020, 12, 13, 12, 0, 0), Boolean.FALSE);
 		searchParameters1 = new GiftCertificateSearchParameters("travel", StringUtils.EMPTY);
 		searchParameters2 = new GiftCertificateSearchParameters("holiday", "good");
 	}
@@ -112,6 +108,20 @@ public class GiftCertificateDaoImplTest {
 	public void findByIdNegativeTest() {
 		final long id = 10;
 		Optional<GiftCertificate> actual = giftCertificateDao.findById(id);
+		assertFalse(actual.isPresent());
+	}
+
+	@Test
+	public void findByNamePositiveTest() {
+		final String name = "Horse ride";
+		Optional<GiftCertificate> actual = giftCertificateDao.findByName(name);
+		assertEquals(Optional.of(giftCertificate3), actual);
+	}
+
+	@Test
+	public void findByNameNegativeTest() {
+		final String name = "Massage";
+		Optional<GiftCertificate> actual = giftCertificateDao.findByName(name);
 		assertFalse(actual.isPresent());
 	}
 

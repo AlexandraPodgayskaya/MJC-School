@@ -20,6 +20,10 @@ public class IncorrectParameterValueException extends RuntimeException {
 		super();
 	}
 
+	public IncorrectParameterValueException(String message) {
+		super(message);
+	}
+
 	/**
 	 * Instantiates a new Incorrect parameter value exception
 	 * 

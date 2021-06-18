@@ -1,7 +1,9 @@
 package com.epam.esm.service.impl;
 
 import java.time.LocalDateTime;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
@@ -58,17 +60,20 @@ public class GiftCertificateServiceImpl implements GiftCertificateService {
 	public GiftCertificateDto createGiftCertificate(GiftCertificateDto giftCertificateDto)
 			throws IncorrectParameterValueException {
 		giftCertificateValidator.validate(giftCertificateDto);
+		checkUniquenessName(giftCertificateDto.getName());
 		GiftCertificate giftCertificate = modelMapper.map(giftCertificateDto, GiftCertificate.class);
 		LocalDateTime currentTime = LocalDateTime.now();
 		giftCertificate.setCreateDate(currentTime);
 		giftCertificate.setLastUpdateDate(currentTime);
 		GiftCertificate createdGiftCertificate = giftCertificateDao.create(giftCertificate);
-		if (!giftCertificateDto.getTags().isEmpty()) {
+		GiftCertificateDto newGiftCertificateDto = modelMapper.map(createdGiftCertificate, GiftCertificateDto.class);
+		if (giftCertificateDto.getTags() != null) {
 			List<Tag> tags = createTags(giftCertificateDto.getTags());
-			createdGiftCertificate.setTags(tags);
-			giftCertificateTagDao.createConnection(createdGiftCertificate);
+			giftCertificateTagDao.createConnection(createdGiftCertificate, tags);
+			newGiftCertificateDto
+					.setTags(tags.stream().map(tag -> modelMapper.map(tag, TagDto.class)).collect(Collectors.toList()));
 		}
-		return modelMapper.map(createdGiftCertificate, GiftCertificateDto.class);
+		return newGiftCertificateDto;
 	}
 
 	@Override
@@ -94,17 +99,26 @@ public class GiftCertificateServiceImpl implements GiftCertificateService {
 	@Override
 	public GiftCertificateDto updateGiftCertificate(GiftCertificateDto giftCertificateDto) {
 		GiftCertificateDto foundGiftCertificateDto = findGiftCertificateById(giftCertificateDto.getId());
+		String giftCertificateName = giftCertificateDto.getName();
+		if (giftCertificateName != null && !giftCertificateName.equals(foundGiftCertificateDto.getName())) {
+			checkUniquenessName(giftCertificateDto.getName());
+		}
 		updateFields(foundGiftCertificateDto, giftCertificateDto);
 		giftCertificateValidator.validate(foundGiftCertificateDto);
 		GiftCertificate updatedGiftCertificate = giftCertificateDao
 				.update(modelMapper.map(foundGiftCertificateDto, GiftCertificate.class));
-		if (!giftCertificateDto.getTags().isEmpty()) {
+		GiftCertificateDto updatedGiftCertificateDto = modelMapper.map(updatedGiftCertificate,
+				GiftCertificateDto.class);
+		if (giftCertificateDto.getTags() != null) {
 			List<Tag> tags = createTags(giftCertificateDto.getTags());
-			updatedGiftCertificate.setTags(tags);
 			giftCertificateTagDao.deleteConnectionByGiftCertificateId(updatedGiftCertificate.getId());
-			giftCertificateTagDao.createConnection(updatedGiftCertificate);
+			giftCertificateTagDao.createConnection(updatedGiftCertificate, tags);
+			updatedGiftCertificateDto
+					.setTags(tags.stream().map(tag -> modelMapper.map(tag, TagDto.class)).collect(Collectors.toList()));
+		} else {
+			updatedGiftCertificateDto.setTags(foundGiftCertificateDto.getTags());
 		}
-		return modelMapper.map(updatedGiftCertificate, GiftCertificateDto.class);
+		return updatedGiftCertificateDto;
 	}
 
 	@Transactional
@@ -117,6 +131,16 @@ public class GiftCertificateServiceImpl implements GiftCertificateService {
 					ErrorCode.GIFT_CERTIFICATE.getCode());
 		}
 		giftCertificateTagDao.deleteConnectionByGiftCertificateId(id);
+	}
+
+	private void checkUniquenessName(String name) {
+		Optional<GiftCertificate> giftCertificateOptional = giftCertificateDao.findByName(name);
+		if (giftCertificateOptional.isPresent()) {
+			Map<String, String> incorrectParameter = new HashMap<>();
+			incorrectParameter.put(MessageKey.PARAMETER_REPEATED_NAME, name);
+			throw new IncorrectParameterValueException("repeated gift certificate name", incorrectParameter,
+					ErrorCode.GIFT_CERTIFICATE.getCode());
+		}
 	}
 
 	private List<Tag> createTags(List<TagDto> tagsToCreate) {
@@ -143,7 +167,7 @@ public class GiftCertificateServiceImpl implements GiftCertificateService {
 		if (receivedGiftCertificate.getPrice() != null) {
 			foundGiftCertificate.setPrice(receivedGiftCertificate.getPrice());
 		}
-		if (receivedGiftCertificate.getDuration() != 0) {
+		if (receivedGiftCertificate.getDuration() != null) {
 			foundGiftCertificate.setDuration(receivedGiftCertificate.getDuration());
 		}
 		foundGiftCertificate.setLastUpdateDate(LocalDateTime.now());

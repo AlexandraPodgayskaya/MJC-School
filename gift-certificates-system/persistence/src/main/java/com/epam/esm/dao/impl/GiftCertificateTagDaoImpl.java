@@ -21,10 +21,16 @@ import com.epam.esm.entity.Tag;
 @Repository
 public class GiftCertificateTagDaoImpl implements GiftCertificateTagDao {
 
-	private static final String INSERT_GIFT_CERTIFICATE_TAG_CONNECTION_SQL = "INSERT INTO GIFT_CERTIFICATE_TAG_CONNECTION (GIFT_CERTIFICATE_ID, TAG_ID) VALUES (?, ?)";
-	private static final String SELECT_TAGS_BY_GIFT_CERTIFICATE_ID_SQL = "SELECT TAG.ID, TAG.NAME, TAG.DELETED FROM GIFT_CERTIFICATE_TAG_CONNECTION JOIN TAG ON GIFT_CERTIFICATE_TAG_CONNECTION.TAG_ID = TAG.ID WHERE GIFT_CERTIFICATE_ID = ? AND TAG.DELETED = FALSE";
-	private static final String DELETE_CONNECTION_BY_TAG_ID_SQL = "DELETE FROM GIFT_CERTIFICATE_TAG_CONNECTION WHERE TAG_ID = ?";
-	private static final String DELETE_CONNECTION_BY_GIFT_CERTIFICATE_ID_SQL = "DELETE FROM GIFT_CERTIFICATE_TAG_CONNECTION WHERE GIFT_CERTIFICATE_ID = ?";
+	private static final String INSERT_GIFT_CERTIFICATE_TAG_CONNECTION_SQL = "INSERT INTO "
+			+ "GIFT_CERTIFICATE_TAG_CONNECTION (GIFT_CERTIFICATE_ID, TAG_ID) VALUES (?, ?)";
+	private static final String SELECT_TAGS_BY_GIFT_CERTIFICATE_ID_SQL = "SELECT TAG.ID, TAG.NAME, "
+			+ "TAG.DELETED FROM GIFT_CERTIFICATE_TAG_CONNECTION JOIN TAG ON "
+			+ "GIFT_CERTIFICATE_TAG_CONNECTION.TAG_ID = TAG.ID WHERE GIFT_CERTIFICATE_ID = ? "
+			+ "AND TAG.DELETED = FALSE";
+	private static final String DELETE_CONNECTION_BY_TAG_ID_SQL = "DELETE FROM "
+			+ "GIFT_CERTIFICATE_TAG_CONNECTION WHERE TAG_ID = ?";
+	private static final String DELETE_CONNECTION_BY_GIFT_CERTIFICATE_ID_SQL = "DELETE FROM "
+			+ "GIFT_CERTIFICATE_TAG_CONNECTION WHERE GIFT_CERTIFICATE_ID = ?";
 
 	private final JdbcTemplate jdbcTemplate;
 	private final TagMapper tagMapper;
@@ -36,9 +42,9 @@ public class GiftCertificateTagDaoImpl implements GiftCertificateTagDao {
 	}
 
 	@Override
-	public void createConnection(GiftCertificate giftCertificate) {
-		giftCertificate.getTags().forEach(tag -> jdbcTemplate.update(INSERT_GIFT_CERTIFICATE_TAG_CONNECTION_SQL,
-				giftCertificate.getId(), tag.getId()));
+	public void createConnection(GiftCertificate giftCertificate, List<Tag> tags) {
+		tags.forEach(tag -> jdbcTemplate.update(INSERT_GIFT_CERTIFICATE_TAG_CONNECTION_SQL, giftCertificate.getId(),
+				tag.getId()));
 	}
 
 	@Override

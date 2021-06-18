@@ -70,11 +70,9 @@ public class GiftCertificateServiceImplTest {
 				10, LocalDateTime.of(2020, 12, 12, 12, 0, 0), LocalDateTime.of(2020, 12, 13, 12, 0, 0),
 				Collections.emptyList());
 		giftCertificate1 = new GiftCertificate(1L, "Cinema", "Best cinema in the city", new BigDecimal(100), 5,
-				LocalDateTime.of(2020, 12, 12, 12, 0, 0), LocalDateTime.of(2020, 12, 13, 12, 0, 0),
-				Collections.emptyList(), Boolean.FALSE);
+				LocalDateTime.of(2020, 12, 12, 12, 0, 0), LocalDateTime.of(2020, 12, 13, 12, 0, 0), Boolean.FALSE);
 		giftCertificate2 = new GiftCertificate(1L, "Travel to German", "You will like it", new BigDecimal(100), 10,
-				LocalDateTime.of(2020, 12, 12, 12, 0, 0), LocalDateTime.of(2020, 12, 13, 12, 0, 0),
-				Collections.emptyList(), Boolean.FALSE);
+				LocalDateTime.of(2020, 12, 12, 12, 0, 0), LocalDateTime.of(2020, 12, 13, 12, 0, 0), Boolean.FALSE);
 	}
 
 	@BeforeEach

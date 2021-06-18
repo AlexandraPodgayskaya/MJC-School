@@ -1,5 +1,8 @@
 package com.epam.esm.dto;
 
+import com.epam.esm.dto.deserializer.IdDeserializer;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+
 /**
  * Class is implementation of pattern DTO for transmission tag entity between
  * service and controller
@@ -9,6 +12,7 @@ package com.epam.esm.dto;
  */
 public class TagDto {
 
+	@JsonDeserialize(using = IdDeserializer.class)
 	private Long id;
 	private String name;
 

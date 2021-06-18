@@ -40,6 +40,14 @@ public interface GiftCertificateDao {
 	Optional<GiftCertificate> findById(long id);
 
 	/**
+	 * Find gift certificate in database by name
+	 * 
+	 * @param name the name of gift certificate to find
+	 * @return the Optional of found gift certificate
+	 */
+	Optional<GiftCertificate> findByName(String name);
+
+	/**
 	 * Update gift certificate in database
 	 * 
 	 * @param giftCertificate the gift certificate to update

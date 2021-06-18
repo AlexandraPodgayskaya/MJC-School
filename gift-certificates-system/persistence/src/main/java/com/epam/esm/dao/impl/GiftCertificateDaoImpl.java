@@ -29,10 +29,18 @@ import com.epam.esm.entity.GiftCertificateSearchQuery;
 @Repository
 public class GiftCertificateDaoImpl implements GiftCertificateDao {
 
-	private static final String INSERT_GIFT_CERTIFICATE_SQL = "INSERT INTO GIFT_CERTIFICATE (NAME, DESCRIPTION, PRICE, DURATION, CREATE_DATE, LAST_UPDATE_DATE) VALUES (?, ?, ?, ?, ?, ?)";
-	private static final String SELECT_GIFT_CERTIFICATE_BY_ID_SQL = "SELECT * FROM GIFT_CERTIFICATE WHERE ID = ? AND DELETED = FALSE";
-	private static final String UPDATE_GIFT_CERTIFICATE_SQL = "UPDATE GIFT_CERTIFICATE SET NAME = ?, DESCRIPTION = ?, PRICE = ?, DURATION = ?, LAST_UPDATE_DATE = ? WHERE ID = ? ";
-	private static final String DELETE_GIFT_CERTIFICATE_SQL = "UPDATE GIFT_CERTIFICATE SET DELETED = TRUE WHERE ID = ? AND DELETED = FALSE";
+	private static final String INSERT_GIFT_CERTIFICATE_SQL = "INSERT INTO GIFT_CERTIFICATE (NAME, "
+			+ "DESCRIPTION, PRICE, DURATION, CREATE_DATE, LAST_UPDATE_DATE) VALUES (?, ?, ?, ?, ?, ?)";
+	private static final String SELECT_GIFT_CERTIFICATE_BY_ID_SQL = "SELECT ID, NAME, DESCRIPTION, PRICE, "
+			+ "DURATION, CREATE_DATE, LAST_UPDATE_DATE, DELETED FROM GIFT_CERTIFICATE WHERE ID = ? "
+			+ "AND DELETED = FALSE";
+	private static final String SELECT_GIFT_CERTIFICATE_BY_NAME_SQL = "SELECT ID, NAME, DESCRIPTION, PRICE, "
+			+ "DURATION, CREATE_DATE, LAST_UPDATE_DATE, DELETED FROM GIFT_CERTIFICATE WHERE NAME = ? "
+			+ "AND DELETED = FALSE";
+	private static final String UPDATE_GIFT_CERTIFICATE_SQL = "UPDATE GIFT_CERTIFICATE SET NAME = ?, "
+			+ "DESCRIPTION = ?, PRICE = ?, DURATION = ?, LAST_UPDATE_DATE = ? WHERE ID = ? ";
+	private static final String DELETE_GIFT_CERTIFICATE_SQL = "UPDATE GIFT_CERTIFICATE SET DELETED = TRUE "
+			+ "WHERE ID = ? AND DELETED = FALSE";
 
 	private final JdbcTemplate jdbcTemplate;
 	private final GiftCertificateMapper giftCertificateMapper;
@@ -71,6 +79,12 @@ public class GiftCertificateDaoImpl implements GiftCertificateDao {
 			GiftCertificateSearchParameters giftCertificateSearchParameters) {
 		GiftCertificateSearchQuery query = queryCreator.createQuery(giftCertificateSearchParameters);
 		return jdbcTemplate.query(query.getQuery(), giftCertificateMapper, query.getParameters().toArray());
+	}
+
+	@Override
+	public Optional<GiftCertificate> findByName(String name) {
+		return jdbcTemplate.queryForStream(SELECT_GIFT_CERTIFICATE_BY_NAME_SQL, giftCertificateMapper, name)
+				.findFirst();
 	}
 
 	@Override

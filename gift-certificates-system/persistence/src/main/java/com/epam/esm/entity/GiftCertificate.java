@@ -2,8 +2,6 @@ package com.epam.esm.entity;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
-import java.util.Collections;
-import java.util.List;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 
@@ -24,15 +22,13 @@ public class GiftCertificate {
 	private LocalDateTime createDate;
 	@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd'T'HH:mm:ss")
 	private LocalDateTime lastUpdateDate;
-	private List<Tag> tags;
 	private boolean deleted;
 
 	public GiftCertificate() {
 	}
 
 	public GiftCertificate(Long id, String name, String description, BigDecimal price, int duration,
-			LocalDateTime createDate, LocalDateTime lastUpdateDate, List<Tag> tags, boolean deleted) {
-		super();
+			LocalDateTime createDate, LocalDateTime lastUpdateDate, boolean deleted) {
 		this.id = id;
 		this.name = name;
 		this.description = description;
@@ -40,7 +36,6 @@ public class GiftCertificate {
 		this.duration = duration;
 		this.createDate = createDate;
 		this.lastUpdateDate = lastUpdateDate;
-		this.tags = tags;
 		this.deleted = deleted;
 	}
 
@@ -100,14 +95,6 @@ public class GiftCertificate {
 		this.lastUpdateDate = lastUpdateDate;
 	}
 
-	public List<Tag> getTags() {
-		return tags == null ? Collections.emptyList() : Collections.unmodifiableList(tags);
-	}
-
-	public void setTags(List<Tag> tags) {
-		this.tags = tags;
-	}
-
 	public boolean isDeleted() {
 		return deleted;
 	}
@@ -128,7 +115,6 @@ public class GiftCertificate {
 		result = prime * result + ((lastUpdateDate == null) ? 0 : lastUpdateDate.hashCode());
 		result = prime * result + ((name == null) ? 0 : name.hashCode());
 		result = prime * result + ((price == null) ? 0 : price.hashCode());
-		result = prime * result + ((tags == null) ? 0 : tags.hashCode());
 		return result;
 	}
 
@@ -175,11 +161,6 @@ public class GiftCertificate {
 				return false;
 		} else if (!price.equals(other.price))
 			return false;
-		if (tags == null) {
-			if (other.tags != null)
-				return false;
-		} else if (!tags.equals(other.tags))
-			return false;
 		return true;
 	}
 
@@ -187,7 +168,7 @@ public class GiftCertificate {
 	public String toString() {
 		return "GiftCertificate [id=" + id + ", name=" + name + ", description=" + description + ", price=" + price
 				+ ", duration=" + duration + ", createDate=" + createDate + ", lastUpdateDate=" + lastUpdateDate
-				+ ", tags=" + tags + ", deleted=" + deleted + "]";
+				+ ", deleted=" + deleted + "]";
 	}
 
 }

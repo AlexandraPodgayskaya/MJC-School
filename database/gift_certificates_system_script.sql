@@ -29,7 +29,8 @@ CREATE TABLE IF NOT EXISTS `gift_certificates_system`.`gift_certificate` (
   `create_date` DATETIME NOT NULL,
   `last_update_date` DATETIME NOT NULL,
   `deleted` BOOLEAN DEFAULT FALSE,
-  PRIMARY KEY (`id`))
+  PRIMARY KEY (`id`),
+  UNIQUE INDEX `name_UNIQUE` (`name` ASC) VISIBLE)
 ENGINE = InnoDB;
 
 
@@ -40,7 +41,8 @@ CREATE TABLE IF NOT EXISTS `gift_certificates_system`.`tag` (
   `id` BIGINT NOT NULL AUTO_INCREMENT,
   `name` VARCHAR(100) NOT NULL,
   `deleted` BOOLEAN DEFAULT FALSE,
-  PRIMARY KEY (`id`))
+  PRIMARY KEY (`id`),
+  UNIQUE INDEX `name_UNIQUE` (`name` ASC) VISIBLE)
 ENGINE = InnoDB;
 
 

@@ -95,7 +95,7 @@ public class GiftCertificateController {
 	 * @param id the gift certificate id which will be deleted
 	 */
 	@DeleteMapping("/{id}")
-	@ResponseStatus(HttpStatus.OK)
+	@ResponseStatus(HttpStatus.NO_CONTENT)
 	public void deleteGiftCertificate(@PathVariable long id) {
 		giftCertificateService.deleteGiftCertificate(id);
 	}

@@ -16,9 +16,10 @@ public interface GiftCertificateTagDao {
 	/**
 	 * Add gift certificate and tag connections in database
 	 * 
-	 * @param giftCertificate gift certificate with tags to add connections
+	 * @param giftCertificate gift certificate to add connections
+	 * @param tags            the list of tags to add connections
 	 */
-	void createConnection(GiftCertificate giftCertificate);
+	void createConnection(GiftCertificate giftCertificate, List<Tag> tags);
 
 	/**
 	 * Find tags by gift certificate id in database
