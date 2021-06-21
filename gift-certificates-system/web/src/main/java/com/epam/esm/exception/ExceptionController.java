@@ -1,0 +1,128 @@
+package com.epam.esm.exception;
+
+import java.util.Locale;
+
+import org.apache.commons.lang3.StringUtils;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.MessageSource;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.converter.HttpMessageNotReadableException;
+import org.springframework.validation.BindException;
+import org.springframework.web.bind.annotation.ExceptionHandler;
+import org.springframework.web.bind.annotation.ResponseStatus;
+import org.springframework.web.bind.annotation.RestControllerAdvice;
+import org.springframework.web.method.annotation.MethodArgumentTypeMismatchException;
+
+import com.epam.esm.util.MessageKey;
+
+/**
+ * Class represents controller which handle all generated exceptions
+ *
+ * @author Aleksandra Podgayskaya
+ * @version 1.0
+ */
+@RestControllerAdvice
+public class ExceptionController {
+
+	private static final Logger logger = LogManager.getLogger();
+	private static final String MESSAGE_KEY_SEPARATOR = "(";
+	private static final String DEFAULT_ERROR_CODE = "00";
+
+	private final MessageSource messageSource;
+
+	@Autowired
+	public ExceptionController(MessageSource messageSource) {
+		this.messageSource = messageSource;
+	}
+
+	/**
+	 * Handle ResourceNotFoundException
+	 * 
+	 * @param exception the exception
+	 * @param locale    the locale of HTTP request
+	 * @return the exception details entity
+	 */
+	@ExceptionHandler(ResourceNotFoundException.class)
+	@ResponseStatus(HttpStatus.NOT_FOUND)
+	public ExceptionDetails handleResourceNotFoundException(ResourceNotFoundException exception, Locale locale) {
+		String errorMessage = messageSource.getMessage(exception.getMessageKey(),
+				new String[] { exception.getMessageParameter() }, locale);
+		logger.error(HttpStatus.NOT_FOUND, exception);
+		return new ExceptionDetails(errorMessage, HttpStatus.NOT_FOUND.value() + exception.getErrorCode());
+	}
+
+	/**
+	 * Handle IncorrectParameterValueException
+	 * 
+	 * @param exception the exception
+	 * @param locale    the locale of HTTP request
+	 * @return the exception details entity
+	 */
+	@ExceptionHandler(IncorrectParameterValueException.class)
+	@ResponseStatus(HttpStatus.BAD_REQUEST)
+	public ExceptionDetails handleIncorrectParameterValueException(IncorrectParameterValueException exception,
+			Locale locale) {
+		String message = messageSource.getMessage(MessageKey.INCORRECT_PARAMETER_VALUE, new String[] {}, locale);
+		StringBuilder builder = new StringBuilder();
+		builder.append(message);
+		exception.getParameters().forEach(
+				(name, value) -> builder.append(messageSource.getMessage(name, new String[] { value }, locale)));
+		logger.error(HttpStatus.BAD_REQUEST + exception.getParameters().toString(), exception);
+		return new ExceptionDetails(builder.toString(), HttpStatus.BAD_REQUEST.value() + exception.getErrorCode());
+	}
+
+	/**
+	 * Handle BindException
+	 * 
+	 * @param exception the exception
+	 * @param locale    the locale of HTTP request
+	 * @return the exception details entity
+	 */
+	@ExceptionHandler(BindException.class)
+	@ResponseStatus(HttpStatus.BAD_REQUEST)
+	public ExceptionDetails handleBindException(BindException exception, Locale locale) {
+		String errorMessage = messageSource.getMessage(MessageKey.INCORRECT_SORTING_PARAMETERS, new String[] {},
+				locale);
+		logger.error(HttpStatus.BAD_REQUEST, exception);
+		return new ExceptionDetails(errorMessage,
+				HttpStatus.BAD_REQUEST.value() + ErrorCode.GIFT_CERTIFICATE.getCode());
+	}
+
+	/**
+	 * Handle MethodArgumentTypeMismatchException and
+	 * HttpMessageNotReadableException
+	 * 
+	 * @param exception the exception
+	 * @param locale    the locale of HTTP request
+	 * @return the exception details entity
+	 */
+	@ExceptionHandler({ MethodArgumentTypeMismatchException.class, HttpMessageNotReadableException.class })
+	@ResponseStatus(HttpStatus.BAD_REQUEST)
+	public ExceptionDetails handleParameterTypeException(Exception exception, Locale locale) {
+		String parameterKey = exception instanceof HttpMessageNotReadableException == Boolean.TRUE
+				? StringUtils.substringBefore(exception.getCause().getMessage(), MESSAGE_KEY_SEPARATOR)
+				: MessageKey.TYPE_ID;
+		String parameter = messageSource.getMessage(parameterKey.strip(), new String[] {}, locale);
+		String errorMessage = messageSource.getMessage(MessageKey.INCORRECT_PARAMETER_TYPE, new String[] { parameter },
+				locale);
+		logger.error(HttpStatus.BAD_REQUEST, exception);
+		return new ExceptionDetails(errorMessage, HttpStatus.BAD_REQUEST.value() + DEFAULT_ERROR_CODE);
+	}
+
+	/**
+	 * Handle all other Exceptions
+	 * 
+	 * @param exception the exception
+	 * @param locale    the locale of HTTP request
+	 * @return the exception details entity
+	 */
+	@ExceptionHandler(Exception.class)
+	@ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
+	public ExceptionDetails handleException(Exception exception, Locale locale) {
+		String errorMessage = messageSource.getMessage(MessageKey.INTERNAL_ERROR, new String[] {}, locale);
+		logger.error(HttpStatus.INTERNAL_SERVER_ERROR, exception);
+		return new ExceptionDetails(errorMessage, HttpStatus.INTERNAL_SERVER_ERROR.value() + DEFAULT_ERROR_CODE);
+	}
+}

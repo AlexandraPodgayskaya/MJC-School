@@ -1,0 +1,9 @@
+group 'com.epam.esm'
+version '1.0'
+    
+dependencies {
+    implementation project (':persistence')
+    implementation 'org.mockito:mockito-core:3.11.1'
+}
+
+
