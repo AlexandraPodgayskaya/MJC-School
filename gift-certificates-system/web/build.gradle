@@ -7,6 +7,4 @@ version '1.0'
 
 dependencies {
     implementation project (':service')
-    implementation "org.springframework:spring-webmvc:$springVersion"
-    providedCompile 'javax.servlet:javax.servlet-api:4.0.1'
 }
