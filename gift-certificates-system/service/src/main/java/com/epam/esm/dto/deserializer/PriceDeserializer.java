@@ -15,7 +15,6 @@ import com.fasterxml.jackson.databind.JsonDeserializer;
  *
  * @author Aleksandra Podgayskaya
  * @version 1.0
- * @see JsonDeserializer<T>
  *
  */
 public class PriceDeserializer extends JsonDeserializer<BigDecimal> {
