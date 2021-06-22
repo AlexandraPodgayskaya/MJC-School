@@ -18,12 +18,10 @@ subprojects {
     }
 
     dependencies {
-        implementation "org.springframework.boot:spring-boot-starter:$springBootVersion"
         implementation "org.springframework.boot:spring-boot-starter-web:$springBootVersion"
         implementation "org.springframework.boot:spring-boot-starter-jdbc:$springBootVersion"
         implementation "org.springframework.boot:spring-boot-starter-data-rest:$springBootVersion"
         implementation "org.springframework.boot:spring-boot-starter-test:$springBootVersion"
-        implementation "org.springframework.boot:spring-boot-starter-tomcat:$springBootVersion"
         implementation 'com.h2database:h2:1.4.200'
         implementation 'org.modelmapper:modelmapper:2.4.4'
         implementation 'org.apache.commons:commons-lang3:3.10'
