@@ -10,6 +10,7 @@ public final class MessageKey {
 
 	public static final String GIFT_CERTIFICATE_NOT_FOUND_BY_ID = "giftCertificate.notFoundById";
 	public static final String TAG_NOT_FOUND_BY_ID = "tag.notFoundById";
+	public static final String USER_NOT_FOUND_BY_ID = "user.notFoundById";
 	public static final String INCORRECT_PARAMETER_VALUE = "incorrectParameterValue";
 	public static final String INCORRECT_SORTING_PARAMETERS = "incorrectSortingParameters";
 	public static final String INCORRECT_PARAMETER_TYPE = "incorrectParameterType";

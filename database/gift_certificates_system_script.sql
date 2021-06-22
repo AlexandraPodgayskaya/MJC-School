@@ -66,6 +66,58 @@ CREATE TABLE IF NOT EXISTS `gift_certificates_system`.`gift_certificate_tag_conn
 ENGINE = InnoDB;
 
 
+-- -----------------------------------------------------
+-- Table `gift_certificates_system`.`user`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `gift_certificates_system`.`user` (
+  `id` BIGINT NOT NULL AUTO_INCREMENT,
+  `name` VARCHAR(100) NOT NULL,
+  `deleted` BOOLEAN DEFAULT FALSE,
+  PRIMARY KEY (`id`))
+ENGINE = InnoDB;
+
+
+-- -----------------------------------------------------
+-- Table `gift_certificates_system`.`order`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `gift_certificates_system`.`order` (
+  `id` BIGINT NOT NULL AUTO_INCREMENT,
+  `cost` DECIMAL(10,2) NOT NULL,
+  `user_id` BIGINT NOT NULL,
+  `create_date` DATETIME NOT NULL,
+  `deleted` BOOLEAN DEFAULT FALSE,
+  PRIMARY KEY (`id`),
+  INDEX `fk_order_user1_idx` (`user_id` ASC) VISIBLE,
+  CONSTRAINT `fk_order_user1`
+    FOREIGN KEY (`user_id`)
+    REFERENCES `gift_certificates_system`.`user` (`id`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION)
+ENGINE = InnoDB;
+
+
+-- -----------------------------------------------------
+-- Table `gift_certificates_system`.`order_gift_certificate_connection`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `gift_certificates_system`.`order_gift_certificate_connection` (
+  `order_id` BIGINT NOT NULL,
+  `gift_certificate_id` BIGINT NOT NULL,
+  `number` INT DEFAULT 1,
+  PRIMARY KEY (`order_id`, `gift_certificate_id`),
+  INDEX `fk_gift_certificate_has_order_order1_idx` (`order_id` ASC) VISIBLE,
+  INDEX `fk_gift_certificate_has_order_gift_certificate1_idx` (`gift_certificate_id` ASC) VISIBLE,
+  CONSTRAINT `fk_gift_certificate_has_order_gift_certificate1`
+    FOREIGN KEY (`gift_certificate_id`)
+    REFERENCES `gift_certificates_system`.`gift_certificate` (`id`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION,
+  CONSTRAINT `fk_gift_certificate_has_order_order1`
+    FOREIGN KEY (`order_id`)
+    REFERENCES `gift_certificates_system`.`order` (`id`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION)
+ENGINE = InnoDB;
+
 SET SQL_MODE=@OLD_SQL_MODE;
 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS;
 SET UNIQUE_CHECKS=@OLD_UNIQUE_CHECKS;
@@ -78,3 +130,8 @@ INSERT INTO `gift_certificates_system`.`tag` (`id`, `name`) VALUES ('2', 'gift')
 INSERT INTO `gift_certificates_system`.`gift_certificate_tag_connection` (`gift_certificate_id`, `tag_id`) VALUES ('1', '1');
 INSERT INTO `gift_certificates_system`.`gift_certificate_tag_connection` (`gift_certificate_id`, `tag_id`) VALUES ('1', '2');
 INSERT INTO `gift_certificates_system`.`gift_certificate_tag_connection` (`gift_certificate_id`, `tag_id`) VALUES ('2', '2');
+
+INSERT INTO `gift_certificates_system`.`user` (`id`, `name`) VALUES ('1', 'Alex');
+INSERT INTO `gift_certificates_system`.`user` (`id`, `name`) VALUES ('2', 'Olga');
+INSERT INTO `gift_certificates_system`.`user` (`id`, `name`) VALUES ('3', 'Masha');
+INSERT INTO `gift_certificates_system`.`user` (`id`, `name`) VALUES ('4', 'Pavel');
