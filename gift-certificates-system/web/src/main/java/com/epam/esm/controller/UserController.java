@@ -1,5 +1,8 @@
 package com.epam.esm.controller;
 
+import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
+import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
+
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,13 +31,21 @@ public class UserController {
 	}
 
 	@GetMapping
-	public PageDto<UserDto> getUsers(@RequestParam Map <String, String> parameters) {
-		PaginationDto pagination =  parametersToDtoConverter.getPaginationDto(parameters);
-		return userService.findAllUsers(pagination);
+	public PageDto<UserDto> getUsers(@RequestParam Map<String, String> parameters) {
+		PaginationDto pagination = parametersToDtoConverter.getPaginationDto(parameters);
+		PageDto<UserDto> page = userService.findAllUsers(pagination);
+		page.getPagePositions().forEach(this::addLinks);
+		return page;
 	}
 
 	@GetMapping("/{id}")
 	public UserDto getUserById(@PathVariable long id) {
-		return userService.findUserById(id);
+		UserDto user = userService.findUserById(id);
+		addLinks(user);
+		return user;
+	}
+
+	private void addLinks(UserDto userDto) {
+		userDto.add(linkTo(methodOn(UserController.class).getUserById(userDto.getId())).withSelfRel());
 	}
 }
