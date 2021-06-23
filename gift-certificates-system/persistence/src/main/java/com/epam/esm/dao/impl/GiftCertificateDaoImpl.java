@@ -14,10 +14,10 @@ import org.springframework.stereotype.Repository;
 
 import com.epam.esm.dao.GiftCertificateDao;
 import com.epam.esm.dao.creator.GiftCertificateQueryCreator;
+import com.epam.esm.dao.creator.GiftCertificateSearchParameters;
+import com.epam.esm.dao.creator.GiftCertificateSearchQuery;
 import com.epam.esm.dao.mapper.GiftCertificateMapper;
 import com.epam.esm.entity.GiftCertificate;
-import com.epam.esm.entity.GiftCertificateSearchParameters;
-import com.epam.esm.entity.GiftCertificateSearchQuery;
 
 /**
  * Class is implementation of interface {@link GiftCertificateDao} and intended

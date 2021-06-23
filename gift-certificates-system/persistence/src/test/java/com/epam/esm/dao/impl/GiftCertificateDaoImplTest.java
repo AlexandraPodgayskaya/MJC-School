@@ -20,8 +20,8 @@ import org.springframework.dao.DataIntegrityViolationException;
 
 import com.epam.esm.configuration.TestConfiguration;
 import com.epam.esm.dao.GiftCertificateDao;
+import com.epam.esm.dao.creator.GiftCertificateSearchParameters;
 import com.epam.esm.entity.GiftCertificate;
-import com.epam.esm.entity.GiftCertificateSearchParameters;
 
 @SpringBootTest(classes = TestConfiguration.class)
 public class GiftCertificateDaoImplTest {

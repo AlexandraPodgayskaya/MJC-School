@@ -9,7 +9,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.epam.esm.dao.UserDao;
+import com.epam.esm.dto.PageDto;
+import com.epam.esm.dto.PaginationDto;
 import com.epam.esm.dto.UserDto;
+import com.epam.esm.entity.Pagination;
 import com.epam.esm.entity.User;
 import com.epam.esm.exception.ErrorCode;
 import com.epam.esm.exception.IncorrectParameterValueException;
@@ -33,10 +36,15 @@ public class UserServiceImpl implements UserService {
 	}
 
 	@Override
-	public List<UserDto> findAllUsers() {
-		List<User> foundUsers = userDao.findAll();
-		return foundUsers.stream().map(foundUser -> modelMapper.map(foundUser, UserDto.class))
+	public PageDto<UserDto> findAllUsers(PaginationDto paginationDto) {
+		// TODO pageDto validation? а вдруг null
+		Pagination pagination = modelMapper.map(paginationDto, Pagination.class);
+		List<User> foundUsers = userDao.findAll(pagination);
+		List<UserDto> foundUsersDto = foundUsers.stream().map(foundUser -> modelMapper.map(foundUser, UserDto.class))
 				.collect(Collectors.toList());
+		long totalNumberPositions = userDao.getTotalNumber();
+		PageDto<UserDto> usersPage = new PageDto<UserDto>(foundUsersDto, totalNumberPositions);
+		return usersPage;
 	}
 
 	@Override

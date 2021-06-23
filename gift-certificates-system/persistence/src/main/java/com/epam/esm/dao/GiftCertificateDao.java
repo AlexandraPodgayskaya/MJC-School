@@ -3,8 +3,8 @@ package com.epam.esm.dao;
 import java.util.List;
 import java.util.Optional;
 
+import com.epam.esm.dao.creator.GiftCertificateSearchParameters;
 import com.epam.esm.entity.GiftCertificate;
-import com.epam.esm.entity.GiftCertificateSearchParameters;
 
 /**
  * Interface for working with gift_certificate table in database

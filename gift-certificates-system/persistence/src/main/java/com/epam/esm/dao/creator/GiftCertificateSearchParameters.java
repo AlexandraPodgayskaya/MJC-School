@@ -1,4 +1,4 @@
-package com.epam.esm.entity;
+package com.epam.esm.dao.creator;
 
 /**
  * Class consists parameters which are used to make selection to database.

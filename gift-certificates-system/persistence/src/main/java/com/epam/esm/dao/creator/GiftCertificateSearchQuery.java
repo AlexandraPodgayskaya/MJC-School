@@ -1,4 +1,4 @@
-package com.epam.esm.entity;
+package com.epam.esm.dao.creator;
 
 import java.util.ArrayList;
 import java.util.Collections;

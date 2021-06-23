@@ -14,11 +14,11 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.epam.esm.dao.GiftCertificateDao;
 import com.epam.esm.dao.GiftCertificateTagDao;
+import com.epam.esm.dao.creator.GiftCertificateSearchParameters;
 import com.epam.esm.dto.GiftCertificateDto;
 import com.epam.esm.dto.GiftCertificateSearchParametersDto;
 import com.epam.esm.dto.TagDto;
 import com.epam.esm.entity.GiftCertificate;
-import com.epam.esm.entity.GiftCertificateSearchParameters;
 import com.epam.esm.entity.Tag;
 import com.epam.esm.exception.ErrorCode;
 import com.epam.esm.exception.IncorrectParameterValueException;

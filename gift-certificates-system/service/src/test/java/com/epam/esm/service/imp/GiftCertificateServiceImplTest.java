@@ -26,10 +26,10 @@ import org.modelmapper.convention.MatchingStrategies;
 
 import com.epam.esm.dao.GiftCertificateDao;
 import com.epam.esm.dao.GiftCertificateTagDao;
+import com.epam.esm.dao.creator.GiftCertificateSearchParameters;
 import com.epam.esm.dto.GiftCertificateDto;
 import com.epam.esm.dto.GiftCertificateSearchParametersDto;
 import com.epam.esm.entity.GiftCertificate;
-import com.epam.esm.entity.GiftCertificateSearchParameters;
 import com.epam.esm.exception.IncorrectParameterValueException;
 import com.epam.esm.exception.ResourceNotFoundException;
 import com.epam.esm.service.GiftCertificateService;

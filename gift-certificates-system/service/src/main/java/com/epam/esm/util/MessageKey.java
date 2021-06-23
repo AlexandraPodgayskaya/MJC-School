@@ -21,6 +21,8 @@ public final class MessageKey {
 	public static final String PARAMETER_DESCRIPTION = "parameter.description";
 	public static final String PARAMETER_PRICE = "parameter.price";
 	public static final String PARAMETER_DURATION = "parameter.duration";
+	public static final String PARAMETER_PAGE_NUMBER = "parameter.pageNumber";
+	public static final String PARAMETER_PAGE_SIZE = "parameter.pageSize";
 	public static final String TYPE_ID = "type.id";
 	public static final String TYPE_PRICE = "type.price";
 	public static final String TYPE_DURATION = "type.duration";

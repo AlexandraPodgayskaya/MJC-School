@@ -28,7 +28,6 @@ public class ExceptionController {
 
 	private static final Logger logger = LogManager.getLogger();
 	private static final String MESSAGE_KEY_SEPARATOR = "(";
-	private static final String DEFAULT_ERROR_CODE = "00";
 
 	private final MessageSource messageSource;
 
@@ -108,7 +107,7 @@ public class ExceptionController {
 		String errorMessage = messageSource.getMessage(MessageKey.INCORRECT_PARAMETER_TYPE, new String[] { parameter },
 				locale);
 		logger.error(HttpStatus.BAD_REQUEST, exception);
-		return new ExceptionDetails(errorMessage, HttpStatus.BAD_REQUEST.value() + DEFAULT_ERROR_CODE);
+		return new ExceptionDetails(errorMessage, HttpStatus.BAD_REQUEST.value() + ErrorCode.DEFAULT.getCode());
 	}
 
 	/**
@@ -123,6 +122,7 @@ public class ExceptionController {
 	public ExceptionDetails handleException(Exception exception, Locale locale) {
 		String errorMessage = messageSource.getMessage(MessageKey.INTERNAL_ERROR, new String[] {}, locale);
 		logger.error(HttpStatus.INTERNAL_SERVER_ERROR, exception);
-		return new ExceptionDetails(errorMessage, HttpStatus.INTERNAL_SERVER_ERROR.value() + DEFAULT_ERROR_CODE);
+		return new ExceptionDetails(errorMessage,
+				HttpStatus.INTERNAL_SERVER_ERROR.value() + ErrorCode.DEFAULT.getCode());
 	}
 }

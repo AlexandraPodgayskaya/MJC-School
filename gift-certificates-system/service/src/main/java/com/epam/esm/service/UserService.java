@@ -1,12 +1,12 @@
 package com.epam.esm.service;
 
-import java.util.List;
-
+import com.epam.esm.dto.PageDto;
+import com.epam.esm.dto.PaginationDto;
 import com.epam.esm.dto.UserDto;
 
 public interface UserService {
 
-	List<UserDto> findAllUsers();
+	PageDto<UserDto> findAllUsers(PaginationDto pageDto);
 
 	UserDto findUserById(long id);
 

@@ -6,9 +6,6 @@ import java.util.List;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Component;
 
-import com.epam.esm.entity.GiftCertificateSearchParameters;
-import com.epam.esm.entity.GiftCertificateSearchQuery;
-
 /**
  * Class designed to create query
  *
