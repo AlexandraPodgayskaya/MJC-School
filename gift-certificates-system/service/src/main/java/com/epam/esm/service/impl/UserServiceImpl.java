@@ -37,7 +37,6 @@ public class UserServiceImpl implements UserService {
 
 	@Override
 	public PageDto<UserDto> findAllUsers(PaginationDto paginationDto) {
-		// TODO pageDto validation? а вдруг null
 		Pagination pagination = modelMapper.map(paginationDto, Pagination.class);
 		List<User> foundUsers = userDao.findAll(pagination);
 		List<UserDto> foundUsersDto = foundUsers.stream().map(foundUser -> modelMapper.map(foundUser, UserDto.class))

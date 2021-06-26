@@ -1,58 +1,29 @@
-package com.epam.esm.entity;
+package com.epam.esm.dto;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonProperty.Access;
 
-/**
- * Class represents gift_certificate entity
- *
- * @author Aleksandra Podgayskaya
- * @version 1.0
- */
-@Entity
-@Table(name = "gift_certificate")
-public class GiftCertificate {
+public class OrderedGiftCertificateDto {
 
-	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	@Column(name = "id")
-	private Long id;
+	@JsonProperty(access = Access.WRITE_ONLY)
+	private GiftCertificateDto giftCertificate;
 	private String name;
 	private String description;
 	private BigDecimal price;
-	private int duration;
+	private Integer duration;
 	private LocalDateTime createDate;
 	private LocalDateTime lastUpdateDate;
-	private boolean deleted;
+	private Integer number;
 
-	public GiftCertificate() {
+	public GiftCertificateDto getGiftCertificate() {
+		return giftCertificate;
 	}
 
-	public GiftCertificate(Long id, String name, String description, BigDecimal price, int duration,
-			LocalDateTime createDate, LocalDateTime lastUpdateDate, boolean deleted) {
-		this.id = id;
-		this.name = name;
-		this.description = description;
-		this.price = price;
-		this.duration = duration;
-		this.createDate = createDate;
-		this.lastUpdateDate = lastUpdateDate;
-		this.deleted = deleted;
-	}
-
-	public Long getId() {
-		return id;
-	}
-
-	public void setId(Long id) {
-		this.id = id;
+	public void setGiftCertificate(GiftCertificateDto giftCertificate) {
+		this.giftCertificate = giftCertificate;
 	}
 
 	public String getName() {
@@ -79,11 +50,11 @@ public class GiftCertificate {
 		this.price = price;
 	}
 
-	public int getDuration() {
+	public Integer getDuration() {
 		return duration;
 	}
 
-	public void setDuration(int duration) {
+	public void setDuration(Integer duration) {
 		this.duration = duration;
 	}
 
@@ -103,12 +74,12 @@ public class GiftCertificate {
 		this.lastUpdateDate = lastUpdateDate;
 	}
 
-	public boolean isDeleted() {
-		return deleted;
+	public Integer getNumber() {
+		return number;
 	}
 
-	public void setDeleted(boolean deleted) {
-		this.deleted = deleted;
+	public void setNumber(Integer number) {
+		this.number = number;
 	}
 
 	@Override
@@ -116,12 +87,12 @@ public class GiftCertificate {
 		final int prime = 31;
 		int result = 1;
 		result = prime * result + ((createDate == null) ? 0 : createDate.hashCode());
-		result = prime * result + (deleted ? 1231 : 1237);
 		result = prime * result + ((description == null) ? 0 : description.hashCode());
-		result = prime * result + duration;
-		result = prime * result + ((id == null) ? 0 : id.hashCode());
+		result = prime * result + ((duration == null) ? 0 : duration.hashCode());
+		result = prime * result + ((giftCertificate == null) ? 0 : giftCertificate.hashCode());
 		result = prime * result + ((lastUpdateDate == null) ? 0 : lastUpdateDate.hashCode());
 		result = prime * result + ((name == null) ? 0 : name.hashCode());
+		result = prime * result + ((number == null) ? 0 : number.hashCode());
 		result = prime * result + ((price == null) ? 0 : price.hashCode());
 		return result;
 	}
@@ -134,25 +105,26 @@ public class GiftCertificate {
 			return false;
 		if (getClass() != obj.getClass())
 			return false;
-		GiftCertificate other = (GiftCertificate) obj;
+		OrderedGiftCertificateDto other = (OrderedGiftCertificateDto) obj;
 		if (createDate == null) {
 			if (other.createDate != null)
 				return false;
 		} else if (!createDate.equals(other.createDate))
-			return false;
-		if (deleted != other.deleted)
 			return false;
 		if (description == null) {
 			if (other.description != null)
 				return false;
 		} else if (!description.equals(other.description))
 			return false;
-		if (duration != other.duration)
-			return false;
-		if (id == null) {
-			if (other.id != null)
+		if (duration == null) {
+			if (other.duration != null)
 				return false;
-		} else if (!id.equals(other.id))
+		} else if (!duration.equals(other.duration))
+			return false;
+		if (giftCertificate == null) {
+			if (other.giftCertificate != null)
+				return false;
+		} else if (!giftCertificate.equals(other.giftCertificate))
 			return false;
 		if (lastUpdateDate == null) {
 			if (other.lastUpdateDate != null)
@@ -164,6 +136,11 @@ public class GiftCertificate {
 				return false;
 		} else if (!name.equals(other.name))
 			return false;
+		if (number == null) {
+			if (other.number != null)
+				return false;
+		} else if (!number.equals(other.number))
+			return false;
 		if (price == null) {
 			if (other.price != null)
 				return false;
@@ -174,9 +151,9 @@ public class GiftCertificate {
 
 	@Override
 	public String toString() {
-		return "GiftCertificate [id=" + id + ", name=" + name + ", description=" + description + ", price=" + price
-				+ ", duration=" + duration + ", createDate=" + createDate + ", lastUpdateDate=" + lastUpdateDate
-				+ ", deleted=" + deleted + "]";
+		return "OrderDetailsDto [giftCertificate=" + giftCertificate + ", name=" + name + ", description=" + description
+				+ ", price=" + price + ", duration=" + duration + ", createDate=" + createDate + ", lastUpdateDate="
+				+ lastUpdateDate + ", number=" + number + "]";
 	}
 
 }

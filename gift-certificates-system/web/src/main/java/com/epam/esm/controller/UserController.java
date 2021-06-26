@@ -47,5 +47,6 @@ public class UserController {
 
 	private void addLinks(UserDto userDto) {
 		userDto.add(linkTo(methodOn(UserController.class).getUserById(userDto.getId())).withSelfRel());
+		//TODO ссылка на получение заказов пользователя
 	}
 }

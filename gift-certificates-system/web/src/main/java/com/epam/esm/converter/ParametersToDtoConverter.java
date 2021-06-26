@@ -13,7 +13,7 @@ import com.epam.esm.util.MessageKey;
 @Component
 public class ParametersToDtoConverter {
 
-	private static final String NUMBER_AND_SIZE_PATTERN = "^\\d+$";// TODO [1-9]
+	private static final String NUMBER_AND_SIZE_PATTERN = "^[1-9]+$";
 	private static final String NUMBER = "number";
 	private static final String SIZE = "size";
 	private static final String DEFAULT_NUMBER = "1";

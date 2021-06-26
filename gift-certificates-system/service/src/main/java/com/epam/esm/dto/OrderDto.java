@@ -1,36 +1,21 @@
-package com.epam.esm.entity;
+package com.epam.esm.dto;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
+import java.util.Collections;
 import java.util.List;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.OneToMany;
-import javax.persistence.Table;
+import com.fasterxml.jackson.annotation.JsonFormat;
 
-@Entity
-@Table(name = "item_order")
-public class Order {
+public class OrderDto {
 
-	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	@Column(name = "id")
+	// TODO validation попробовать hibernate и написать deserializer если что
 	private Long id;
-	@Column(name = "cost")
-	private BigDecimal cost;
-	@Column(name = "user_id")
-	private Long userId;
-	@Column(name = "create_date")
+	private BigDecimal cost;// TODO проверить как будет если укажут
+	private Long userId;// TODO User?
+	@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd'T'HH:mm:ss")
 	private LocalDateTime createDate;
-	@Column(name = "deleted")
-	private boolean deleted;
-
-	@OneToMany(mappedBy = "order")
-	private List<OrderedGiftCertificate> orderDetails; //TODO в equals toString?
+	List<OrderedGiftCertificateDto> orderedGiftCertificates;
 
 	public Long getId() {
 		return id;
@@ -64,20 +49,12 @@ public class Order {
 		this.createDate = createDate;
 	}
 
-	public boolean isDeleted() {
-		return deleted;
+	public List<OrderedGiftCertificateDto> getOrderedGiftCertificates() {
+		return orderedGiftCertificates == null ? null : Collections.unmodifiableList(orderedGiftCertificates);
 	}
 
-	public void setDeleted(boolean deleted) {
-		this.deleted = deleted;
-	}
-
-	public List<OrderedGiftCertificate> getOrderDetails() {
-		return orderDetails;
-	}
-
-	public void setOrderDetails(List<OrderedGiftCertificate> orderDetails) {
-		this.orderDetails = orderDetails;
+	public void setOrderedGiftCertificates(List<OrderedGiftCertificateDto> orderedGiftCertificates) {
+		this.orderedGiftCertificates = orderedGiftCertificates;
 	}
 
 	@Override
@@ -86,8 +63,8 @@ public class Order {
 		int result = 1;
 		result = prime * result + ((cost == null) ? 0 : cost.hashCode());
 		result = prime * result + ((createDate == null) ? 0 : createDate.hashCode());
-		result = prime * result + (deleted ? 1231 : 1237);
 		result = prime * result + ((id == null) ? 0 : id.hashCode());
+		result = prime * result + ((orderedGiftCertificates == null) ? 0 : orderedGiftCertificates.hashCode());
 		result = prime * result + ((userId == null) ? 0 : userId.hashCode());
 		return result;
 	}
@@ -100,7 +77,7 @@ public class Order {
 			return false;
 		if (getClass() != obj.getClass())
 			return false;
-		Order other = (Order) obj;
+		OrderDto other = (OrderDto) obj;
 		if (cost == null) {
 			if (other.cost != null)
 				return false;
@@ -111,12 +88,15 @@ public class Order {
 				return false;
 		} else if (!createDate.equals(other.createDate))
 			return false;
-		if (deleted != other.deleted)
-			return false;
 		if (id == null) {
 			if (other.id != null)
 				return false;
 		} else if (!id.equals(other.id))
+			return false;
+		if (orderedGiftCertificates == null) {
+			if (other.orderedGiftCertificates != null)
+				return false;
+		} else if (!orderedGiftCertificates.equals(other.orderedGiftCertificates))
 			return false;
 		if (userId == null) {
 			if (other.userId != null)
@@ -128,8 +108,8 @@ public class Order {
 
 	@Override
 	public String toString() {
-		return "Order [id=" + id + ", cost=" + cost + ", userId=" + userId + ", createDate=" + createDate + ", deleted="
-				+ deleted + "]";
+		return "OrderDto [id=" + id + ", cost=" + cost + ", userId=" + userId + ", createDate=" + createDate
+				+ ", orderedGiftCertificate=" + orderedGiftCertificates + "]";
 	}
 
 }
