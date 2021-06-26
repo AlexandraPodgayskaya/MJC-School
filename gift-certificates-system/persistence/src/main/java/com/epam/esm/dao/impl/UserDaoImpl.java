@@ -15,9 +15,8 @@ import com.epam.esm.entity.User;
 @Repository
 public class UserDaoImpl implements UserDao {
 
-	private static final String SELECT_ALL_USERS_SQL = "SELECT u FROM User u WHERE u.deleted = false";
-	private static final String SELECT_USER_BY_ID_SQL = "SELECT u FROM User u WHERE u.deleted = false "
-			+ "AND u.id = :id";
+	private static final String SELECT_ALL_USERS_SQL = "FROM User WHERE deleted = false";
+	private static final String SELECT_USER_BY_ID_SQL = "FROM User WHERE deleted = false AND id = :id";
 	private static final String SELECT_TOTAL_NUMBER_USERS_SQL = "SELECT COUNT(*) FROM User u "
 			+ "WHERE u.deleted = false";
 	private static final String ID_PARAMETER = "id";
@@ -27,9 +26,8 @@ public class UserDaoImpl implements UserDao {
 
 	@Override
 	public List<User> findAll(Pagination pagination) {
-		return entityManager.createQuery(SELECT_ALL_USERS_SQL, User.class)
-				.setFirstResult((pagination.getPageNumber() - 1) * pagination.getPageSize())
-				.setMaxResults(pagination.getPageSize()).getResultList();// TODO логику подсчета в pagination
+		return entityManager.createQuery(SELECT_ALL_USERS_SQL, User.class).setFirstResult(pagination.getOffset())
+				.setMaxResults(pagination.getLimit()).getResultList();
 	}
 
 	@Override

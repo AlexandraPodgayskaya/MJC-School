@@ -8,7 +8,7 @@ package com.epam.esm.exception;
  */
 public enum ErrorCode {
 
-	DEFAULT("00"), GIFT_CERTIFICATE("01"), TAG("02"), USER("03");
+	DEFAULT("00"), GIFT_CERTIFICATE("01"), TAG("02"), USER("03"), ORDER("04");
 
 	private final String code;
 

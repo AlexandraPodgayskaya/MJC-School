@@ -23,7 +23,9 @@ public class ParametersToDtoConverter {
 		String number = parameters.get(NUMBER) == null ? DEFAULT_NUMBER : parameters.get(NUMBER);
 		String size = parameters.get(SIZE) == null ? DEFAULT_SIZE : parameters.get(SIZE);
 		checkParametersValue(number, size);
-		return new PaginationDto(Integer.valueOf(number), Integer.valueOf(size));
+		int offset = (Integer.valueOf(number) - 1) * Integer.valueOf(size);
+		int limit = Integer.valueOf(size);
+		return new PaginationDto(offset, limit);
 
 	}
 

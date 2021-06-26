@@ -9,6 +9,8 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
@@ -22,15 +24,16 @@ public class Order {
 	private Long id;
 	@Column(name = "cost")
 	private BigDecimal cost;
-	@Column(name = "user_id")
-	private Long userId;
+	@ManyToOne
+	@JoinColumn(name = "user_id")
+	private User user;
 	@Column(name = "create_date")
 	private LocalDateTime createDate;
 	@Column(name = "deleted")
 	private boolean deleted;
 
 	@OneToMany(mappedBy = "order")
-	private List<OrderedGiftCertificate> orderDetails; //TODO â equals toString?
+	private List<OrderedGiftCertificate> orderedGiftCertificates; // TODO â equals toString?
 
 	public Long getId() {
 		return id;
@@ -48,12 +51,12 @@ public class Order {
 		this.cost = cost;
 	}
 
-	public Long getUserId() {
-		return userId;
+	public User getUser() {
+		return user;
 	}
 
-	public void setUserId(Long userId) {
-		this.userId = userId;
+	public void setUser(User user) {
+		this.user = user;
 	}
 
 	public LocalDateTime getCreateDate() {
@@ -72,12 +75,12 @@ public class Order {
 		this.deleted = deleted;
 	}
 
-	public List<OrderedGiftCertificate> getOrderDetails() {
-		return orderDetails;
+	public List<OrderedGiftCertificate> getOrderedGiftCertificates() {
+		return orderedGiftCertificates;
 	}
 
-	public void setOrderDetails(List<OrderedGiftCertificate> orderDetails) {
-		this.orderDetails = orderDetails;
+	public void setOrderedGiftCertificates(List<OrderedGiftCertificate> orderedGiftCertificates) {
+		this.orderedGiftCertificates = orderedGiftCertificates;
 	}
 
 	@Override
@@ -88,7 +91,8 @@ public class Order {
 		result = prime * result + ((createDate == null) ? 0 : createDate.hashCode());
 		result = prime * result + (deleted ? 1231 : 1237);
 		result = prime * result + ((id == null) ? 0 : id.hashCode());
-		result = prime * result + ((userId == null) ? 0 : userId.hashCode());
+		result = prime * result + ((orderedGiftCertificates == null) ? 0 : orderedGiftCertificates.hashCode());
+		result = prime * result + ((user == null) ? 0 : user.hashCode());
 		return result;
 	}
 
@@ -118,18 +122,23 @@ public class Order {
 				return false;
 		} else if (!id.equals(other.id))
 			return false;
-		if (userId == null) {
-			if (other.userId != null)
+		if (orderedGiftCertificates == null) {
+			if (other.orderedGiftCertificates != null)
 				return false;
-		} else if (!userId.equals(other.userId))
+		} else if (!orderedGiftCertificates.equals(other.orderedGiftCertificates))
+			return false;
+		if (user == null) {
+			if (other.user != null)
+				return false;
+		} else if (!user.equals(other.user))
 			return false;
 		return true;
 	}
 
 	@Override
 	public String toString() {
-		return "Order [id=" + id + ", cost=" + cost + ", userId=" + userId + ", createDate=" + createDate + ", deleted="
-				+ deleted + "]";
+		return "Order [id=" + id + ", cost=" + cost + ", user=" + user + ", createDate=" + createDate + ", deleted="
+				+ deleted + ", orderedGiftCertificates=" + orderedGiftCertificates + "]";
 	}
 
 }

@@ -13,17 +13,20 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.epam.esm.dao.OrderDao;
 import com.epam.esm.dao.OrderedGiftCertificateDao;
-import com.epam.esm.dto.OrderedGiftCertificateDto;
 import com.epam.esm.dto.OrderDto;
+import com.epam.esm.dto.OrderedGiftCertificateDto;
 import com.epam.esm.dto.PageDto;
 import com.epam.esm.dto.PaginationDto;
 import com.epam.esm.entity.Order;
 import com.epam.esm.entity.OrderedGiftCertificate;
+import com.epam.esm.entity.Pagination;
+import com.epam.esm.exception.ErrorCode;
 import com.epam.esm.exception.IncorrectParameterValueException;
 import com.epam.esm.exception.ResourceNotFoundException;
 import com.epam.esm.service.GiftCertificateService;
 import com.epam.esm.service.OrderService;
 import com.epam.esm.service.UserService;
+import com.epam.esm.util.MessageKey;
 
 @Service
 public class OrderServiceImpl implements OrderService {
@@ -35,8 +38,8 @@ public class OrderServiceImpl implements OrderService {
 	private final GiftCertificateService giftCertificateService;
 
 	@Autowired
-	public OrderServiceImpl(OrderDao orderDao, OrderedGiftCertificateDao orderGiftCertificateDao, ModelMapper modelMapper,
-			UserService userService, GiftCertificateService giftCertificateService) {
+	public OrderServiceImpl(OrderDao orderDao, OrderedGiftCertificateDao orderGiftCertificateDao,
+			ModelMapper modelMapper, UserService userService, GiftCertificateService giftCertificateService) {
 		this.orderDao = orderDao;
 		this.orderGiftCertificateDao = orderGiftCertificateDao;
 		this.modelMapper = modelMapper;
@@ -49,12 +52,11 @@ public class OrderServiceImpl implements OrderService {
 	public OrderDto addOrder(OrderDto orderDto) throws IncorrectParameterValueException, ResourceNotFoundException {
 		// TODO validate проверить чтобы не было повторений id orderDetails(вывести id в
 		// Set и сравнить размер set с list orderDetails)
-		System.out.println(orderDto.toString());//TODO
-		userService.findUserById(orderDto.getUserId());
+		orderDto.setUser(userService.findUserById(orderDto.getUser().getId()));
 		orderDto.getOrderedGiftCertificates().forEach(giftCertificate -> giftCertificate.setGiftCertificate(
 				giftCertificateService.findGiftCertificateById(giftCertificate.getGiftCertificate().getId())));
-		List<OrderedGiftCertificate> orderedGiftCertificates = orderDto.getOrderedGiftCertificates().stream()
-				.map(orderedGiftCertificateDto -> modelMapper.map(orderedGiftCertificateDto, OrderedGiftCertificate.class))
+		List<OrderedGiftCertificate> orderedGiftCertificates = orderDto.getOrderedGiftCertificates().stream().map(
+				orderedGiftCertificateDto -> modelMapper.map(orderedGiftCertificateDto, OrderedGiftCertificate.class))
 				.collect(Collectors.toList());
 		Order order = modelMapper.map(orderDto, Order.class);
 		BigDecimal orderCost = BigDecimal.ZERO.setScale(2, RoundingMode.HALF_UP);
@@ -76,7 +78,8 @@ public class OrderServiceImpl implements OrderService {
 		orderGiftCertificateDao.create(orderedGiftCertificates);// TODO вернуть созданный
 
 		List<OrderedGiftCertificateDto> orderDetailsDto = orderedGiftCertificates.stream()
-				.map(giftCertificate -> modelMapper.map(giftCertificate, OrderedGiftCertificateDto.class)).collect(Collectors.toList());
+				.map(giftCertificate -> modelMapper.map(giftCertificate, OrderedGiftCertificateDto.class))
+				.collect(Collectors.toList());
 		OrderDto createdOrderDto = modelMapper.map(addedOrder, OrderDto.class);
 		createdOrderDto.setOrderedGiftCertificates(orderDetailsDto);
 		return createdOrderDto;
@@ -84,14 +87,21 @@ public class OrderServiceImpl implements OrderService {
 
 	@Override
 	public OrderDto findOrderById(long id) {
-		// TODO Auto-generated method stub
-		return null;
+		// id validate TODO
+		return orderDao.findById(id).map(order -> modelMapper.map(order, OrderDto.class))
+				.orElseThrow(() -> new ResourceNotFoundException("no order by id", MessageKey.ORDER_NOT_FOUND_BY_ID,
+						String.valueOf(id), ErrorCode.ORDER.getCode()));
 	}
 
 	@Override
-	public PageDto<OrderDto> findOrdersByUserId(long userId, PaginationDto pagination) {
-		// TODO Auto-generated method stub
-		return null;
+	public PageDto<OrderDto> findOrdersByUserId(long userId, PaginationDto paginationDto) {
+		Pagination pagination = modelMapper.map(paginationDto, Pagination.class);
+		List<Order> foundOrders = orderDao.findByUserId(userId, pagination);
+		List<OrderDto> foundOrdersDto = foundOrders.stream()
+				.map(foundOrder -> modelMapper.map(foundOrder, OrderDto.class)).collect(Collectors.toList());
+		long totalNumberPositions = orderDao.getTotalNumberByUserId(userId);
+		PageDto<OrderDto> ordersPage = new PageDto<OrderDto>(foundOrdersDto, totalNumberPositions);
+		return ordersPage;
 	}
 
 }

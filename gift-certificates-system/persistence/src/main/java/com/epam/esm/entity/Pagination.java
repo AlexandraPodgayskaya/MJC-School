@@ -2,31 +2,31 @@ package com.epam.esm.entity;
 
 public class Pagination {
 
-	private int pageNumber;
-	private int pageSize;
+	private int offset;
+	private int limit;
 
-	public int getPageNumber() {
-		return pageNumber;
+	public int getOffset() {
+		return offset;
 	}
 
-	public void setPageNumber(int pageNumber) {
-		this.pageNumber = pageNumber;
+	public void setOffset(int offset) {
+		this.offset = offset;
 	}
 
-	public int getPageSize() {
-		return pageSize;
+	public int getLimit() {
+		return limit;
 	}
 
-	public void setPageSize(int pageSize) {
-		this.pageSize = pageSize;
+	public void setLimit(int limit) {
+		this.limit = limit;
 	}
 
 	@Override
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
-		result = prime * result + pageNumber;
-		result = prime * result + pageSize;
+		result = prime * result + limit;
+		result = prime * result + offset;
 		return result;
 	}
 
@@ -39,16 +39,15 @@ public class Pagination {
 		if (getClass() != obj.getClass())
 			return false;
 		Pagination other = (Pagination) obj;
-		if (pageNumber != other.pageNumber)
+		if (limit != other.limit)
 			return false;
-		if (pageSize != other.pageSize)
+		if (offset != other.offset)
 			return false;
 		return true;
 	}
 
 	@Override
 	public String toString() {
-		return "Pagination [pageNumber=" + pageNumber + ", pageSize=" + pageSize + "]";
+		return "Pagination [offset=" + offset + ", limit=" + limit + "]";
 	}
-
 }

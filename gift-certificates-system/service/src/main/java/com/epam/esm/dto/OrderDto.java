@@ -12,7 +12,7 @@ public class OrderDto {
 	// TODO validation попробовать hibernate и написать deserializer если что
 	private Long id;
 	private BigDecimal cost;// TODO проверить как будет если укажут
-	private Long userId;// TODO User?
+	private UserDto user;// TODO User?
 	@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd'T'HH:mm:ss")
 	private LocalDateTime createDate;
 	List<OrderedGiftCertificateDto> orderedGiftCertificates;
@@ -33,12 +33,12 @@ public class OrderDto {
 		this.cost = cost;
 	}
 
-	public Long getUserId() {
-		return userId;
+	public UserDto getUser() {
+		return user;
 	}
 
-	public void setUserId(Long userId) {
-		this.userId = userId;
+	public void setUser(UserDto user) {
+		this.user = user;
 	}
 
 	public LocalDateTime getCreateDate() {
@@ -65,7 +65,7 @@ public class OrderDto {
 		result = prime * result + ((createDate == null) ? 0 : createDate.hashCode());
 		result = prime * result + ((id == null) ? 0 : id.hashCode());
 		result = prime * result + ((orderedGiftCertificates == null) ? 0 : orderedGiftCertificates.hashCode());
-		result = prime * result + ((userId == null) ? 0 : userId.hashCode());
+		result = prime * result + ((user == null) ? 0 : user.hashCode());
 		return result;
 	}
 
@@ -98,18 +98,18 @@ public class OrderDto {
 				return false;
 		} else if (!orderedGiftCertificates.equals(other.orderedGiftCertificates))
 			return false;
-		if (userId == null) {
-			if (other.userId != null)
+		if (user == null) {
+			if (other.user != null)
 				return false;
-		} else if (!userId.equals(other.userId))
+		} else if (!user.equals(other.user))
 			return false;
 		return true;
 	}
 
 	@Override
 	public String toString() {
-		return "OrderDto [id=" + id + ", cost=" + cost + ", userId=" + userId + ", createDate=" + createDate
-				+ ", orderedGiftCertificate=" + orderedGiftCertificates + "]";
+		return "OrderDto [id=" + id + ", cost=" + cost + ", user=" + user + ", createDate=" + createDate
+				+ ", orderedGiftCertificates=" + orderedGiftCertificates + "]";
 	}
 
 }
