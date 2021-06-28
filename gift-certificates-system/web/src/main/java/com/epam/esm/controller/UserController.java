@@ -3,6 +3,7 @@ package com.epam.esm.controller;
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
 
+import java.util.Collections;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,6 +22,7 @@ import com.epam.esm.service.UserService;
 @RestController
 @RequestMapping("/users")
 public class UserController {
+	private static final String ORDERS = "orders";
 	private final UserService userService;
 	private final ParametersToDtoConverter parametersToDtoConverter;
 
@@ -46,7 +48,9 @@ public class UserController {
 	}
 
 	private void addLinks(UserDto userDto) {
+		//TODO выделить в отдельный класс? Static?
 		userDto.add(linkTo(methodOn(UserController.class).getUserById(userDto.getId())).withSelfRel());
-		//TODO ссылка на получение заказов пользователя
+		userDto.add(linkTo(methodOn(OrderController.class).getOrdersByUserId(userDto.getId(), Collections.emptyMap()))
+				.withRel(ORDERS));
 	}
 }

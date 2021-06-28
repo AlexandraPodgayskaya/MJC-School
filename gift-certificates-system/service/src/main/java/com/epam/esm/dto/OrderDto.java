@@ -5,14 +5,17 @@ import java.time.LocalDateTime;
 import java.util.Collections;
 import java.util.List;
 
+import org.springframework.hateoas.RepresentationModel;
+
 import com.fasterxml.jackson.annotation.JsonFormat;
 
-public class OrderDto {
+public class OrderDto extends RepresentationModel<OrderDto> {
 
-	// TODO validation попробовать hibernate и написать deserializer если что
+	// TODO validation попробовать hibernate и написать deserializer если что и
+	// сделать JsonIgnore на поля, которые нужны только для отбражения клиенту
 	private Long id;
-	private BigDecimal cost;// TODO проверить как будет если укажут
-	private UserDto user;// TODO User?
+	private BigDecimal cost;
+	private UserDto user;
 	@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd'T'HH:mm:ss")
 	private LocalDateTime createDate;
 	List<OrderedGiftCertificateDto> orderedGiftCertificates;

@@ -11,6 +11,7 @@ import org.springframework.stereotype.Repository;
 import com.epam.esm.dao.UserDao;
 import com.epam.esm.entity.Pagination;
 import com.epam.esm.entity.User;
+import com.epam.esm.util.QueryParameter;
 
 @Repository
 public class UserDaoImpl implements UserDao {
@@ -19,7 +20,6 @@ public class UserDaoImpl implements UserDao {
 	private static final String SELECT_USER_BY_ID_SQL = "FROM User WHERE deleted = false AND id = :id";
 	private static final String SELECT_TOTAL_NUMBER_USERS_SQL = "SELECT COUNT(*) FROM User u "
 			+ "WHERE u.deleted = false";
-	private static final String ID_PARAMETER = "id";
 
 	@PersistenceContext
 	private EntityManager entityManager;
@@ -32,7 +32,7 @@ public class UserDaoImpl implements UserDao {
 
 	@Override
 	public Optional<User> findById(long id) {
-		return entityManager.createQuery(SELECT_USER_BY_ID_SQL, User.class).setParameter(ID_PARAMETER, id)
+		return entityManager.createQuery(SELECT_USER_BY_ID_SQL, User.class).setParameter(QueryParameter.ID, id)
 				.getResultStream().findFirst();
 	}
 

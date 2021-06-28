@@ -54,5 +54,4 @@ public class UserServiceImpl implements UserService {
 				.orElseThrow(() -> new ResourceNotFoundException("no user by id", MessageKey.USER_NOT_FOUND_BY_ID,
 						String.valueOf(id), ErrorCode.USER.getCode()));
 	}
-
 }

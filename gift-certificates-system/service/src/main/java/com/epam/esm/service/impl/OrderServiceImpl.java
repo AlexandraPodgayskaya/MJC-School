@@ -12,7 +12,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.epam.esm.dao.OrderDao;
-import com.epam.esm.dao.OrderedGiftCertificateDao;
+import com.epam.esm.dto.GiftCertificateDto;
 import com.epam.esm.dto.OrderDto;
 import com.epam.esm.dto.OrderedGiftCertificateDto;
 import com.epam.esm.dto.PageDto;
@@ -32,16 +32,14 @@ import com.epam.esm.util.MessageKey;
 public class OrderServiceImpl implements OrderService {
 
 	private final OrderDao orderDao;
-	private final OrderedGiftCertificateDao orderGiftCertificateDao;
 	private final ModelMapper modelMapper;
 	private final UserService userService;
 	private final GiftCertificateService giftCertificateService;
 
 	@Autowired
-	public OrderServiceImpl(OrderDao orderDao, OrderedGiftCertificateDao orderGiftCertificateDao,
-			ModelMapper modelMapper, UserService userService, GiftCertificateService giftCertificateService) {
+	public OrderServiceImpl(OrderDao orderDao, ModelMapper modelMapper, UserService userService,
+			GiftCertificateService giftCertificateService) {
 		this.orderDao = orderDao;
-		this.orderGiftCertificateDao = orderGiftCertificateDao;
 		this.modelMapper = modelMapper;
 		this.userService = userService;
 		this.giftCertificateService = giftCertificateService;
@@ -53,35 +51,14 @@ public class OrderServiceImpl implements OrderService {
 		// TODO validate проверить чтобы не было повторений id orderDetails(вывести id в
 		// Set и сравнить размер set с list orderDetails)
 		orderDto.setUser(userService.findUserById(orderDto.getUser().getId()));
-		orderDto.getOrderedGiftCertificates().forEach(giftCertificate -> giftCertificate.setGiftCertificate(
-				giftCertificateService.findGiftCertificateById(giftCertificate.getGiftCertificate().getId())));
-		List<OrderedGiftCertificate> orderedGiftCertificates = orderDto.getOrderedGiftCertificates().stream().map(
-				orderedGiftCertificateDto -> modelMapper.map(orderedGiftCertificateDto, OrderedGiftCertificate.class))
-				.collect(Collectors.toList());
+		orderDto.getOrderedGiftCertificates().forEach(this::setOrderedGiftCertificateDetails);
 		Order order = modelMapper.map(orderDto, Order.class);
-		BigDecimal orderCost = BigDecimal.ZERO.setScale(2, RoundingMode.HALF_UP);
-		for (OrderedGiftCertificate giftCertificate : orderedGiftCertificates) {
-			giftCertificate.setName(giftCertificate.getGiftCertificate().getName());
-			giftCertificate.setDescription(giftCertificate.getGiftCertificate().getDescription());
-			giftCertificate.setPrice(giftCertificate.getGiftCertificate().getPrice());
-			giftCertificate.setDuration(giftCertificate.getGiftCertificate().getDuration());
-			giftCertificate.setCreateDate(giftCertificate.getGiftCertificate().getCreateDate());
-			giftCertificate.setLastUpdateDate(giftCertificate.getGiftCertificate().getLastUpdateDate());
-			BigDecimal giftCertificatesCost = giftCertificate.getGiftCertificate().getPrice()
-					.multiply(BigDecimal.valueOf(giftCertificate.getNumber()));
-			orderCost = orderCost.add(giftCertificatesCost);
-		}
-		order.setCost(orderCost);
+		setTotalCostOrder(order);
 		order.setCreateDate(LocalDateTime.now());
 		Order addedOrder = orderDao.create(order);
-		orderedGiftCertificates.forEach(giftCertificate -> giftCertificate.setOrder(addedOrder));
-		orderGiftCertificateDao.create(orderedGiftCertificates);// TODO вернуть созданный
-
-		List<OrderedGiftCertificateDto> orderDetailsDto = orderedGiftCertificates.stream()
-				.map(giftCertificate -> modelMapper.map(giftCertificate, OrderedGiftCertificateDto.class))
-				.collect(Collectors.toList());
+		order.getOrderedGiftCertificates().forEach(giftCertificate -> giftCertificate.setOrder(addedOrder));
+		orderDao.createOrderDetails(order.getOrderedGiftCertificates());
 		OrderDto createdOrderDto = modelMapper.map(addedOrder, OrderDto.class);
-		createdOrderDto.setOrderedGiftCertificates(orderDetailsDto);
 		return createdOrderDto;
 	}
 
@@ -102,6 +79,28 @@ public class OrderServiceImpl implements OrderService {
 		long totalNumberPositions = orderDao.getTotalNumberByUserId(userId);
 		PageDto<OrderDto> ordersPage = new PageDto<OrderDto>(foundOrdersDto, totalNumberPositions);
 		return ordersPage;
+	}
+
+	private void setOrderedGiftCertificateDetails(OrderedGiftCertificateDto orderedGiftCertificate) {
+		GiftCertificateDto giftCertificate = giftCertificateService
+				.findGiftCertificateById(orderedGiftCertificate.getGiftCertificate().getId());
+		orderedGiftCertificate.setName(giftCertificate.getName());
+		orderedGiftCertificate.setDescription(giftCertificate.getDescription());
+		orderedGiftCertificate.setPrice(giftCertificate.getPrice());
+		orderedGiftCertificate.setDuration(giftCertificate.getDuration());
+		orderedGiftCertificate.setCreateDate(giftCertificate.getCreateDate());
+		orderedGiftCertificate.setLastUpdateDate(giftCertificate.getLastUpdateDate());
+
+	}
+
+	private void setTotalCostOrder(Order order) {
+		BigDecimal orderCost = BigDecimal.ZERO.setScale(2, RoundingMode.HALF_UP);
+		for (OrderedGiftCertificate giftCertificate : order.getOrderedGiftCertificates()) {
+			BigDecimal giftCertificatesCost = giftCertificate.getPrice()
+					.multiply(BigDecimal.valueOf(giftCertificate.getNumber()));
+			orderCost = orderCost.add(giftCertificatesCost);
+		}
+		order.setCost(orderCost);
 	}
 
 }

@@ -15,7 +15,7 @@ import javax.persistence.Table;
 @Table(name = "ordered_gift_certificate")
 @IdClass(OrderDetailsId.class)
 public class OrderedGiftCertificate {
-//TODO переименовать в orderedGiftCertificate
+
 	@Id
 	@ManyToOne
 	@JoinColumn(name = "order_id")

@@ -33,7 +33,7 @@ public class Order {
 	private boolean deleted;
 
 	@OneToMany(mappedBy = "order")
-	private List<OrderedGiftCertificate> orderedGiftCertificates; // TODO â equals toString?
+	private List<OrderedGiftCertificate> orderedGiftCertificates;
 
 	public Long getId() {
 		return id;

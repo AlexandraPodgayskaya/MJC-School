@@ -3,10 +3,12 @@ package com.epam.esm.dto;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
+import org.springframework.hateoas.RepresentationModel;
+
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonProperty.Access;
 
-public class OrderedGiftCertificateDto {
+public class OrderedGiftCertificateDto extends RepresentationModel<OrderDto> {
 
 	@JsonProperty(access = Access.WRITE_ONLY)
 	private GiftCertificateDto giftCertificate;
