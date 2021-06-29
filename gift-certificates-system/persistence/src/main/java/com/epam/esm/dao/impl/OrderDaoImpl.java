@@ -17,11 +17,11 @@ import com.epam.esm.util.QueryParameter;
 @Repository
 public class OrderDaoImpl implements OrderDao {
 
-	private static final String SELECT_ORDER_BY_ID_SQL = "FROM Order WHERE deleted = FALSE AND id = :id";
+	private static final String SELECT_ORDER_BY_ID_SQL = "FROM Order WHERE deleted = false AND id = :id";
 	private static final String SELECT_ORDERS_BY_USER_ID_SQL = "FROM Order WHERE deleted = false "
-			+ "AND user.id = :userId";
+			+ "AND userId = :userId";
 	private static final String SELECT_TOTAL_NUMBER_USERS_ORDERS_SQL = "SELECT COUNT(*) FROM Order "
-			+ "WHERE deleted = false AND user.id = :userId";
+			+ "WHERE deleted = false AND userId = :userId";
 	private static final String INSERT_ORDERED_GIFT_CERTIFICATES_SQL = "INSERT INTO ordered_gift_certificate "
 			+ "(order_id, gift_certificate_id, name, description, price, duration, create_date, "
 			+ "last_update_date, number) VALUES (:orderId, :giftCertificateId, :name, :description, :price, "

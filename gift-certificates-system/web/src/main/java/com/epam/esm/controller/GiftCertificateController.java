@@ -1,9 +1,13 @@
 package com.epam.esm.controller;
 
-import java.util.List;
+import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
+import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
+
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
@@ -11,11 +15,15 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.epam.esm.converter.ParametersToDtoConverter;
 import com.epam.esm.dto.GiftCertificateDto;
 import com.epam.esm.dto.GiftCertificateSearchParametersDto;
+import com.epam.esm.dto.PageDto;
+import com.epam.esm.dto.PaginationDto;
 import com.epam.esm.service.GiftCertificateService;
 
 /**
@@ -30,11 +38,16 @@ import com.epam.esm.service.GiftCertificateService;
 @RequestMapping("/gift-certificates")
 public class GiftCertificateController {
 
+	private static final String UPDATE = "update";
+	private static final String DELETE = "delete";
 	private final GiftCertificateService giftCertificateService;
+	private final ParametersToDtoConverter parametersToDtoConverter;
 
 	@Autowired
-	public GiftCertificateController(GiftCertificateService giftCertificateService) {
+	public GiftCertificateController(GiftCertificateService giftCertificateService,
+			ParametersToDtoConverter parametersToDtoConverter) {
 		this.giftCertificateService = giftCertificateService;
+		this.parametersToDtoConverter = parametersToDtoConverter;
 	}
 
 	/**
@@ -46,9 +59,14 @@ public class GiftCertificateController {
 	 * @return the list of found gift certificates dto
 	 */
 	@GetMapping
-	public List<GiftCertificateDto> getGiftCertificates(
-			GiftCertificateSearchParametersDto giftCertificateSearchParametersDto) {
-		return giftCertificateService.findGiftCertificates(giftCertificateSearchParametersDto);
+	public PageDto<GiftCertificateDto> getGiftCertificates(@RequestParam Map<String, String> parameters) {
+		PaginationDto pagination = parametersToDtoConverter.getPaginationDto(parameters);
+		GiftCertificateSearchParametersDto giftCertificateSearchParametersDto = parametersToDtoConverter
+				.getGiftCertificateSearchParametersDto(parameters);
+		PageDto<GiftCertificateDto> page = giftCertificateService.findGiftCertificates(pagination,
+				giftCertificateSearchParametersDto);
+		page.getPagePositions().forEach(this::addLinks);
+		return page;
 	}
 
 	/**
@@ -59,7 +77,9 @@ public class GiftCertificateController {
 	 */
 	@GetMapping("/{id}")
 	public GiftCertificateDto getGiftCertificateById(@PathVariable long id) {
-		return giftCertificateService.findGiftCertificateById(id);
+		GiftCertificateDto foundGiftCertificateDto = giftCertificateService.findGiftCertificateById(id);
+		addLinks(foundGiftCertificateDto);
+		return foundGiftCertificateDto;
 	}
 
 	/**
@@ -71,7 +91,9 @@ public class GiftCertificateController {
 	@PostMapping
 	@ResponseStatus(HttpStatus.CREATED)
 	public GiftCertificateDto createGiftCertificate(@RequestBody GiftCertificateDto giftCertificateDto) {
-		return giftCertificateService.createGiftCertificate(giftCertificateDto);
+		GiftCertificateDto createdGiftCertificate = giftCertificateService.createGiftCertificate(giftCertificateDto);
+		addLinks(createdGiftCertificate);
+		return createdGiftCertificate;
 	}
 
 	/**
@@ -85,7 +107,9 @@ public class GiftCertificateController {
 	public GiftCertificateDto updateGiftCertificate(@PathVariable long id,
 			@RequestBody GiftCertificateDto giftCertificateDto) {
 		giftCertificateDto.setId(id);
-		return giftCertificateService.updateGiftCertificate(giftCertificateDto);
+		GiftCertificateDto updatedGiftCertificate = giftCertificateService.updateGiftCertificate(giftCertificateDto);
+		addLinks(updatedGiftCertificate);
+		return updatedGiftCertificate;
 	}
 
 	/**
@@ -95,8 +119,21 @@ public class GiftCertificateController {
 	 * @param id the gift certificate id which will be deleted
 	 */
 	@DeleteMapping("/{id}")
-	@ResponseStatus(HttpStatus.NO_CONTENT)
-	public void deleteGiftCertificate(@PathVariable long id) {
+	public ResponseEntity<Void> deleteGiftCertificate(@PathVariable long id) {
 		giftCertificateService.deleteGiftCertificate(id);
+		return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+	}
+
+	private void addLinks(GiftCertificateDto giftCertificateDto) {
+		giftCertificateDto.add(
+				linkTo(methodOn(GiftCertificateController.class).getGiftCertificateById(giftCertificateDto.getId()))
+						.withSelfRel());
+		giftCertificateDto.add(linkTo(methodOn(GiftCertificateController.class)
+				.updateGiftCertificate(giftCertificateDto.getId(), giftCertificateDto)).withRel(UPDATE));
+		giftCertificateDto
+				.add(linkTo(methodOn(GiftCertificateController.class).deleteGiftCertificate(giftCertificateDto.getId()))
+						.withRel(DELETE));
+		giftCertificateDto.getTags().forEach(
+				tagDto -> tagDto.add(linkTo(methodOn(TagController.class).getTagById(tagDto.getId())).withSelfRel()));
 	}
 }

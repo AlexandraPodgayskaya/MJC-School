@@ -42,7 +42,7 @@ public class UserServiceImpl implements UserService {
 		List<UserDto> foundUsersDto = foundUsers.stream().map(foundUser -> modelMapper.map(foundUser, UserDto.class))
 				.collect(Collectors.toList());
 		long totalNumberPositions = userDao.getTotalNumber();
-		PageDto<UserDto> usersPage = new PageDto<UserDto>(foundUsersDto, totalNumberPositions);
+		PageDto<UserDto> usersPage = new PageDto<>(foundUsersDto, totalNumberPositions);
 		return usersPage;
 	}
 

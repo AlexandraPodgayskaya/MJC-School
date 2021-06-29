@@ -15,7 +15,7 @@ public class OrderDto extends RepresentationModel<OrderDto> {
 	// сделать JsonIgnore на поля, которые нужны только для отбражения клиенту
 	private Long id;
 	private BigDecimal cost;
-	private UserDto user;
+	private Long userId;
 	@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd'T'HH:mm:ss")
 	private LocalDateTime createDate;
 	List<OrderedGiftCertificateDto> orderedGiftCertificates;
@@ -36,12 +36,12 @@ public class OrderDto extends RepresentationModel<OrderDto> {
 		this.cost = cost;
 	}
 
-	public UserDto getUser() {
-		return user;
+	public Long getUserId() {
+		return userId;
 	}
 
-	public void setUser(UserDto user) {
-		this.user = user;
+	public void setUserId(Long userId) {
+		this.userId = userId;
 	}
 
 	public LocalDateTime getCreateDate() {
@@ -63,12 +63,12 @@ public class OrderDto extends RepresentationModel<OrderDto> {
 	@Override
 	public int hashCode() {
 		final int prime = 31;
-		int result = 1;
+		int result = super.hashCode();
 		result = prime * result + ((cost == null) ? 0 : cost.hashCode());
 		result = prime * result + ((createDate == null) ? 0 : createDate.hashCode());
 		result = prime * result + ((id == null) ? 0 : id.hashCode());
 		result = prime * result + ((orderedGiftCertificates == null) ? 0 : orderedGiftCertificates.hashCode());
-		result = prime * result + ((user == null) ? 0 : user.hashCode());
+		result = prime * result + ((userId == null) ? 0 : userId.hashCode());
 		return result;
 	}
 
@@ -76,7 +76,7 @@ public class OrderDto extends RepresentationModel<OrderDto> {
 	public boolean equals(Object obj) {
 		if (this == obj)
 			return true;
-		if (obj == null)
+		if (!super.equals(obj))
 			return false;
 		if (getClass() != obj.getClass())
 			return false;
@@ -101,17 +101,17 @@ public class OrderDto extends RepresentationModel<OrderDto> {
 				return false;
 		} else if (!orderedGiftCertificates.equals(other.orderedGiftCertificates))
 			return false;
-		if (user == null) {
-			if (other.user != null)
+		if (userId == null) {
+			if (other.userId != null)
 				return false;
-		} else if (!user.equals(other.user))
+		} else if (!userId.equals(other.userId))
 			return false;
 		return true;
 	}
 
 	@Override
 	public String toString() {
-		return "OrderDto [id=" + id + ", cost=" + cost + ", user=" + user + ", createDate=" + createDate
+		return "OrderDto [id=" + id + ", cost=" + cost + ", userId=" + userId + ", createDate=" + createDate
 				+ ", orderedGiftCertificates=" + orderedGiftCertificates + "]";
 	}
 

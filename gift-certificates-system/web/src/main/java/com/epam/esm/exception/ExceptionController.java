@@ -100,7 +100,8 @@ public class ExceptionController {
 	@ExceptionHandler({ MethodArgumentTypeMismatchException.class, HttpMessageNotReadableException.class })
 	@ResponseStatus(HttpStatus.BAD_REQUEST)
 	public ExceptionDetails handleParameterTypeException(Exception exception, Locale locale) {
-		String parameterKey = exception instanceof HttpMessageNotReadableException == Boolean.TRUE
+		//TODO NullPointerException пустое боди при обновлении сертификата
+		String parameterKey = exception instanceof HttpMessageNotReadableException == Boolean.TRUE 
 				? StringUtils.substringBefore(exception.getCause().getMessage(), MESSAGE_KEY_SEPARATOR)
 				: MessageKey.TYPE_ID;
 		String parameter = messageSource.getMessage(parameterKey.strip(), new String[] {}, locale);

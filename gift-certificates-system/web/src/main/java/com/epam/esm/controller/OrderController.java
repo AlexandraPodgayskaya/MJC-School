@@ -46,8 +46,8 @@ public class OrderController {
 
 	@GetMapping("/users/{userId}")
 	public PageDto<OrderDto> getOrdersByUserId(@PathVariable long userId,
-			@RequestParam Map<String, String> parameters) {
-		PaginationDto pagination = parametersToDtoConverter.getPaginationDto(parameters);
+			@RequestParam Map<String, String> pageParameters) {
+		PaginationDto pagination = parametersToDtoConverter.getPaginationDto(pageParameters);
 		PageDto<OrderDto> page = orderService.findOrdersByUserId(userId, pagination);
 		page.getPagePositions().forEach(this::addLinks);
 		return page;
@@ -62,10 +62,8 @@ public class OrderController {
 	}
 
 	private void addLinks(OrderDto orderDto) {
-		// TODO выделить в отдельный класс? Static?
 		orderDto.add(linkTo(methodOn(OrderController.class).getOrderById(orderDto.getId())).withSelfRel());
-		orderDto.getUser()
-				.add(linkTo(methodOn(UserController.class).getUserById(orderDto.getUser().getId())).withRel(USER));
+		orderDto.add(linkTo(methodOn(UserController.class).getUserById(orderDto.getUserId())).withRel(USER));
 		orderDto.getOrderedGiftCertificates().forEach(
 				orderedGiftCertificate -> orderedGiftCertificate.add(linkTo(methodOn(GiftCertificateController.class)
 						.getGiftCertificateById(orderedGiftCertificate.getGiftCertificate().getId()))

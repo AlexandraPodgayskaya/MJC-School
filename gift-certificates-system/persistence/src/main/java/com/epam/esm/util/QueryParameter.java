@@ -6,6 +6,7 @@ public final class QueryParameter {
 	public static final String USER_ID = "userId";
 	public static final String ORDER_ID = "orderId";
 	public static final String GIFT_CERTIFICATE_ID = "giftCertificateId";
+	public static final String TAG_ID = "tagId";
 	public static final String NAME = "name";
 	public static final String DESCRIPTION = "description";
 	public static final String PRICE = "price";

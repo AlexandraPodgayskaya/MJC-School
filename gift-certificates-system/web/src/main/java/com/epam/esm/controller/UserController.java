@@ -33,8 +33,8 @@ public class UserController {
 	}
 
 	@GetMapping
-	public PageDto<UserDto> getUsers(@RequestParam Map<String, String> parameters) {
-		PaginationDto pagination = parametersToDtoConverter.getPaginationDto(parameters);
+	public PageDto<UserDto> getUsers(@RequestParam Map<String, String> pageParameters) {
+		PaginationDto pagination = parametersToDtoConverter.getPaginationDto(pageParameters);
 		PageDto<UserDto> page = userService.findAllUsers(pagination);
 		page.getPagePositions().forEach(this::addLinks);
 		return page;
@@ -48,7 +48,6 @@ public class UserController {
 	}
 
 	private void addLinks(UserDto userDto) {
-		//TODO выделить в отдельный класс? Static?
 		userDto.add(linkTo(methodOn(UserController.class).getUserById(userDto.getId())).withSelfRel());
 		userDto.add(linkTo(methodOn(OrderController.class).getOrdersByUserId(userDto.getId(), Collections.emptyMap()))
 				.withRel(ORDERS));

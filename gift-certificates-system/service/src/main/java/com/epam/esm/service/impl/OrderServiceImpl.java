@@ -50,7 +50,7 @@ public class OrderServiceImpl implements OrderService {
 	public OrderDto addOrder(OrderDto orderDto) throws IncorrectParameterValueException, ResourceNotFoundException {
 		// TODO validate проверить чтобы не было повторений id orderDetails(вывести id в
 		// Set и сравнить размер set с list orderDetails)
-		orderDto.setUser(userService.findUserById(orderDto.getUser().getId()));
+		userService.findUserById(orderDto.getUserId());
 		orderDto.getOrderedGiftCertificates().forEach(this::setOrderedGiftCertificateDetails);
 		Order order = modelMapper.map(orderDto, Order.class);
 		setTotalCostOrder(order);
@@ -77,7 +77,7 @@ public class OrderServiceImpl implements OrderService {
 		List<OrderDto> foundOrdersDto = foundOrders.stream()
 				.map(foundOrder -> modelMapper.map(foundOrder, OrderDto.class)).collect(Collectors.toList());
 		long totalNumberPositions = orderDao.getTotalNumberByUserId(userId);
-		PageDto<OrderDto> ordersPage = new PageDto<OrderDto>(foundOrdersDto, totalNumberPositions);
+		PageDto<OrderDto> ordersPage = new PageDto<>(foundOrdersDto, totalNumberPositions);
 		return ordersPage;
 	}
 

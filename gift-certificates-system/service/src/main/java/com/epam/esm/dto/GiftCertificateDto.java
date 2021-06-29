@@ -5,6 +5,8 @@ import java.time.LocalDateTime;
 import java.util.Collections;
 import java.util.List;
 
+import org.springframework.hateoas.RepresentationModel;
+
 import com.epam.esm.dto.deserializer.DurationDeserializer;
 import com.epam.esm.dto.deserializer.IdDeserializer;
 import com.epam.esm.dto.deserializer.PriceDeserializer;
@@ -18,7 +20,7 @@ import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
  * @author Aleksandra Podgayskaya
  * @version 1.0
  */
-public class GiftCertificateDto {
+public class GiftCertificateDto extends RepresentationModel<UserDto> {
 
 	@JsonDeserialize(using = IdDeserializer.class)
 	private Long id;

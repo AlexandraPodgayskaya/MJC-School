@@ -2,13 +2,20 @@ package com.epam.esm.entity;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
+import java.util.Collections;
+import java.util.List;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
 import javax.persistence.Table;
+
+import org.hibernate.annotations.Where;
 
 /**
  * Class represents gift_certificate entity
@@ -24,13 +31,25 @@ public class GiftCertificate {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name = "id")
 	private Long id;
+	@Column(name = "name")
 	private String name;
+	@Column(name = "description")
 	private String description;
+	@Column(name = "price")
 	private BigDecimal price;
+	@Column(name = "duration")
 	private int duration;
+	@Column(name = "create_date")
 	private LocalDateTime createDate;
+	@Column(name = "last_update_date")
 	private LocalDateTime lastUpdateDate;
+	@Column(name = "deleted")
 	private boolean deleted;
+
+	@ManyToMany
+	@JoinTable(name = "gift_certificate_tag_connection", joinColumns = @JoinColumn(name = "gift_certificate_id"), inverseJoinColumns = @JoinColumn(name = "tag_id"))
+	@Where(clause = "deleted = false")
+	private List<Tag> tags;
 
 	public GiftCertificate() {
 	}
@@ -111,6 +130,14 @@ public class GiftCertificate {
 		this.deleted = deleted;
 	}
 
+	public List<Tag> getTags() {
+		return tags == null ? null : Collections.unmodifiableList(tags);
+	}
+
+	public void setTags(List<Tag> tags) {
+		this.tags = tags;
+	}
+
 	@Override
 	public int hashCode() {
 		final int prime = 31;
@@ -123,6 +150,7 @@ public class GiftCertificate {
 		result = prime * result + ((lastUpdateDate == null) ? 0 : lastUpdateDate.hashCode());
 		result = prime * result + ((name == null) ? 0 : name.hashCode());
 		result = prime * result + ((price == null) ? 0 : price.hashCode());
+		result = prime * result + ((tags == null) ? 0 : tags.hashCode());
 		return result;
 	}
 
@@ -169,6 +197,11 @@ public class GiftCertificate {
 				return false;
 		} else if (!price.equals(other.price))
 			return false;
+		if (tags == null) {
+			if (other.tags != null)
+				return false;
+		} else if (!tags.equals(other.tags))
+			return false;
 		return true;
 	}
 
@@ -176,7 +209,7 @@ public class GiftCertificate {
 	public String toString() {
 		return "GiftCertificate [id=" + id + ", name=" + name + ", description=" + description + ", price=" + price
 				+ ", duration=" + duration + ", createDate=" + createDate + ", lastUpdateDate=" + lastUpdateDate
-				+ ", deleted=" + deleted + "]";
+				+ ", deleted=" + deleted + ", tags=" + tags + "]";
 	}
 
 }

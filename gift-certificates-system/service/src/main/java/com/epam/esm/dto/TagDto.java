@@ -1,5 +1,7 @@
 package com.epam.esm.dto;
 
+import org.springframework.hateoas.RepresentationModel;
+
 import com.epam.esm.dto.deserializer.IdDeserializer;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 
@@ -10,7 +12,7 @@ import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
  * @author Aleksandra Podgayskaya
  * @version 1.0
  */
-public class TagDto {
+public class TagDto extends RepresentationModel<UserDto> {
 
 	@JsonDeserialize(using = IdDeserializer.class)
 	private Long id;

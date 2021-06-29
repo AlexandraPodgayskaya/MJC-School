@@ -1,9 +1,9 @@
 package com.epam.esm.service;
 
-import java.util.List;
-
 import com.epam.esm.dto.GiftCertificateDto;
 import com.epam.esm.dto.GiftCertificateSearchParametersDto;
+import com.epam.esm.dto.PageDto;
+import com.epam.esm.dto.PaginationDto;
 
 /**
  * Interface for working with gift certificate
@@ -29,7 +29,7 @@ public interface GiftCertificateService {
 	 *                                           be found gift certificates
 	 * @return the list of found gift certificates
 	 */
-	List<GiftCertificateDto> findGiftCertificates(
+	PageDto<GiftCertificateDto> findGiftCertificates(PaginationDto pagination,
 			GiftCertificateSearchParametersDto giftCertificateSearchParametersDto);
 
 	/**

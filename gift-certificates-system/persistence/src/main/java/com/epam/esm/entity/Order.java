@@ -9,8 +9,6 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
@@ -24,9 +22,8 @@ public class Order {
 	private Long id;
 	@Column(name = "cost")
 	private BigDecimal cost;
-	@ManyToOne
-	@JoinColumn(name = "user_id")
-	private User user;
+	@Column(name = "user_id")
+	private Long userId;
 	@Column(name = "create_date")
 	private LocalDateTime createDate;
 	@Column(name = "deleted")
@@ -51,12 +48,12 @@ public class Order {
 		this.cost = cost;
 	}
 
-	public User getUser() {
-		return user;
+	public Long getUserId() {
+		return userId;
 	}
 
-	public void setUser(User user) {
-		this.user = user;
+	public void setUserId(Long userId) {
+		this.userId = userId;
 	}
 
 	public LocalDateTime getCreateDate() {
@@ -92,7 +89,7 @@ public class Order {
 		result = prime * result + (deleted ? 1231 : 1237);
 		result = prime * result + ((id == null) ? 0 : id.hashCode());
 		result = prime * result + ((orderedGiftCertificates == null) ? 0 : orderedGiftCertificates.hashCode());
-		result = prime * result + ((user == null) ? 0 : user.hashCode());
+		result = prime * result + ((userId == null) ? 0 : userId.hashCode());
 		return result;
 	}
 
@@ -127,17 +124,17 @@ public class Order {
 				return false;
 		} else if (!orderedGiftCertificates.equals(other.orderedGiftCertificates))
 			return false;
-		if (user == null) {
-			if (other.user != null)
+		if (userId == null) {
+			if (other.userId != null)
 				return false;
-		} else if (!user.equals(other.user))
+		} else if (!userId.equals(other.userId))
 			return false;
 		return true;
 	}
 
 	@Override
 	public String toString() {
-		return "Order [id=" + id + ", cost=" + cost + ", user=" + user + ", createDate=" + createDate + ", deleted="
+		return "Order [id=" + id + ", cost=" + cost + ", userId=" + userId + ", createDate=" + createDate + ", deleted="
 				+ deleted + ", orderedGiftCertificates=" + orderedGiftCertificates + "]";
 	}
 

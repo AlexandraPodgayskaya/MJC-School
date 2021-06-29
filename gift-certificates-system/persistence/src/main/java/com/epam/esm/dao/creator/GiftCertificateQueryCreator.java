@@ -1,10 +1,18 @@
 package com.epam.esm.dao.creator;
 
-import java.util.Arrays;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
-import org.apache.commons.lang3.StringUtils;
+import javax.persistence.criteria.CriteriaBuilder;
+import javax.persistence.criteria.CriteriaQuery;
+import javax.persistence.criteria.Predicate;
+import javax.persistence.criteria.Root;
+
 import org.springframework.stereotype.Component;
+
+import com.epam.esm.dao.creator.GiftCertificateSearchParameters.OrderType;
+import com.epam.esm.entity.GiftCertificate;
 
 /**
  * Class designed to create query
@@ -15,19 +23,11 @@ import org.springframework.stereotype.Component;
 @Component
 public class GiftCertificateQueryCreator {
 
-	private static final String SELECT_GIFT_CERTIFICATES = "SELECT ID, NAME, DESCRIPTION, PRICE, DURATION, "
-			+ "CREATE_DATE, LAST_UPDATE_DATE, DELETED FROM GIFT_CERTIFICATE WHERE DELETED = FALSE ";
-	private static final String TAG_NAME_CONDITION = " AND ID IN "
-			+ "(SELECT GIFT_CERTIFICATE_TAG_CONNECTION.GIFT_CERTIFICATE_ID FROM "
-			+ "GIFT_CERTIFICATE_TAG_CONNECTION JOIN TAG ON GIFT_CERTIFICATE_TAG_CONNECTION.TAG_ID "
-			+ "= TAG.ID WHERE TAG.DELETED = FALSE AND TAG.NAME IN (?  ";
-	private static final String PART_NAME_OR_DESCRIPTION_CONDITION = " AND (GIFT_CERTIFICATE.NAME LIKE ?  "
-			+ "OR GIFT_CERTIFICATE.DESCRIPTION LIKE ? ) ";
+	private static final String DELETED = "deleted";
+	private final String TAGS = "tags";
+	private final String NAME = "name";
+	private final String DESCRIPTION = "description";
 	private static final String ZERO_OR_MORE_CHARACTERS = "%";
-	private static final String SEPARATOR_TAGS = ",";
-	private static final String ADDITIONAL_REQUEST_PARAMETER = ", ?";
-	private static final String END_QUERY = ")) ";
-	private static final String ORDER_BY = " ORDER BY ";
 
 	/**
 	 * Create query
@@ -35,47 +35,60 @@ public class GiftCertificateQueryCreator {
 	 * @param searchParameters the gift certificate query parameters
 	 * @return the created query
 	 */
-	public GiftCertificateSearchQuery createQuery(GiftCertificateSearchParameters searchParameters) {
-		GiftCertificateSearchQuery giftCertificateSearchQuery = new GiftCertificateSearchQuery();
-		StringBuilder query = new StringBuilder();
-		query.append(SELECT_GIFT_CERTIFICATES);
-		if (StringUtils.isNotBlank(searchParameters.getTagName())) {
-			createTagNameCondition(searchParameters.getTagName(), query, giftCertificateSearchQuery);
+	public CriteriaQuery<GiftCertificate> createCriteriaQuery(GiftCertificateSearchParameters searchParameters,
+			CriteriaBuilder criteriaBuilder) {
+		CriteriaQuery<GiftCertificate> criteriaQuery = criteriaBuilder.createQuery(GiftCertificate.class);
+		Root<GiftCertificate> giftCertificateRoot = criteriaQuery.from(GiftCertificate.class);
+		List<Predicate> restrictions = new ArrayList<>();
+		restrictions.add(addDeletedFalse(searchParameters, criteriaBuilder, giftCertificateRoot));
+		restrictions.addAll(addTagNames(searchParameters, criteriaBuilder, giftCertificateRoot));
+		restrictions.addAll(addPartNameOrDescription(searchParameters, criteriaBuilder, giftCertificateRoot));
+		criteriaQuery.select(giftCertificateRoot).where(restrictions.toArray(new Predicate[] {}));
+		addSortType(searchParameters, criteriaBuilder, criteriaQuery, giftCertificateRoot);
+
+		return criteriaQuery;
+	}
+
+	private Predicate addDeletedFalse(GiftCertificateSearchParameters searchParameters, CriteriaBuilder criteriaBuilder,
+			Root<GiftCertificate> root) {
+		Predicate predicate = criteriaBuilder.equal(root.get(DELETED), Boolean.FALSE);
+		return predicate;
+	}
+
+	private List<Predicate> addTagNames(GiftCertificateSearchParameters searchParameters,
+			CriteriaBuilder criteriaBuilder, Root<GiftCertificate> root) {
+		List<Predicate> restrictions = new ArrayList<>();
+		if (searchParameters.getTagNames() != null) {
+			restrictions = searchParameters.getTagNames().stream()
+					.map(tagName -> criteriaBuilder.equal(root.join(TAGS).get(NAME), tagName))
+					.collect(Collectors.toList());
 		}
-		if (StringUtils.isNotBlank(searchParameters.getPartNameOrDescription())) {
-			createPartNameOrDescriptionCondition(searchParameters.getPartNameOrDescription(), query,
-					giftCertificateSearchQuery);
+		return restrictions;
+	}
+
+	private List<Predicate> addPartNameOrDescription(GiftCertificateSearchParameters searchParameters,
+			CriteriaBuilder criteriaBuilder, Root<GiftCertificate> root) {
+		List<Predicate> predicates = new ArrayList<>();
+		if (searchParameters.getPartNameOrDescription() != null) {
+			predicates.add(criteriaBuilder.or(
+					criteriaBuilder.like(root.get(DESCRIPTION),
+							ZERO_OR_MORE_CHARACTERS + searchParameters.getPartNameOrDescription()
+									+ ZERO_OR_MORE_CHARACTERS),
+					criteriaBuilder.like(root.get(NAME), ZERO_OR_MORE_CHARACTERS
+							+ searchParameters.getPartNameOrDescription() + ZERO_OR_MORE_CHARACTERS)));
 		}
+		return predicates;
+	}
+
+	private void addSortType(GiftCertificateSearchParameters searchParameters, CriteriaBuilder criteriaBuilder,
+			CriteriaQuery<GiftCertificate> criteriaQuery, Root<GiftCertificate> root) {
 		if (searchParameters.getSortType() != null) {
-			query.append(ORDER_BY + searchParameters.getSortType());
-			if (searchParameters.getOrderType() != null) {
-				query.append(StringUtils.SPACE + searchParameters.getOrderType());
+			String sortFieldName = searchParameters.getSortType().getSortFieldName();
+			if (searchParameters.getOrderType() != null && searchParameters.getOrderType().equals(OrderType.DESC)) {
+				criteriaQuery.orderBy(criteriaBuilder.desc(root.get(sortFieldName)));
+			} else {
+				criteriaQuery.orderBy(criteriaBuilder.asc(root.get(sortFieldName)));
 			}
 		}
-		giftCertificateSearchQuery.setQuery(query.toString());
-		return giftCertificateSearchQuery;
-	}
-
-	private void createTagNameCondition(String tagName, StringBuilder query,
-			GiftCertificateSearchQuery giftCertificateSearchQuery) {
-		query.append(TAG_NAME_CONDITION);
-		if (tagName.contains(SEPARATOR_TAGS)) {
-			List<String> tags = Arrays.asList(tagName.split(SEPARATOR_TAGS));
-			tags.forEach(tag -> giftCertificateSearchQuery.addParameter(tag.trim()));
-			final int numberAdditionalTagNames = tags.size() - 1;
-			query.append(StringUtils.repeat(ADDITIONAL_REQUEST_PARAMETER, numberAdditionalTagNames));
-		} else {
-			giftCertificateSearchQuery.addParameter(tagName);
-		}
-		query.append(END_QUERY);
-	}
-
-	private void createPartNameOrDescriptionCondition(String partNameOrDescription, StringBuilder query,
-			GiftCertificateSearchQuery giftCertificateSearchQuery) {
-		query.append(PART_NAME_OR_DESCRIPTION_CONDITION);
-		giftCertificateSearchQuery
-				.addParameter(ZERO_OR_MORE_CHARACTERS + partNameOrDescription + ZERO_OR_MORE_CHARACTERS);
-		giftCertificateSearchQuery
-				.addParameter(ZERO_OR_MORE_CHARACTERS + partNameOrDescription + ZERO_OR_MORE_CHARACTERS);
 	}
 }

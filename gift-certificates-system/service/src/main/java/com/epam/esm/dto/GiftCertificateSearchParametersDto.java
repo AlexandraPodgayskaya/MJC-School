@@ -1,5 +1,8 @@
 package com.epam.esm.dto;
 
+import java.util.Collections;
+import java.util.List;
+
 /**
  * Class is implementation of pattern DTO for transmission gift certificate
  * search parameters between controller and service
@@ -9,7 +12,7 @@ package com.epam.esm.dto;
  */
 public class GiftCertificateSearchParametersDto {
 
-	private String tagName;
+	private List<String> tagNames;
 	private String partNameOrDescription;
 	private SortType sortType;
 	private OrderType orderType;
@@ -17,12 +20,12 @@ public class GiftCertificateSearchParametersDto {
 	public GiftCertificateSearchParametersDto() {
 	}
 
-	public String getTagName() {
-		return tagName;
+	public List<String> getTagNames() {
+		return tagNames == null ? null : Collections.unmodifiableList(tagNames);
 	}
 
-	public void setTagName(String tagName) {
-		this.tagName = tagName;
+	public void setTagNames(List<String> tagNames) {
+		this.tagNames = tagNames;
 	}
 
 	public String getPartNameOrDescription() {
@@ -50,13 +53,19 @@ public class GiftCertificateSearchParametersDto {
 	}
 
 	@Override
+	public String toString() {
+		return "GiftCertificateSearchParametersDto [tagNames=" + tagNames + ", partNameOrDescription="
+				+ partNameOrDescription + ", sortType=" + sortType + ", orderType=" + orderType + "]";
+	}
+
+	@Override
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
 		result = prime * result + ((orderType == null) ? 0 : orderType.hashCode());
 		result = prime * result + ((partNameOrDescription == null) ? 0 : partNameOrDescription.hashCode());
 		result = prime * result + ((sortType == null) ? 0 : sortType.hashCode());
-		result = prime * result + ((tagName == null) ? 0 : tagName.hashCode());
+		result = prime * result + ((tagNames == null) ? 0 : tagNames.hashCode());
 		return result;
 	}
 
@@ -78,18 +87,12 @@ public class GiftCertificateSearchParametersDto {
 			return false;
 		if (sortType != other.sortType)
 			return false;
-		if (tagName == null) {
-			if (other.tagName != null)
+		if (tagNames == null) {
+			if (other.tagNames != null)
 				return false;
-		} else if (!tagName.equals(other.tagName))
+		} else if (!tagNames.equals(other.tagNames))
 			return false;
 		return true;
-	}
-
-	@Override
-	public String toString() {
-		return "GiftCertificateSearchParametersDto [tagName=" + tagName + ", partNameOrDescription="
-				+ partNameOrDescription + ", sortType=" + sortType + ", orderType=" + orderType + "]";
 	}
 
 	public enum SortType {

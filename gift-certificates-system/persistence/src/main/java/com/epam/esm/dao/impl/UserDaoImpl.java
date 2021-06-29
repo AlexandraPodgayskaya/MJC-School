@@ -18,8 +18,7 @@ public class UserDaoImpl implements UserDao {
 
 	private static final String SELECT_ALL_USERS_SQL = "FROM User WHERE deleted = false";
 	private static final String SELECT_USER_BY_ID_SQL = "FROM User WHERE deleted = false AND id = :id";
-	private static final String SELECT_TOTAL_NUMBER_USERS_SQL = "SELECT COUNT(*) FROM User u "
-			+ "WHERE u.deleted = false";
+	private static final String SELECT_TOTAL_NUMBER_USERS_SQL = "SELECT COUNT(*) FROM User WHERE deleted = false";
 
 	@PersistenceContext
 	private EntityManager entityManager;
