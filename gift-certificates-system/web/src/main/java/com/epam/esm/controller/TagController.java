@@ -70,6 +70,13 @@ public class TagController {
 		return foundTagDto;
 	}
 
+	@GetMapping("/popular")
+	public TagDto getMostPopularTagOfUserWithHighestCostOfAllOrders() {
+		TagDto foundTagDto = tagService.findMostPopularTagOfUserWithHighestCostOfAllOrders();
+		addLinks(foundTagDto);
+		return foundTagDto;
+	}
+
 	/**
 	 * Add new tag, processes POST requests at /tags
 	 * 

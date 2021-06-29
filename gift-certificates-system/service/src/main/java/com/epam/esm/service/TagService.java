@@ -35,6 +35,8 @@ public interface TagService {
 	 */
 	TagDto findTagById(long id);
 
+	TagDto findMostPopularTagOfUserWithHighestCostOfAllOrders();
+
 	/**
 	 * Remove tag with all records in connection table
 	 * 

@@ -26,6 +26,14 @@ public class TagDaoImpl implements TagDao {
 	private static final String SELECT_ALL_TAGS_SQL = "FROM Tag WHERE deleted = false";
 	private static final String SELECT_TAG_BY_ID_SQL = "FROM Tag WHERE deleted = false AND id = :id";
 	private static final String SELECT_TAG_BY_NAME_SQL = "FROM Tag WHERE deleted = false AND name = :name";
+	private static final String SELECT_MOST_POPULAR_TAG_SQL = "SELECT tag.id, tag.name, tag.deleted "
+			+ "FROM item_order JOIN ordered_gift_certificate ON item_order.id = ordered_gift_certificate.order_id "
+			+ "JOIN gift_certificate ON ordered_gift_certificate.gift_certificate_id = gift_certificate.id "
+			+ "JOIN gift_certificate_tag_connection ON gift_certificate.id = gift_certificate_tag_connection.gift_certificate_id "
+			+ "JOIN tag ON gift_certificate_tag_connection.tag_id = tag.id WHERE item_order.deleted = false "
+			+ "AND tag.deleted = false AND item_order.user_id = (SELECT item_order.user_id from item_order "
+			+ "JOIN user ON item_order.user_id = user.id WHERE item_order.deleted = false and user.deleted = false "
+			+ "GROUP BY user_id ORDER BY sum(item_order.cost) DESC LIMIT 1) GROUP BY tag.id ORDER BY count(*) DESC LIMIT 1 ";
 	private static final String DELETE_TAG_SQL = "UPDATE Tag SET deleted = true WHERE id = :id AND deleted = false";
 	private static final String DELETE_CONNECTION_BY_TAG_ID_SQL = "DELETE FROM "
 			+ "gift_certificate_tag_connection WHERE tag_id = :tagId";
@@ -56,6 +64,12 @@ public class TagDaoImpl implements TagDao {
 	public Optional<Tag> findByName(String tagName) {
 		return entityManager.createQuery(SELECT_TAG_BY_NAME_SQL, Tag.class).setParameter(QueryParameter.NAME, tagName)
 				.getResultStream().findFirst();
+	}
+
+	@SuppressWarnings("unchecked")
+	@Override
+	public Optional<Tag> findMostPopularTagOfUserWithHighestCostOfAllOrders() {
+		return entityManager.createNativeQuery(SELECT_MOST_POPULAR_TAG_SQL, Tag.class).getResultStream().findFirst();
 	}
 
 	@Override

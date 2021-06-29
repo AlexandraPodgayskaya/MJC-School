@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
+import org.apache.commons.lang3.StringUtils;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -70,6 +71,15 @@ public class TagServiceImpl implements TagService {
 		return foundTag.map(tag -> modelMapper.map(tag, TagDto.class))
 				.orElseThrow(() -> new ResourceNotFoundException("no tag by id", MessageKey.TAG_NOT_FOUND_BY_ID,
 						String.valueOf(id), ErrorCode.TAG.getCode()));
+	}
+
+	@Override
+	public TagDto findMostPopularTagOfUserWithHighestCostOfAllOrders() {
+		Optional<Tag> foundTagOptional = tagDao.findMostPopularTagOfUserWithHighestCostOfAllOrders();
+		return foundTagOptional.map(foundTag -> modelMapper.map(foundTag, TagDto.class))
+				.orElseThrow(() -> new ResourceNotFoundException(
+						"most popular tag of user with highest cost of all orders not found", MessageKey.TAG_NOT_FOUND,
+						StringUtils.EMPTY, ErrorCode.TAG.getCode()));
 	}
 
 	@Transactional

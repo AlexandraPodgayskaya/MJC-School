@@ -51,6 +51,9 @@ public interface TagDao {
 	 * @param id - the id of tag to remove
 	 * @return boolean true if everything go correct, else false
 	 */
+
+	Optional<Tag> findMostPopularTagOfUserWithHighestCostOfAllOrders();
+
 	boolean delete(long id);
 
 	boolean deleteConnectionByTagId(long id);
