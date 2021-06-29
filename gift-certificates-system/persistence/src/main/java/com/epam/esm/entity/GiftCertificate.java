@@ -13,6 +13,8 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
+import javax.persistence.PrePersist;
+import javax.persistence.PreUpdate;
 import javax.persistence.Table;
 
 import org.hibernate.annotations.Where;
@@ -64,6 +66,18 @@ public class GiftCertificate {
 		this.createDate = createDate;
 		this.lastUpdateDate = lastUpdateDate;
 		this.deleted = deleted;
+	}
+
+	@PrePersist
+	public void beforeCreateGiftCertificate() {
+		LocalDateTime currentTime = LocalDateTime.now();
+		setCreateDate(currentTime);
+		setLastUpdateDate(currentTime);
+	}
+
+	@PreUpdate
+	public void beforeUpdateGiftCertificate() {
+		setLastUpdateDate(LocalDateTime.now());
 	}
 
 	public Long getId() {

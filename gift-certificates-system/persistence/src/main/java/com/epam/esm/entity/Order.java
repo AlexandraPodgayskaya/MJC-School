@@ -10,6 +10,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
+import javax.persistence.PrePersist;
 import javax.persistence.Table;
 
 @Entity
@@ -31,6 +32,11 @@ public class Order {
 
 	@OneToMany(mappedBy = "order")
 	private List<OrderedGiftCertificate> orderedGiftCertificates;
+
+	@PrePersist
+	public void beforeCreateOrder() {
+		setCreateDate(LocalDateTime.now());
+	}
 
 	public Long getId() {
 		return id;

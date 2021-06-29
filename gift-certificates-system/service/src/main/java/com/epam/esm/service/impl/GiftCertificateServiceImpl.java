@@ -1,6 +1,5 @@
 package com.epam.esm.service.impl;
 
-import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -61,9 +60,6 @@ public class GiftCertificateServiceImpl implements GiftCertificateService {
 		checkUniquenessName(giftCertificateDto.getName());
 		giftCertificateDto.setTags(createTags(giftCertificateDto.getTags()));
 		GiftCertificate giftCertificate = modelMapper.map(giftCertificateDto, GiftCertificate.class);
-		LocalDateTime currentTime = LocalDateTime.now();
-		giftCertificate.setCreateDate(currentTime);
-		giftCertificate.setLastUpdateDate(currentTime);
 		GiftCertificate createdGiftCertificate = giftCertificateDao.create(giftCertificate);
 		return modelMapper.map(createdGiftCertificate, GiftCertificateDto.class);
 	}
@@ -157,6 +153,5 @@ public class GiftCertificateServiceImpl implements GiftCertificateService {
 		if (receivedGiftCertificate.getTags() != null) {
 			foundGiftCertificate.setTags(receivedGiftCertificate.getTags());
 		}
-		foundGiftCertificate.setLastUpdateDate(LocalDateTime.now());
 	}
 }

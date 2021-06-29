@@ -2,7 +2,6 @@ package com.epam.esm.service.impl;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
-import java.time.LocalDateTime;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -54,7 +53,6 @@ public class OrderServiceImpl implements OrderService {
 		orderDto.getOrderedGiftCertificates().forEach(this::setOrderedGiftCertificateDetails);
 		Order order = modelMapper.map(orderDto, Order.class);
 		setTotalCostOrder(order);
-		order.setCreateDate(LocalDateTime.now());
 		Order addedOrder = orderDao.create(order);
 		order.getOrderedGiftCertificates().forEach(giftCertificate -> giftCertificate.setOrder(addedOrder));
 		orderDao.createOrderDetails(order.getOrderedGiftCertificates());
