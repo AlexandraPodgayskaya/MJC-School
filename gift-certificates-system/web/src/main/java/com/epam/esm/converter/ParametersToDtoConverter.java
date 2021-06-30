@@ -69,20 +69,26 @@ public class ParametersToDtoConverter {
 	private void setSortingParameters(Map<String, String> parameters,
 			GiftCertificateSearchParametersDto searchParametersDto) {
 		String sortType = parameters.get(SORT_TYPE);
-		if (StringUtils.isNotBlank(sortType)) {
-			if (!EnumUtils.isValidEnum(SortType.class, sortType.toUpperCase())) {
-				// TODO exception
-			}
+		String orderType = parameters.get(ORDER_TYPE);
+		if (StringUtils.isNotBlank(sortType) && StringUtils.isNotBlank(sortType)) {
+			checkSortingParameters(sortType, orderType);
 			searchParametersDto.setSortType(SortType.valueOf(sortType.toUpperCase()));
-
-			String orderType = parameters.get(ORDER_TYPE);
-			if (StringUtils.isNotBlank(orderType)) {
-				if (!EnumUtils.isValidEnum(OrderType.class, orderType.toUpperCase())) {
-					// TODO exception
-				}
-				searchParametersDto.setOrderType(OrderType.valueOf(orderType.toUpperCase()));
-			}
+			searchParametersDto.setOrderType(OrderType.valueOf(orderType.toUpperCase()));
 		}
+
 	}
 
+	private void checkSortingParameters(String sortType, String orderType) {
+		Map<String, String> incorrectParameters = new HashMap<>();
+		if (!EnumUtils.isValidEnum(SortType.class, sortType.toUpperCase())) {
+			incorrectParameters.put(MessageKey.PARAMETER_SORT_TYPE, sortType);
+		}
+		if (!EnumUtils.isValidEnum(OrderType.class, orderType.toUpperCase())) {
+			incorrectParameters.put(MessageKey.PARAMETER_ORDER_TYPE, sortType);
+		}
+		if (!incorrectParameters.isEmpty()) {
+			throw new IncorrectParameterValueException("error sorting parameters", incorrectParameters,
+					ErrorCode.GIFT_CERTIFICATE.getCode());
+		}
+	}
 }

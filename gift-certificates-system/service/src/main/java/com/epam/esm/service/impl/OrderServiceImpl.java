@@ -27,21 +27,24 @@ import com.epam.esm.service.OrderService;
 import com.epam.esm.service.UserService;
 import com.epam.esm.util.MessageKey;
 import com.epam.esm.validator.OrderValidator;
+import com.epam.esm.validator.UserValidator;
 
 @Service
 public class OrderServiceImpl implements OrderService {
 
 	private final OrderDao orderDao;
 	private final OrderValidator orderValidator;
+	private final UserValidator userValidator;
 	private final ModelMapper modelMapper;
 	private final UserService userService;
 	private final GiftCertificateService giftCertificateService;
 
 	@Autowired
-	public OrderServiceImpl(OrderDao orderDao, OrderValidator orderValidator, ModelMapper modelMapper,
-			UserService userService, GiftCertificateService giftCertificateService) {
+	public OrderServiceImpl(OrderDao orderDao, OrderValidator orderValidator, UserValidator userValidator,
+			ModelMapper modelMapper, UserService userService, GiftCertificateService giftCertificateService) {
 		this.orderDao = orderDao;
 		this.orderValidator = orderValidator;
+		this.userValidator = userValidator;
 		this.modelMapper = modelMapper;
 		this.userService = userService;
 		this.giftCertificateService = giftCertificateService;
@@ -71,7 +74,9 @@ public class OrderServiceImpl implements OrderService {
 	}
 
 	@Override
-	public PageDto<OrderDto> findOrdersByUserId(long userId, PaginationDto paginationDto) {
+	public PageDto<OrderDto> findOrdersByUserId(long userId, PaginationDto paginationDto)
+			throws IncorrectParameterValueException {
+		userValidator.validateId(userId);
 		Pagination pagination = modelMapper.map(paginationDto, Pagination.class);
 		List<Order> foundOrders = orderDao.findByUserId(userId, pagination);
 		List<OrderDto> foundOrdersDto = foundOrders.stream()
@@ -90,7 +95,6 @@ public class OrderServiceImpl implements OrderService {
 		orderedGiftCertificate.setDuration(giftCertificate.getDuration());
 		orderedGiftCertificate.setCreateDate(giftCertificate.getCreateDate());
 		orderedGiftCertificate.setLastUpdateDate(giftCertificate.getLastUpdateDate());
-
 	}
 
 	private void setTotalCostOrder(Order order) {
@@ -102,5 +106,4 @@ public class OrderServiceImpl implements OrderService {
 		}
 		order.setCost(orderCost);
 	}
-
 }

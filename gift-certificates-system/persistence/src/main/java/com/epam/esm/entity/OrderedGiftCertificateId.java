@@ -2,7 +2,7 @@ package com.epam.esm.entity;
 
 import java.io.Serializable;
 
-public class OrderDetailsId implements Serializable {
+public class OrderedGiftCertificateId implements Serializable {
 
 	private static final long serialVersionUID = 1L;
 
@@ -46,7 +46,7 @@ public class OrderDetailsId implements Serializable {
 			return false;
 		if (getClass() != obj.getClass())
 			return false;
-		OrderDetailsId other = (OrderDetailsId) obj;
+		OrderedGiftCertificateId other = (OrderedGiftCertificateId) obj;
 		if (giftCertificate == null) {
 			if (other.giftCertificate != null)
 				return false;
@@ -62,7 +62,7 @@ public class OrderDetailsId implements Serializable {
 
 	@Override
 	public String toString() {
-		return "OrderDetailsId [order=" + order + ", giftCertificate=" + giftCertificate + "]";
+		return "OrderedGiftCertificateId [order=" + order + ", giftCertificate=" + giftCertificate + "]";
 	}
 
 }

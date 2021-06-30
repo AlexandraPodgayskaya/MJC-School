@@ -14,7 +14,6 @@ public final class MessageKey {
 	public static final String ORDER_NOT_FOUND_BY_ID = "order.notFoundById";
 	public static final String USER_NOT_FOUND_BY_ID = "user.notFoundById";
 	public static final String INCORRECT_PARAMETER_VALUE = "incorrectParameterValue";
-	public static final String INCORRECT_SORTING_PARAMETERS = "incorrectSortingParameters";
 	public static final String INCORRECT_PARAMETER_TYPE = "incorrectParameterType";
 	public static final String INTERNAL_ERROR = "internalError";
 	public static final String PARAMETER_NAME = "parameter.name";
@@ -29,6 +28,8 @@ public final class MessageKey {
 	public static final String PARAMETER_GIFT_CERTIFICATE = "parameter.giftCertificate";
 	public static final String PARAMETER_NUMBER = "parameter.number";
 	public static final String PARAMETER_DUPLICATE_GIFT_CERTIFICATES = "parameter.duplicateGiftCertificates";
+	public static final String PARAMETER_SORT_TYPE = "parameter.sortType";
+	public static final String PARAMETER_ORDER_TYPE = "parameter.orderType";
 	public static final String TYPE_ID = "type.id";
 	public static final String TYPE_PRICE = "type.price";
 	public static final String TYPE_DURATION = "type.duration";

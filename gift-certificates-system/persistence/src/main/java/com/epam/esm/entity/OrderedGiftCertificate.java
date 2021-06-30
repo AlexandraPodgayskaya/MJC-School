@@ -13,7 +13,7 @@ import javax.persistence.Table;
 
 @Entity
 @Table(name = "ordered_gift_certificate")
-@IdClass(OrderDetailsId.class)
+@IdClass(OrderedGiftCertificateId.class)
 public class OrderedGiftCertificate {
 
 	@Id
