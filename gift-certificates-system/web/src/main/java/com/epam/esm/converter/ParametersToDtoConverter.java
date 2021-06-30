@@ -84,7 +84,7 @@ public class ParametersToDtoConverter {
 			incorrectParameters.put(MessageKey.PARAMETER_SORT_TYPE, sortType);
 		}
 		if (!EnumUtils.isValidEnum(OrderType.class, orderType.toUpperCase())) {
-			incorrectParameters.put(MessageKey.PARAMETER_ORDER_TYPE, sortType);
+			incorrectParameters.put(MessageKey.PARAMETER_ORDER_TYPE, orderType);
 		}
 		if (!incorrectParameters.isEmpty()) {
 			throw new IncorrectParameterValueException("error sorting parameters", incorrectParameters,

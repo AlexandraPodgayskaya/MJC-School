@@ -5,8 +5,10 @@ import java.time.LocalDateTime;
 
 import org.springframework.hateoas.RepresentationModel;
 
+import com.epam.esm.dto.deserializer.NumberDeserializer;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonProperty.Access;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 
 public class OrderedGiftCertificateDto extends RepresentationModel<OrderDto> {
 
@@ -14,10 +16,15 @@ public class OrderedGiftCertificateDto extends RepresentationModel<OrderDto> {
 	private GiftCertificateDto giftCertificate;
 	private String name;
 	private String description;
+	@JsonProperty(access = Access.READ_ONLY)
 	private BigDecimal price;
+	@JsonProperty(access = Access.READ_ONLY)
 	private Integer duration;
+	@JsonProperty(access = Access.READ_ONLY)
 	private LocalDateTime createDate;
+	@JsonProperty(access = Access.READ_ONLY)
 	private LocalDateTime lastUpdateDate;
+	@JsonDeserialize(using = NumberDeserializer.class)
 	private Integer number;
 
 	public GiftCertificateDto getGiftCertificate() {

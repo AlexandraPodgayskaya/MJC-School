@@ -2,8 +2,8 @@ package com.epam.esm.dto;
 
 import org.springframework.hateoas.RepresentationModel;
 
-import com.epam.esm.dto.deserializer.IdDeserializer;
-import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonProperty.Access;
 
 /**
  * Class is implementation of pattern DTO for transmission tag entity between
@@ -14,7 +14,7 @@ import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
  */
 public class TagDto extends RepresentationModel<UserDto> {
 
-	@JsonDeserialize(using = IdDeserializer.class)
+	@JsonProperty(access = Access.READ_ONLY)
 	private Long id;
 	private String name;
 

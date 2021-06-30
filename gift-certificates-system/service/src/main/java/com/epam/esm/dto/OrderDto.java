@@ -7,17 +7,22 @@ import java.util.List;
 
 import org.springframework.hateoas.RepresentationModel;
 
+import com.epam.esm.dto.deserializer.UserIdDeserializer;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonProperty.Access;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 
 public class OrderDto extends RepresentationModel<OrderDto> {
 
 	@JsonProperty(access = Access.READ_ONLY)
 	private Long id;
+	@JsonProperty(access = Access.READ_ONLY)
 	private BigDecimal cost;
+	@JsonDeserialize(using = UserIdDeserializer.class)
 	private Long userId;
 	@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd'T'HH:mm:ss")
+	@JsonProperty(access = Access.READ_ONLY)
 	private LocalDateTime createDate;
 	List<OrderedGiftCertificateDto> orderedGiftCertificates;
 

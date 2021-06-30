@@ -11,6 +11,8 @@ import com.epam.esm.dto.deserializer.DurationDeserializer;
 import com.epam.esm.dto.deserializer.IdDeserializer;
 import com.epam.esm.dto.deserializer.PriceDeserializer;
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonProperty.Access;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 
 /**
@@ -31,7 +33,9 @@ public class GiftCertificateDto extends RepresentationModel<UserDto> {
 	@JsonDeserialize(using = DurationDeserializer.class)
 	private Integer duration;
 	@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd'T'HH:mm:ss")
+	@JsonProperty(access = Access.READ_ONLY)
 	private LocalDateTime createDate;
+	@JsonProperty(access = Access.READ_ONLY)
 	@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd'T'HH:mm:ss")
 	private LocalDateTime lastUpdateDate;
 	private List<TagDto> tags;

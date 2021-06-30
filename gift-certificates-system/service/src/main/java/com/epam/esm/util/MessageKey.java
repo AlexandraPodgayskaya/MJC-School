@@ -30,10 +30,12 @@ public final class MessageKey {
 	public static final String PARAMETER_DUPLICATE_GIFT_CERTIFICATES = "parameter.duplicateGiftCertificates";
 	public static final String PARAMETER_SORT_TYPE = "parameter.sortType";
 	public static final String PARAMETER_ORDER_TYPE = "parameter.orderType";
-	public static final String TYPE_ID = "type.id";
-	public static final String TYPE_PRICE = "type.price";
-	public static final String TYPE_DURATION = "type.duration";
-	public static final String TYPE_DATA = "type.data";
+	public static final String TYPE_ID = "parameterType.id";
+	public static final String TYPE_USER_ID = "parameterType.userId";
+	public static final String TYPE_PRICE = "parameterType.price";
+	public static final String TYPE_DURATION = "parameterType.duration";
+	public static final String TYPE_NUMBER = "parameterType.number";
+	public static final String BE_CAREFUL = "beCareful";
 
 	private MessageKey() {
 	}

@@ -27,6 +27,7 @@ public class ExceptionController {
 
 	private static final Logger logger = LogManager.getLogger();
 	private static final String MESSAGE_KEY_SEPARATOR = "(";
+	private static final String PART_MESSAGE_KEY = "parameterType.";
 
 	private final MessageSource messageSource;
 
@@ -94,9 +95,9 @@ public class ExceptionController {
 	@ResponseStatus(HttpStatus.BAD_REQUEST)
 	public ExceptionDetails handleHttpMessageNotReadableException(HttpMessageNotReadableException exception,
 			Locale locale) {
-		String parameterKey = exception.getCause() != null
+		String parameterKey = exception.getCause() != null && exception.getMessage().contains(PART_MESSAGE_KEY)
 				? StringUtils.substringBefore(exception.getCause().getMessage(), MESSAGE_KEY_SEPARATOR)
-				: MessageKey.TYPE_DATA;
+				: MessageKey.BE_CAREFUL;
 		String parameter = messageSource.getMessage(parameterKey.strip(), new String[] {}, locale);
 		String errorMessage = messageSource.getMessage(MessageKey.INCORRECT_PARAMETER_TYPE, new String[] { parameter },
 				locale);
