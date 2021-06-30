@@ -20,6 +20,15 @@ public class User {
 	@Column(name = "deleted")
 	private boolean deleted;
 
+	public User() {
+	}
+
+	public User(Long id, String name, boolean deleted) {
+		this.id = id;
+		this.name = name;
+		this.deleted = deleted;
+	}
+
 	public Long getId() {
 		return id;
 	}

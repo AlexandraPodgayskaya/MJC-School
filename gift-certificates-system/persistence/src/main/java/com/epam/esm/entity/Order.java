@@ -33,6 +33,19 @@ public class Order {
 	@OneToMany(mappedBy = "order")
 	private List<OrderedGiftCertificate> orderedGiftCertificates;
 
+	public Order() {
+	}
+
+	public Order(Long id, BigDecimal cost, Long userId, LocalDateTime createDate, boolean deleted,
+			List<OrderedGiftCertificate> orderedGiftCertificates) {
+		this.id = id;
+		this.cost = cost;
+		this.userId = userId;
+		this.createDate = createDate;
+		this.deleted = deleted;
+		this.orderedGiftCertificates = orderedGiftCertificates;
+	}
+
 	@PrePersist
 	public void beforeCreateOrder() {
 		setCreateDate(LocalDateTime.now());

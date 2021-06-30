@@ -40,7 +40,7 @@ public class GiftCertificate {
 	@Column(name = "price")
 	private BigDecimal price;
 	@Column(name = "duration")
-	private int duration;
+	private Integer duration;
 	@Column(name = "create_date")
 	private LocalDateTime createDate;
 	@Column(name = "last_update_date")
@@ -56,7 +56,11 @@ public class GiftCertificate {
 	public GiftCertificate() {
 	}
 
-	public GiftCertificate(Long id, String name, String description, BigDecimal price, int duration,
+	public GiftCertificate(Long id) {
+		this.id = id;
+	}
+
+	public GiftCertificate(Long id, String name, String description, BigDecimal price, Integer duration,
 			LocalDateTime createDate, LocalDateTime lastUpdateDate, boolean deleted) {
 		this.id = id;
 		this.name = name;
@@ -112,11 +116,11 @@ public class GiftCertificate {
 		this.price = price;
 	}
 
-	public int getDuration() {
+	public Integer getDuration() {
 		return duration;
 	}
 
-	public void setDuration(int duration) {
+	public void setDuration(Integer duration) {
 		this.duration = duration;
 	}
 
@@ -159,7 +163,7 @@ public class GiftCertificate {
 		result = prime * result + ((createDate == null) ? 0 : createDate.hashCode());
 		result = prime * result + (deleted ? 1231 : 1237);
 		result = prime * result + ((description == null) ? 0 : description.hashCode());
-		result = prime * result + duration;
+		result = prime * result + ((duration == null) ? 0 : duration.hashCode());
 		result = prime * result + ((id == null) ? 0 : id.hashCode());
 		result = prime * result + ((lastUpdateDate == null) ? 0 : lastUpdateDate.hashCode());
 		result = prime * result + ((name == null) ? 0 : name.hashCode());
@@ -189,7 +193,10 @@ public class GiftCertificate {
 				return false;
 		} else if (!description.equals(other.description))
 			return false;
-		if (duration != other.duration)
+		if (duration == null) {
+			if (other.duration != null)
+				return false;
+		} else if (!duration.equals(other.duration))
 			return false;
 		if (id == null) {
 			if (other.id != null)

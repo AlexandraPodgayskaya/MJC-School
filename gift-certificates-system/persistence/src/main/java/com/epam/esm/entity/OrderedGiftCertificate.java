@@ -39,6 +39,23 @@ public class OrderedGiftCertificate {
 	@Column(name = "number")
 	private Integer number;
 
+	public OrderedGiftCertificate() {
+	}
+
+	public OrderedGiftCertificate(Order order, GiftCertificate giftCertificate, String name, String description,
+			BigDecimal price, Integer duration, LocalDateTime createDate, LocalDateTime lastUpdateDate,
+			Integer number) {
+		this.order = order;
+		this.giftCertificate = giftCertificate;
+		this.name = name;
+		this.description = description;
+		this.price = price;
+		this.duration = duration;
+		this.createDate = createDate;
+		this.lastUpdateDate = lastUpdateDate;
+		this.number = number;
+	}
+
 	public Order getOrder() {
 		return order;
 	}

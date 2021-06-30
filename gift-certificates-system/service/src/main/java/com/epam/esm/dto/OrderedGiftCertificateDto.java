@@ -27,6 +27,27 @@ public class OrderedGiftCertificateDto extends RepresentationModel<OrderDto> {
 	@JsonDeserialize(using = NumberDeserializer.class)
 	private Integer number;
 
+	public OrderedGiftCertificateDto() {
+	}
+
+	public OrderedGiftCertificateDto(GiftCertificateDto giftCertificate, Integer number) {
+		this.giftCertificate = giftCertificate;
+		this.number = number;
+	}
+
+	public OrderedGiftCertificateDto(GiftCertificateDto giftCertificate, String name, String description,
+			BigDecimal price, Integer duration, LocalDateTime createDate, LocalDateTime lastUpdateDate,
+			Integer number) {
+		this.giftCertificate = giftCertificate;
+		this.name = name;
+		this.description = description;
+		this.price = price;
+		this.duration = duration;
+		this.createDate = createDate;
+		this.lastUpdateDate = lastUpdateDate;
+		this.number = number;
+	}
+
 	public GiftCertificateDto getGiftCertificate() {
 		return giftCertificate;
 	}

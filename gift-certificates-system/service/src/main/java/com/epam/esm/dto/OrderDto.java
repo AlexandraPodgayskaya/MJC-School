@@ -26,6 +26,23 @@ public class OrderDto extends RepresentationModel<OrderDto> {
 	private LocalDateTime createDate;
 	List<OrderedGiftCertificateDto> orderedGiftCertificates;
 
+	public OrderDto() {
+	}
+
+	public OrderDto(Long userId, List<OrderedGiftCertificateDto> orderedGiftCertificates) {
+		this.userId = userId;
+		this.orderedGiftCertificates = orderedGiftCertificates;
+	}
+
+	public OrderDto(Long id, BigDecimal cost, Long userId, LocalDateTime createDate,
+			List<OrderedGiftCertificateDto> orderedGiftCertificates) {
+		this.id = id;
+		this.cost = cost;
+		this.userId = userId;
+		this.createDate = createDate;
+		this.orderedGiftCertificates = orderedGiftCertificates;
+	}
+
 	public Long getId() {
 		return id;
 	}

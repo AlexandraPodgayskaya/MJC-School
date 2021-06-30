@@ -43,6 +43,10 @@ public class GiftCertificateDto extends RepresentationModel<UserDto> {
 	public GiftCertificateDto() {
 	}
 
+	public GiftCertificateDto(Long id) {
+		this.id = id;
+	}
+
 	public GiftCertificateDto(Long id, String name, String description, BigDecimal price, int duration,
 			LocalDateTime createDate, LocalDateTime lastUpdateDate, List<TagDto> tags) {
 		super();
