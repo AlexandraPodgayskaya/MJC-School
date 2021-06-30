@@ -11,6 +11,12 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
+/**
+ * Class represents ordered_gift_certificate entity
+ *
+ * @author Aleksandra Podgayskaya
+ * @version 1.0
+ */
 @Entity
 @Table(name = "ordered_gift_certificate")
 @IdClass(OrderedGiftCertificateId.class)

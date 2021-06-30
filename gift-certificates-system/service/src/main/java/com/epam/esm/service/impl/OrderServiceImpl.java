@@ -29,6 +29,13 @@ import com.epam.esm.util.MessageKey;
 import com.epam.esm.validator.OrderValidator;
 import com.epam.esm.validator.UserValidator;
 
+/**
+ * Class is implementation of interface {@link OrderService} and intended to
+ * work with order
+ *
+ * @author Aleksandra Podgayskaya
+ * @version 1.0
+ */
 @Service
 public class OrderServiceImpl implements OrderService {
 

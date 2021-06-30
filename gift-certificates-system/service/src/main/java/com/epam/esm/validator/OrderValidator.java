@@ -20,11 +20,23 @@ import com.epam.esm.exception.IncorrectParameterValueException;
 import com.epam.esm.util.MessageKey;
 import com.epam.esm.util.ValidValue;
 
+/**
+ * Class provides methods to validate fields of {@link OrderDto}.
+ *
+ * @author Aleksandra Podgayskaya
+ * @version 1.0
+ */
 @Component
 public class OrderValidator {
 
 	private static final Logger logger = LogManager.getLogger();
 
+	/**
+	 * Validate order id
+	 * 
+	 * @param id the order id for validation
+	 * @throws IncorrectParameterValueException in case incorrect id
+	 */
 	public void validateId(long id) throws IncorrectParameterValueException {
 		if (id < ValidValue.MIN_ID) {
 			Map<String, String> incorrectParameter = new HashMap<>();
@@ -35,6 +47,12 @@ public class OrderValidator {
 		}
 	}
 
+	/**
+	 * Validate all fields of order
+	 * 
+	 * @param orderDto the order for validation
+	 * @throws IncorrectParameterValueException in case incorrect parameters
+	 */
 	public void validate(OrderDto orderDto) {
 		Map<String, String> incorrectParameters = new LinkedHashMap<>();
 		Long userId = orderDto.getUserId();

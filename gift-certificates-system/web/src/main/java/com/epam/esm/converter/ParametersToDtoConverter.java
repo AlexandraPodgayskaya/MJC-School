@@ -18,6 +18,13 @@ import com.epam.esm.exception.ErrorCode;
 import com.epam.esm.exception.IncorrectParameterValueException;
 import com.epam.esm.util.MessageKey;
 
+/**
+ * Class converts parameters to Dto
+ *
+ * @author Aleksandra Podgayskaya
+ * @version 1.0
+ *
+ */
 @Component
 public class ParametersToDtoConverter {
 
@@ -32,6 +39,12 @@ public class ParametersToDtoConverter {
 	private static final String DEFAULT_NUMBER = "1";
 	private static final String DEFAULT_SIZE = "5";
 
+	/**
+	 * Get pagination dto
+	 * 
+	 * @param pageParameters the page parameters
+	 * @return pagination dto
+	 */
 	public PaginationDto getPaginationDto(Map<String, String> pageParameters) {
 		String number = pageParameters.get(NUMBER) == null ? DEFAULT_NUMBER : pageParameters.get(NUMBER);
 		String size = pageParameters.get(SIZE) == null ? DEFAULT_SIZE : pageParameters.get(SIZE);
@@ -42,6 +55,12 @@ public class ParametersToDtoConverter {
 
 	}
 
+	/**
+	 * Get gift certificate search parameters dto
+	 * 
+	 * @param parameters the search parameters
+	 * @return gift certificate search parameters dto
+	 */
 	public GiftCertificateSearchParametersDto getGiftCertificateSearchParametersDto(Map<String, String> parameters) {
 		GiftCertificateSearchParametersDto searchParametersDto = new GiftCertificateSearchParametersDto();
 		String tagNames = parameters.get(TAG_NAMES);

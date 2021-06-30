@@ -1,5 +1,11 @@
 package com.epam.esm.dao.creator;
 
+/**
+ * Class sort types
+ *
+ * @author Aleksandra Podgayskaya
+ * @version 1.0
+ */
 public enum SortType {
 
 	NAME("name"), CREATE_DATE("createDate");

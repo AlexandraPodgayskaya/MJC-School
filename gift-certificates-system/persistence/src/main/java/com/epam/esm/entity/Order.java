@@ -13,6 +13,12 @@ import javax.persistence.OneToMany;
 import javax.persistence.PrePersist;
 import javax.persistence.Table;
 
+/**
+ * Class represents item_order entity
+ *
+ * @author Aleksandra Podgayskaya
+ * @version 1.0
+ */
 @Entity
 @Table(name = "item_order")
 public class Order {

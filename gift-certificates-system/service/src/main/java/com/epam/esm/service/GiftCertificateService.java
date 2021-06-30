@@ -25,9 +25,10 @@ public interface GiftCertificateService {
 	/**
 	 * Find gift certificates by search parameters
 	 *
+	 * @param pagination                         the information about pagination
 	 * @param giftCertificateSearchParametersDto parameters according to which will
 	 *                                           be found gift certificates
-	 * @return the list of found gift certificates
+	 * @return the page with found gift certificates and total number of positions
 	 */
 	PageDto<GiftCertificateDto> findGiftCertificates(PaginationDto pagination,
 			GiftCertificateSearchParametersDto giftCertificateSearchParametersDto);

@@ -7,6 +7,12 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
+/**
+ * Class represents user entity
+ *
+ * @author Aleksandra Podgayskaya
+ * @version 1.0
+ */
 @Entity
 @Table(name = "user")
 public class User {

@@ -72,6 +72,13 @@ public class ExceptionController {
 		return new ExceptionDetails(builder.toString(), HttpStatus.BAD_REQUEST.value() + exception.getErrorCode());
 	}
 
+	/**
+	 * Handle MethodArgumentTypeMismatchException
+	 * 
+	 * @param exception the exception
+	 * @param locale    the locale of HTTP request
+	 * @return the exception details entity
+	 */
 	@ExceptionHandler(MethodArgumentTypeMismatchException.class)
 	@ResponseStatus(HttpStatus.BAD_REQUEST)
 	public ExceptionDetails handleMethodArgumentTypeMismatchException(MethodArgumentTypeMismatchException exception,
@@ -84,8 +91,7 @@ public class ExceptionController {
 	}
 
 	/**
-	 * Handle MethodArgumentTypeMismatchException and
-	 * HttpMessageNotReadableException
+	 * Handle HttpMessageNotReadableException
 	 * 
 	 * @param exception the exception
 	 * @param locale    the locale of HTTP request

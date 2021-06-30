@@ -14,6 +14,13 @@ import com.epam.esm.entity.OrderedGiftCertificate;
 import com.epam.esm.entity.Pagination;
 import com.epam.esm.util.QueryParameter;
 
+/**
+ * Class is implementation of interface {@link OrderDao} and intended
+ * to work with item_order table
+ *
+ * @author Aleksandra Podgayskaya
+ * @version 1.0
+ */
 @Repository
 public class OrderDaoImpl implements OrderDao {
 

@@ -6,8 +6,20 @@ import com.epam.esm.dto.UserDto;
 
 public interface UserService {
 
-	PageDto<UserDto> findAllUsers(PaginationDto pageDto);
+	/**
+	 * Find all users
+	 *
+	 * @param paginationDto the information about pagination
+	 * @return the page with found users and total number of positions
+	 */
+	PageDto<UserDto> findAllUsers(PaginationDto paginationDto);
 
+	/**
+	 * Find user by id
+	 * 
+	 * @param id the id of user to find
+	 * @return the found user
+	 */
 	UserDto findUserById(long id);
 
 }

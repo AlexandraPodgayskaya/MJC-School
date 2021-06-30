@@ -22,6 +22,12 @@ import com.epam.esm.dto.PageDto;
 import com.epam.esm.dto.PaginationDto;
 import com.epam.esm.service.OrderService;
 
+/**
+ * Class is an endpoint of the API which allows to perform operations on order
+ * 
+ * @author Aleksandra Podgayskaya
+ * @version 1.0
+ */
 @RestController
 @RequestMapping("/orders")
 public class OrderController {
@@ -37,6 +43,12 @@ public class OrderController {
 		this.parametersToDtoConverter = parametersToDtoConverter;
 	}
 
+	/**
+	 * Get order by id, processes GET requests at /orders/{id}
+	 * 
+	 * @param id the order id which will be found
+	 * @return the found order dto
+	 */
 	@GetMapping("/{id}")
 	public OrderDto getOrderById(@PathVariable long id) {
 		OrderDto foundOrderDto = orderService.findOrderById(id);
@@ -44,6 +56,13 @@ public class OrderController {
 		return foundOrderDto;
 	}
 
+	/**
+	 * Get order by user id, processes GET requests at /orders/users/{userId}
+	 * 
+	 * @param userId             the user id
+	 * @param pageParameters the information for pagination
+	 * @return the page with found orders and total number of positions
+	 */
 	@GetMapping("/users/{userId}")
 	public PageDto<OrderDto> getOrdersByUserId(@PathVariable long userId,
 			@RequestParam Map<String, String> pageParameters) {
@@ -53,6 +72,12 @@ public class OrderController {
 		return page;
 	}
 
+	/**
+	 * Add new order, processes POST requests at /orders
+	 * 
+	 * @param orderDto the new order which will be added
+	 * @return the added order dto
+	 */
 	@PostMapping
 	@ResponseStatus(HttpStatus.CREATED)
 	public OrderDto addOrder(@RequestBody OrderDto orderDto) {

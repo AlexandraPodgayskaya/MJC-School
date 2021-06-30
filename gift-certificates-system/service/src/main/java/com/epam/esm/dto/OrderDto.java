@@ -13,6 +13,13 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonProperty.Access;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 
+/**
+ * Class is implementation of pattern DTO for transmission order entity between
+ * service and controller
+ *
+ * @author Aleksandra Podgayskaya
+ * @version 1.0
+ */
 public class OrderDto extends RepresentationModel<OrderDto> {
 
 	@JsonProperty(access = Access.READ_ONLY)

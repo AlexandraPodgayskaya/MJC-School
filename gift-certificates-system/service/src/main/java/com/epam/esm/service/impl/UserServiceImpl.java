@@ -21,6 +21,13 @@ import com.epam.esm.service.UserService;
 import com.epam.esm.util.MessageKey;
 import com.epam.esm.validator.UserValidator;
 
+/**
+ * Class is implementation of interface {@link UserService} and intended to work
+ * with user
+ *
+ * @author Aleksandra Podgayskaya
+ * @version 1.0
+ */
 @Service
 public class UserServiceImpl implements UserService {
 

@@ -10,6 +10,13 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonProperty.Access;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 
+/**
+ * Class is implementation of pattern DTO for transmission ordered gift
+ * certificate entity between service and controller
+ *
+ * @author Aleksandra Podgayskaya
+ * @version 1.0
+ */
 public class OrderedGiftCertificateDto extends RepresentationModel<OrderDto> {
 
 	@JsonProperty(access = Access.WRITE_ONLY)

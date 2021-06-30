@@ -47,7 +47,8 @@ public class TagController {
 	/**
 	 * Get all tags, processes GET requests at /tags
 	 * 
-	 * @return the list of all tags dto
+	 * @param pageParameters the information for pagination
+	 * @return the page with found tags and total number of positions
 	 */
 	@GetMapping
 	public PageDto<TagDto> getTags(@RequestParam Map<String, String> pageParameters) {
@@ -70,6 +71,12 @@ public class TagController {
 		return foundTagDto;
 	}
 
+	/**
+	 * Get the most popular tag of user with highest cost of all orders, processes
+	 * GET requests at /tags/popular
+	 * 
+	 * @return the found tag dto
+	 */
 	@GetMapping("/popular")
 	public TagDto getMostPopularTagOfUserWithHighestCostOfAllOrders() {
 		TagDto foundTagDto = tagService.findMostPopularTagOfUserWithHighestCostOfAllOrders();
@@ -94,7 +101,8 @@ public class TagController {
 	/**
 	 * Delete tag by id, processes DELETE requests at /tags/{id}
 	 * 
-	 * @param id he tag id which will be deletedF
+	 * @param id he tag id which will be deleted
+	 * @return void
 	 */
 	@DeleteMapping("/{id}")
 	public ResponseEntity<Void> deleteTag(@PathVariable long id) {

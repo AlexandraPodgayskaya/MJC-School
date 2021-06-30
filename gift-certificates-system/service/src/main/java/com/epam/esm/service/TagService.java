@@ -22,8 +22,9 @@ public interface TagService {
 
 	/**
 	 * Find all tags
-	 * 
-	 * @return the list of all tags dto
+	 *
+	 * @param paginationDto the information about pagination
+	 * @return the page with found tags and total number of positions
 	 */
 	PageDto<TagDto> findAllTags(PaginationDto paginationDto);
 
@@ -35,6 +36,11 @@ public interface TagService {
 	 */
 	TagDto findTagById(long id);
 
+	/**
+	 * Find the most popular tag of user with highest cost of all orders
+	 * 
+	 * @return the found tag dto
+	 */
 	TagDto findMostPopularTagOfUserWithHighestCostOfAllOrders();
 
 	/**

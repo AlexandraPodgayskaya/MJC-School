@@ -1,5 +1,11 @@
 package com.epam.esm.util;
 
+/**
+ * Utility class of query parameters
+ *
+ * @author Aleksandra Podgayskaya
+ * @version 1.0
+ */
 public final class QueryParameter {
 
 	public static final String ID = "id";

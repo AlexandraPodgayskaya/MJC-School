@@ -13,6 +13,13 @@ import com.epam.esm.entity.Pagination;
 import com.epam.esm.entity.User;
 import com.epam.esm.util.QueryParameter;
 
+/**
+ * Class is implementation of interface {@link UserDao} and intended
+ * to work with user table
+ *
+ * @author Aleksandra Podgayskaya
+ * @version 1.0
+ */
 @Repository
 public class UserDaoImpl implements UserDao {
 

@@ -32,7 +32,8 @@ public class GiftCertificateQueryCreator {
 	 * Create query
 	 * 
 	 * @param searchParameters the gift certificate query parameters
-	 * @return the created query
+	 * @param criteriaBuilder the criteria builder
+     * @return the criteria query
 	 */
 	public CriteriaQuery<GiftCertificate> createCriteriaQuery(GiftCertificateSearchParameters searchParameters,
 			CriteriaBuilder criteriaBuilder) {

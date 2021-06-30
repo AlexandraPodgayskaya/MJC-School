@@ -19,6 +19,12 @@ import com.epam.esm.dto.PaginationDto;
 import com.epam.esm.dto.UserDto;
 import com.epam.esm.service.UserService;
 
+/**
+ * Class is an endpoint of the API which allows to perform operations on user
+ * 
+ * @author Aleksandra Podgayskaya
+ * @version 1.0
+ */
 @RestController
 @RequestMapping("/users")
 public class UserController {
@@ -32,6 +38,12 @@ public class UserController {
 		this.parametersToDtoConverter = parametersToDtoConverter;
 	}
 
+	/**
+	 * Get all users, processes GET requests at /users
+	 * 
+	 * @param pageParameters the information for pagination
+	 * @return the page with found users and total number of positions
+	 */
 	@GetMapping
 	public PageDto<UserDto> getUsers(@RequestParam Map<String, String> pageParameters) {
 		PaginationDto pagination = parametersToDtoConverter.getPaginationDto(pageParameters);
@@ -40,6 +52,12 @@ public class UserController {
 		return page;
 	}
 
+	/**
+	 * Get user by id, processes GET requests at /users/{id}
+	 * 
+	 * @param id the user id which will be found
+	 * @return the found user dto
+	 */
 	@GetMapping("/{id}")
 	public UserDto getUserById(@PathVariable long id) {
 		UserDto user = userService.findUserById(id);

@@ -54,9 +54,9 @@ public class GiftCertificateController {
 	 * Get gift certificates by parameters, processes GET requests at
 	 * /gift-certificates
 	 * 
-	 * @param giftCertificateSearchParametersDto the gift certificate search
-	 *                                           parameters
-	 * @return the list of found gift certificates dto
+	 * @param parameters the gift certificate search parameters and information for
+	 *                   pagination
+	 * @return the page with found gift certificates and total number of positions
 	 */
 	@GetMapping
 	public PageDto<GiftCertificateDto> getGiftCertificates(@RequestParam Map<String, String> parameters) {
@@ -117,6 +117,7 @@ public class GiftCertificateController {
 	 * /gift-certificates/{id}
 	 * 
 	 * @param id the gift certificate id which will be deleted
+	 * @return void
 	 */
 	@DeleteMapping("/{id}")
 	public ResponseEntity<Void> deleteGiftCertificate(@PathVariable long id) {

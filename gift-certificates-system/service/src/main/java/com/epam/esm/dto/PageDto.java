@@ -1,5 +1,11 @@
 package com.epam.esm.dto;
 
+/**
+ * Class is implementation of pattern DTO for page entity
+ *
+ * @author Aleksandra Podgayskaya
+ * @version 1.0
+ */
 import java.util.Collections;
 import java.util.List;
 
