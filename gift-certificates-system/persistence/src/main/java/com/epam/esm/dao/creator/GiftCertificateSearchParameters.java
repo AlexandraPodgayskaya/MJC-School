@@ -18,6 +18,11 @@ public class GiftCertificateSearchParameters {
 	public GiftCertificateSearchParameters() {
 	}
 
+	public GiftCertificateSearchParameters(List<String> tagNames, String partNameOrDescription) {
+		this.tagNames = tagNames;
+		this.partNameOrDescription = partNameOrDescription;
+	}
+
 	public List<String> getTagNames() {
 		return tagNames == null ? null : Collections.unmodifiableList(tagNames);
 	}

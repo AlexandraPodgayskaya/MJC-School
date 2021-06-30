@@ -72,6 +72,19 @@ public class GiftCertificate {
 		this.deleted = deleted;
 	}
 
+	public GiftCertificate(Long id, String name, String description, BigDecimal price, Integer duration,
+			LocalDateTime createDate, LocalDateTime lastUpdateDate, boolean deleted, List<Tag> tags) {
+		this.id = id;
+		this.name = name;
+		this.description = description;
+		this.price = price;
+		this.duration = duration;
+		this.createDate = createDate;
+		this.lastUpdateDate = lastUpdateDate;
+		this.deleted = deleted;
+		this.tags = tags;
+	}
+
 	@PrePersist
 	public void beforeCreateGiftCertificate() {
 		LocalDateTime currentTime = LocalDateTime.now();
