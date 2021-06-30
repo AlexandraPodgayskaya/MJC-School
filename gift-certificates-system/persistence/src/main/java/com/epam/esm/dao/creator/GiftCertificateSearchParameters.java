@@ -93,22 +93,4 @@ public class GiftCertificateSearchParameters {
 				+ partNameOrDescription + ", sortType=" + sortType + ", orderType=" + orderType + "]";
 	}
 
-	public enum SortType {
-		NAME("name"), CREATE_DATE("createDate");
-
-		// TODO
-		private final String sortFieldName;
-
-		private SortType(String sortFieldName) {
-			this.sortFieldName = sortFieldName;
-		}
-
-		public String getSortFieldName() {
-			return sortFieldName;
-		}
-	}
-
-	public enum OrderType {
-		ASC, DESC
-	}
 }

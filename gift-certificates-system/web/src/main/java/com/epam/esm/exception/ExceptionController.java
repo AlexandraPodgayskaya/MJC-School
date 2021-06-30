@@ -9,7 +9,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.MessageSource;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.converter.HttpMessageNotReadableException;
-import org.springframework.validation.BindException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
@@ -72,21 +71,15 @@ public class ExceptionController {
 		return new ExceptionDetails(builder.toString(), HttpStatus.BAD_REQUEST.value() + exception.getErrorCode());
 	}
 
-	/**
-	 * Handle BindException
-	 * 
-	 * @param exception the exception
-	 * @param locale    the locale of HTTP request
-	 * @return the exception details entity
-	 */
-	@ExceptionHandler(BindException.class)
+	@ExceptionHandler(MethodArgumentTypeMismatchException.class)
 	@ResponseStatus(HttpStatus.BAD_REQUEST)
-	public ExceptionDetails handleBindException(BindException exception, Locale locale) {
-		String errorMessage = messageSource.getMessage(MessageKey.INCORRECT_SORTING_PARAMETERS, new String[] {},
-				locale);
+	public ExceptionDetails handleMethodArgumentTypeMismatchException(MethodArgumentTypeMismatchException exception,
+			Locale locale) {
+		String metodArgument = messageSource.getMessage(MessageKey.TYPE_ID, new String[] {}, locale);
+		String errorMessage = messageSource.getMessage(MessageKey.INCORRECT_PARAMETER_TYPE,
+				new String[] { metodArgument }, locale);
 		logger.error(HttpStatus.BAD_REQUEST, exception);
-		return new ExceptionDetails(errorMessage,
-				HttpStatus.BAD_REQUEST.value() + ErrorCode.GIFT_CERTIFICATE.getCode());
+		return new ExceptionDetails(errorMessage, HttpStatus.BAD_REQUEST.value() + ErrorCode.DEFAULT.getCode());
 	}
 
 	/**
@@ -97,13 +90,13 @@ public class ExceptionController {
 	 * @param locale    the locale of HTTP request
 	 * @return the exception details entity
 	 */
-	@ExceptionHandler({ MethodArgumentTypeMismatchException.class, HttpMessageNotReadableException.class })
+	@ExceptionHandler(HttpMessageNotReadableException.class)
 	@ResponseStatus(HttpStatus.BAD_REQUEST)
-	public ExceptionDetails handleParameterTypeException(Exception exception, Locale locale) {
-		//TODO NullPointerException пустое боди при обновлении сертификата
-		String parameterKey = exception instanceof HttpMessageNotReadableException == Boolean.TRUE 
+	public ExceptionDetails handleHttpMessageNotReadableException(HttpMessageNotReadableException exception,
+			Locale locale) {
+		String parameterKey = exception.getCause() != null
 				? StringUtils.substringBefore(exception.getCause().getMessage(), MESSAGE_KEY_SEPARATOR)
-				: MessageKey.TYPE_ID;
+				: MessageKey.TYPE_DATA;
 		String parameter = messageSource.getMessage(parameterKey.strip(), new String[] {}, locale);
 		String errorMessage = messageSource.getMessage(MessageKey.INCORRECT_PARAMETER_TYPE, new String[] { parameter },
 				locale);

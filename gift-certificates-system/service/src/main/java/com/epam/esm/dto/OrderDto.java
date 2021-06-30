@@ -8,11 +8,12 @@ import java.util.List;
 import org.springframework.hateoas.RepresentationModel;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonProperty.Access;
 
 public class OrderDto extends RepresentationModel<OrderDto> {
 
-	// TODO validation попробовать hibernate и написать deserializer если что и
-	// сделать JsonIgnore на поля, которые нужны только для отбражения клиенту
+	@JsonProperty(access = Access.READ_ONLY)
 	private Long id;
 	private BigDecimal cost;
 	private Long userId;

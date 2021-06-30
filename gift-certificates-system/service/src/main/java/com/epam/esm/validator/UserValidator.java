@@ -17,8 +17,6 @@ public class UserValidator {
 
 	private static final Logger logger = LogManager.getLogger();
 
-	// TODO Abstract validator - validate id если сделать установку кода на
-	// ExceptionHandlere в зависимости от uri
 	public void validateId(long id) throws IncorrectParameterValueException {
 		if (id < ValidValue.MIN_ID) {
 			Map<String, String> incorrectParameter = new HashMap<>();

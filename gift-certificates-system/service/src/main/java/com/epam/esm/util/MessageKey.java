@@ -25,9 +25,14 @@ public final class MessageKey {
 	public static final String PARAMETER_DURATION = "parameter.duration";
 	public static final String PARAMETER_PAGE_NUMBER = "parameter.pageNumber";
 	public static final String PARAMETER_PAGE_SIZE = "parameter.pageSize";
+	public static final String PARAMETER_ORDERED_GIFT_CERTIFICATES = "parameter.orderedGiftCertificates";
+	public static final String PARAMETER_GIFT_CERTIFICATE = "parameter.giftCertificate";
+	public static final String PARAMETER_NUMBER = "parameter.number";
+	public static final String PARAMETER_DUPLICATE_GIFT_CERTIFICATES = "parameter.duplicateGiftCertificates";
 	public static final String TYPE_ID = "type.id";
 	public static final String TYPE_PRICE = "type.price";
 	public static final String TYPE_DURATION = "type.duration";
+	public static final String TYPE_DATA = "type.data";
 
 	private MessageKey() {
 	}

@@ -26,19 +26,22 @@ import com.epam.esm.service.GiftCertificateService;
 import com.epam.esm.service.OrderService;
 import com.epam.esm.service.UserService;
 import com.epam.esm.util.MessageKey;
+import com.epam.esm.validator.OrderValidator;
 
 @Service
 public class OrderServiceImpl implements OrderService {
 
 	private final OrderDao orderDao;
+	private final OrderValidator orderValidator;
 	private final ModelMapper modelMapper;
 	private final UserService userService;
 	private final GiftCertificateService giftCertificateService;
 
 	@Autowired
-	public OrderServiceImpl(OrderDao orderDao, ModelMapper modelMapper, UserService userService,
-			GiftCertificateService giftCertificateService) {
+	public OrderServiceImpl(OrderDao orderDao, OrderValidator orderValidator, ModelMapper modelMapper,
+			UserService userService, GiftCertificateService giftCertificateService) {
 		this.orderDao = orderDao;
+		this.orderValidator = orderValidator;
 		this.modelMapper = modelMapper;
 		this.userService = userService;
 		this.giftCertificateService = giftCertificateService;
@@ -47,8 +50,7 @@ public class OrderServiceImpl implements OrderService {
 	@Transactional
 	@Override
 	public OrderDto addOrder(OrderDto orderDto) throws IncorrectParameterValueException, ResourceNotFoundException {
-		// TODO validate проверить чтобы не было повторений id orderDetails(вывести id в
-		// Set и сравнить размер set с list orderDetails)
+		orderValidator.validate(orderDto);
 		userService.findUserById(orderDto.getUserId());
 		orderDto.getOrderedGiftCertificates().forEach(this::setOrderedGiftCertificateDetails);
 		Order order = modelMapper.map(orderDto, Order.class);
@@ -61,8 +63,8 @@ public class OrderServiceImpl implements OrderService {
 	}
 
 	@Override
-	public OrderDto findOrderById(long id) {
-		// id validate TODO
+	public OrderDto findOrderById(long id) throws IncorrectParameterValueException, ResourceNotFoundException {
+		orderValidator.validateId(id);
 		return orderDao.findById(id).map(order -> modelMapper.map(order, OrderDto.class))
 				.orElseThrow(() -> new ResourceNotFoundException("no order by id", MessageKey.ORDER_NOT_FOUND_BY_ID,
 						String.valueOf(id), ErrorCode.ORDER.getCode()));

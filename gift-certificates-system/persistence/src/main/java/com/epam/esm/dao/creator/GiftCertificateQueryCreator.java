@@ -11,7 +11,6 @@ import javax.persistence.criteria.Root;
 
 import org.springframework.stereotype.Component;
 
-import com.epam.esm.dao.creator.GiftCertificateSearchParameters.OrderType;
 import com.epam.esm.entity.GiftCertificate;
 
 /**
