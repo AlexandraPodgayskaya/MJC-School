@@ -7,92 +7,89 @@ import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.ArgumentMatchers.isA;
 import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.doThrow;
-import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.Optional;
 
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.modelmapper.ModelMapper;
-import org.modelmapper.convention.MatchingStrategies;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.test.mock.mockito.MockBean;
 
+import com.epam.esm.configuration.TestConfiguration;
 import com.epam.esm.dao.GiftCertificateDao;
+import com.epam.esm.dao.creator.GiftCertificateSearchParameters;
 import com.epam.esm.dto.GiftCertificateDto;
+import com.epam.esm.dto.GiftCertificateSearchParametersDto;
+import com.epam.esm.dto.PageDto;
+import com.epam.esm.dto.PaginationDto;
 import com.epam.esm.entity.GiftCertificate;
+import com.epam.esm.entity.Pagination;
 import com.epam.esm.exception.IncorrectParameterValueException;
 import com.epam.esm.exception.ResourceNotFoundException;
 import com.epam.esm.service.GiftCertificateService;
 import com.epam.esm.service.TagService;
-import com.epam.esm.service.impl.GiftCertificateServiceImpl;
 import com.epam.esm.validator.GiftCertificateValidator;
 
+@SpringBootTest(classes = TestConfiguration.class)
 public class GiftCertificateServiceImplTest {
 
-	private static GiftCertificateDao giftCertificateDao;
-	private static GiftCertificateValidator giftCertificateValidator;
-	private static TagService tagService;
-	private static ModelMapper modelMapper;
-	private static GiftCertificateService giftCertificateService;
+	@MockBean
+	private GiftCertificateDao giftCertificateDao;
+	@MockBean
+	private GiftCertificateValidator giftCertificateValidator;
+	@MockBean
+	private TagService tagService;
+	@Autowired
+	private GiftCertificateService giftCertificateService;
 	private static GiftCertificateDto giftCertificateDto1;
 	private static GiftCertificateDto giftCertificateDto2;
 	private static GiftCertificateDto giftCertificateDto3;
 	private static GiftCertificateDto giftCertificateDto4;
 	private static GiftCertificate giftCertificate1;
 	private static GiftCertificate giftCertificate2;
+	private static PaginationDto pagination;
+	private static PageDto<GiftCertificateDto> page;
 
 	@BeforeAll
 	public static void setUp() {
-		modelMapper = new ModelMapper();
-		modelMapper.getConfiguration().setMatchingStrategy(MatchingStrategies.STRICT).setFieldMatchingEnabled(true)
-				.setSkipNullEnabled(true).setFieldAccessLevel(org.modelmapper.config.Configuration.AccessLevel.PRIVATE);
 		giftCertificateDto1 = new GiftCertificateDto(null, "Cinema", "Best cinema in the city", new BigDecimal(100), 5,
 				LocalDateTime.of(2020, 12, 12, 12, 0, 0), LocalDateTime.of(2020, 12, 13, 12, 0, 0),
 				Collections.emptyList());
 		giftCertificateDto2 = new GiftCertificateDto(1L, "Cinema", "Best cinema in the city", new BigDecimal(100), 5,
-				LocalDateTime.of(2020, 12, 12, 12, 0, 0), LocalDateTime.of(2020, 12, 13, 12, 0, 0),
-				Collections.emptyList());
+				LocalDateTime.of(2020, 12, 12, 12, 0, 0), LocalDateTime.of(2020, 12, 13, 12, 0, 0), null);
 		giftCertificateDto3 = new GiftCertificateDto(1L, "", "", new BigDecimal(100), -5,
 				LocalDateTime.of(2020, 12, 12, 12, 0, 0), LocalDateTime.of(2020, 12, 13, 12, 0, 0),
 				Collections.emptyList());
 		giftCertificateDto4 = new GiftCertificateDto(1L, "Travel to German", "You will like it", new BigDecimal(100),
-				10, LocalDateTime.of(2020, 12, 12, 12, 0, 0), LocalDateTime.of(2020, 12, 13, 12, 0, 0),
-				Collections.emptyList());
+				10, LocalDateTime.of(2020, 12, 12, 12, 0, 0), LocalDateTime.of(2020, 12, 13, 12, 0, 0), null);
 		giftCertificate1 = new GiftCertificate(1L, "Cinema", "Best cinema in the city", new BigDecimal(100), 5,
 				LocalDateTime.of(2020, 12, 12, 12, 0, 0), LocalDateTime.of(2020, 12, 13, 12, 0, 0), Boolean.FALSE);
 		giftCertificate2 = new GiftCertificate(1L, "Travel to German", "You will like it", new BigDecimal(100), 10,
 				LocalDateTime.of(2020, 12, 12, 12, 0, 0), LocalDateTime.of(2020, 12, 13, 12, 0, 0), Boolean.FALSE);
-	}
-
-	@BeforeEach
-	public void init() {
-		giftCertificateDao = mock(GiftCertificateDao.class);
-		giftCertificateValidator = mock(GiftCertificateValidator.class);
-		tagService = mock(TagService.class);
-		giftCertificateService = new GiftCertificateServiceImpl(giftCertificateDao, giftCertificateValidator,
-				tagService, modelMapper);
+		pagination = new PaginationDto(1, 5);
+		page = new PageDto<>(Arrays.asList(giftCertificateDto2, giftCertificateDto4), 2L);
 	}
 
 	@AfterAll
 	public static void tearDown() {
-		giftCertificateDao = null;
-		giftCertificateValidator = null;
-		tagService = null;
-		giftCertificateService = null;
 		giftCertificateDto1 = null;
 		giftCertificateDto2 = null;
 		giftCertificateDto3 = null;
 		giftCertificateDto4 = null;
 		giftCertificate1 = null;
 		giftCertificate2 = null;
+		pagination = null;
+		page = null;
 	}
 
-	//TODO @Test
+	@Test
 	public void createGiftCertificatePositiveTest() {
 		doNothing().when(giftCertificateValidator).validate(isA(GiftCertificateDto.class));
 		when(giftCertificateDao.create(isA(GiftCertificate.class))).thenReturn(giftCertificate1);
@@ -108,18 +105,18 @@ public class GiftCertificateServiceImplTest {
 				() -> giftCertificateService.createGiftCertificate(giftCertificateDto3));
 	}
 
-	/*
-	 * @Test public void findGiftCertificatesPositiveTest() { final int
-	 * expectedNumberGiftCertificates = 2;
-	 * when(giftCertificateDao.findBySearchParameters(isA(
-	 * GiftCertificateSearchParameters.class)))
-	 * .thenReturn(Arrays.asList(giftCertificate1, giftCertificate2));
-	 * List<GiftCertificateDto> actual = giftCertificateService
-	 * .findGiftCertificates(new GiftCertificateSearchParametersDto());
-	 * assertEquals(expectedNumberGiftCertificates, actual.size()); }TODO
-	 */
+	@Test
+	public void findGiftCertificatesPositiveTest() {
+		when(giftCertificateDao.findBySearchParameters(isA(Pagination.class),
+				isA(GiftCertificateSearchParameters.class)))
+						.thenReturn(Arrays.asList(giftCertificate1, giftCertificate2));
+		when(giftCertificateDao.getTotalNumber(isA(GiftCertificateSearchParameters.class))).thenReturn(2L);
+		PageDto<GiftCertificateDto> actualPage = giftCertificateService.findGiftCertificates(pagination,
+				new GiftCertificateSearchParametersDto());
+		assertEquals(page, actualPage);
+	}
 
-	//TODO @Test
+	@Test
 	void findGiftCertificateByIdPositiveTest() {
 		final long id = 1;
 		doNothing().when(giftCertificateValidator).validateId(anyLong());
@@ -143,7 +140,7 @@ public class GiftCertificateServiceImplTest {
 		assertThrows(ResourceNotFoundException.class, () -> giftCertificateService.findGiftCertificateById(id));
 	}
 
-	//TODO @Test
+	@Test
 	public void updateGiftCertificatePositiveTest() {
 		when(giftCertificateDao.findById(anyLong())).thenReturn(Optional.of(giftCertificate2));
 		doNothing().when(giftCertificateValidator).validate(isA(GiftCertificateDto.class));
