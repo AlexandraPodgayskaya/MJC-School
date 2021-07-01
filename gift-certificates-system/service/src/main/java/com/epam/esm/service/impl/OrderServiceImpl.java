@@ -70,7 +70,7 @@ public class OrderServiceImpl implements OrderService {
 			Map<String, String> incorrectParameter = new HashMap<>();
 			incorrectParameter.put(exception.getMessageKey(), exception.getMessageParameter());
 			throw new IncorrectParameterValueException("resource not found", incorrectParameter,
-					ErrorCode.ORDER.getCode());
+					ErrorCode.ORDER.getCode(), exception);
 		}
 		Order order = modelMapper.map(orderDto, Order.class);
 		setTotalCostOrder(order);
