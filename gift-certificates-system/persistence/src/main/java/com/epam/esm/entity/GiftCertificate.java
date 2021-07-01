@@ -7,17 +7,18 @@ import java.util.List;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.EntityListeners;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
-import javax.persistence.PrePersist;
-import javax.persistence.PreUpdate;
 import javax.persistence.Table;
 
 import org.hibernate.annotations.Where;
+
+import com.epam.esm.entity.audit.GiftCertificateAudit;
 
 /**
  * Class represents gift_certificate entity
@@ -27,6 +28,7 @@ import org.hibernate.annotations.Where;
  */
 @Entity
 @Table(name = "gift_certificate")
+@EntityListeners(GiftCertificateAudit.class)
 public class GiftCertificate {
 
 	@Id
@@ -83,18 +85,6 @@ public class GiftCertificate {
 		this.lastUpdateDate = lastUpdateDate;
 		this.deleted = deleted;
 		this.tags = tags;
-	}
-
-	@PrePersist
-	public void beforeCreateGiftCertificate() {
-		LocalDateTime currentTime = LocalDateTime.now();
-		setCreateDate(currentTime);
-		setLastUpdateDate(currentTime);
-	}
-
-	@PreUpdate
-	public void beforeUpdateGiftCertificate() {
-		setLastUpdateDate(LocalDateTime.now());
 	}
 
 	public Long getId() {

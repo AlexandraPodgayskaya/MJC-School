@@ -6,12 +6,14 @@ import java.util.List;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.EntityListeners;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
-import javax.persistence.PrePersist;
 import javax.persistence.Table;
+
+import com.epam.esm.entity.audit.OrderAudit;
 
 /**
  * Class represents item_order entity
@@ -21,6 +23,7 @@ import javax.persistence.Table;
  */
 @Entity
 @Table(name = "item_order")
+@EntityListeners(OrderAudit.class)
 public class Order {
 
 	@Id
@@ -50,11 +53,6 @@ public class Order {
 		this.createDate = createDate;
 		this.deleted = deleted;
 		this.orderedGiftCertificates = orderedGiftCertificates;
-	}
-
-	@PrePersist
-	public void beforeCreateOrder() {
-		setCreateDate(LocalDateTime.now());
 	}
 
 	public Long getId() {
