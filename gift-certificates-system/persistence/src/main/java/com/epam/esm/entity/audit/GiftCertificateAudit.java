@@ -7,6 +7,12 @@ import javax.persistence.PreUpdate;
 
 import com.epam.esm.entity.GiftCertificate;
 
+/**
+ * Class is listener for gift certificate entity
+ *
+ * @author Aleksandra Podgayskaya
+ * @version 1.0
+ */
 public class GiftCertificateAudit {
 
 	@PrePersist
