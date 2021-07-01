@@ -30,6 +30,7 @@ public final class MessageKey {
 	public static final String PARAMETER_DUPLICATE_GIFT_CERTIFICATES = "parameter.duplicateGiftCertificates";
 	public static final String PARAMETER_SORT_TYPE = "parameter.sortType";
 	public static final String PARAMETER_ORDER_TYPE = "parameter.orderType";
+	public static final String NO_FIELDS_TO_UPDATE = "noFieldsToUpdate";
 	public static final String TYPE_ID = "parameterType.id";
 	public static final String TYPE_USER_ID = "parameterType.userId";
 	public static final String TYPE_PRICE = "parameterType.price";

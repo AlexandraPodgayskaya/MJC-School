@@ -6,6 +6,7 @@ import java.util.Map;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
+import org.apache.commons.lang3.StringUtils;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -138,20 +139,32 @@ public class GiftCertificateServiceImpl implements GiftCertificateService {
 	}
 
 	private void updateFields(GiftCertificateDto foundGiftCertificate, GiftCertificateDto receivedGiftCertificate) {
+		int fieldCounter = 0;
 		if (receivedGiftCertificate.getName() != null) {
 			foundGiftCertificate.setName(receivedGiftCertificate.getName());
+			fieldCounter++;
 		}
 		if (receivedGiftCertificate.getDescription() != null) {
 			foundGiftCertificate.setDescription(receivedGiftCertificate.getDescription());
+			fieldCounter++;
 		}
 		if (receivedGiftCertificate.getPrice() != null) {
 			foundGiftCertificate.setPrice(receivedGiftCertificate.getPrice());
+			fieldCounter++;
 		}
 		if (receivedGiftCertificate.getDuration() != null) {
 			foundGiftCertificate.setDuration(receivedGiftCertificate.getDuration());
+			fieldCounter++;
 		}
 		if (receivedGiftCertificate.getTags() != null) {
 			foundGiftCertificate.setTags(receivedGiftCertificate.getTags());
+			fieldCounter++;
+		}
+		if (fieldCounter == 0) {
+			Map<String, String> incorrectParameter = new HashMap<>();
+			incorrectParameter.put(MessageKey.NO_FIELDS_TO_UPDATE, StringUtils.EMPTY);
+			throw new IncorrectParameterValueException("no fields to update", incorrectParameter,
+					ErrorCode.GIFT_CERTIFICATE.getCode());
 		}
 	}
 }

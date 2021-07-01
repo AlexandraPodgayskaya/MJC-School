@@ -2,7 +2,9 @@ package com.epam.esm.service.impl;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 import org.modelmapper.ModelMapper;
@@ -59,10 +61,17 @@ public class OrderServiceImpl implements OrderService {
 
 	@Transactional
 	@Override
-	public OrderDto addOrder(OrderDto orderDto) throws IncorrectParameterValueException, ResourceNotFoundException {
+	public OrderDto addOrder(OrderDto orderDto) throws IncorrectParameterValueException {
 		orderValidator.validate(orderDto);
-		userService.findUserById(orderDto.getUserId());
-		orderDto.getOrderedGiftCertificates().forEach(this::setOrderedGiftCertificateDetails);
+		try {
+			userService.findUserById(orderDto.getUserId());
+			orderDto.getOrderedGiftCertificates().forEach(this::setOrderedGiftCertificateDetails);
+		} catch (ResourceNotFoundException exception) {
+			Map<String, String> incorrectParameter = new HashMap<>();
+			incorrectParameter.put(exception.getMessageKey(), exception.getMessageParameter());
+			throw new IncorrectParameterValueException("resource not found", incorrectParameter,
+					ErrorCode.ORDER.getCode());
+		}
 		Order order = modelMapper.map(orderDto, Order.class);
 		setTotalCostOrder(order);
 		Order addedOrder = orderDao.create(order);
