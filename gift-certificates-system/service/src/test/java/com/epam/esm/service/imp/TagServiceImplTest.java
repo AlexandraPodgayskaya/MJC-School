@@ -20,7 +20,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 
-import com.epam.esm.configuration.TestConfiguration;
+import com.epam.esm.configuration.ServiceConfiguration;
 import com.epam.esm.dao.TagDao;
 import com.epam.esm.dto.PageDto;
 import com.epam.esm.dto.PaginationDto;
@@ -32,7 +32,7 @@ import com.epam.esm.exception.ResourceNotFoundException;
 import com.epam.esm.service.TagService;
 import com.epam.esm.validator.TagValidator;
 
-@SpringBootTest(classes = TestConfiguration.class)
+@SpringBootTest(classes = ServiceConfiguration.class)
 public class TagServiceImplTest {
 
 	@MockBean

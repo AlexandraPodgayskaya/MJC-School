@@ -3,20 +3,16 @@ package com.epam.esm.configuration;
 import org.modelmapper.ModelMapper;
 import org.modelmapper.convention.MatchingStrategies;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.boot.autoconfigure.domain.EntityScan;
 import org.springframework.context.annotation.Bean;
-import org.springframework.transaction.annotation.EnableTransactionManagement;
 
 /**
- * Class contains spring configuration
+ * Class contains service configuration
  *
  * @author Aleksandra Podgayskaya
  * @version 1.0
  */
-@SpringBootApplication
-@EnableTransactionManagement
-@EntityScan(basePackages = "com.epam.esm")
-public class RootConfiguration {
+@SpringBootApplication(scanBasePackages = "com.epam.esm")
+public class ServiceConfiguration {
 
 	/**
 	 * Create bean ModelMapper which will be used to parse entity to dto and

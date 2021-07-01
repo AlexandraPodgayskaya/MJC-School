@@ -22,7 +22,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 
-import com.epam.esm.configuration.TestConfiguration;
+import com.epam.esm.configuration.ServiceConfiguration;
 import com.epam.esm.dao.OrderDao;
 import com.epam.esm.dto.GiftCertificateDto;
 import com.epam.esm.dto.OrderDto;
@@ -41,7 +41,7 @@ import com.epam.esm.service.UserService;
 import com.epam.esm.validator.OrderValidator;
 import com.epam.esm.validator.UserValidator;
 
-@SpringBootTest(classes = TestConfiguration.class)
+@SpringBootTest(classes = ServiceConfiguration.class)
 public class OrderServiceImplTest {
 
 	@MockBean

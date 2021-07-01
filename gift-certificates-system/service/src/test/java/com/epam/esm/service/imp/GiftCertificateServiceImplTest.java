@@ -22,7 +22,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 
-import com.epam.esm.configuration.TestConfiguration;
+import com.epam.esm.configuration.ServiceConfiguration;
 import com.epam.esm.dao.GiftCertificateDao;
 import com.epam.esm.dao.creator.GiftCertificateSearchParameters;
 import com.epam.esm.dto.GiftCertificateDto;
@@ -37,7 +37,7 @@ import com.epam.esm.service.GiftCertificateService;
 import com.epam.esm.service.TagService;
 import com.epam.esm.validator.GiftCertificateValidator;
 
-@SpringBootTest(classes = TestConfiguration.class)
+@SpringBootTest(classes = ServiceConfiguration.class)
 public class GiftCertificateServiceImplTest {
 
 	@MockBean
