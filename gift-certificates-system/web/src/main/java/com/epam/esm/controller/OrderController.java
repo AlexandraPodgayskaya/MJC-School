@@ -59,7 +59,7 @@ public class OrderController {
 	/**
 	 * Get order by user id, processes GET requests at /orders/users/{userId}
 	 * 
-	 * @param userId             the user id
+	 * @param userId         the user id
 	 * @param pageParameters the information for pagination
 	 * @return the page with found orders and total number of positions
 	 */
@@ -93,7 +93,6 @@ public class OrderController {
 				orderedGiftCertificate -> orderedGiftCertificate.add(linkTo(methodOn(GiftCertificateController.class)
 						.getGiftCertificateById(orderedGiftCertificate.getGiftCertificate().getId()))
 								.withRel(GIFT_CERTIFICATE)));
-
 	}
 
 }

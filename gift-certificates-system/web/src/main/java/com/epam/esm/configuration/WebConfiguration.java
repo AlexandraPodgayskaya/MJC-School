@@ -1,7 +1,7 @@
 package com.epam.esm.configuration;
 
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.boot.SpringBootConfiguration;
 import org.springframework.boot.autoconfigure.domain.EntityScan;
 import org.springframework.context.MessageSource;
 import org.springframework.context.annotation.Bean;
@@ -16,7 +16,7 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
  * @version 1.0
  * @see WebMvcConfigurer
  */
-@SpringBootApplication(scanBasePackages = "com.epam.esm")
+@SpringBootConfiguration
 @EnableTransactionManagement
 @EntityScan(basePackages = "com.epam.esm")
 public class WebConfiguration implements WebMvcConfigurer {

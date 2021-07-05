@@ -28,7 +28,7 @@ import com.epam.esm.util.MessageKey;
 @Component
 public class ParametersToDtoConverter {
 
-	private static final String NUMBER_AND_SIZE_PATTERN = "^[1-9]+$";
+	private static final String NUMBER_AND_SIZE_PATTERN = "^[1-9][0-9]{0,8}$";
 	private static final String NUMBER = "number";
 	private static final String SIZE = "size";
 	private static final String TAG_NAMES = "tagNames";
@@ -74,12 +74,15 @@ public class ParametersToDtoConverter {
 	}
 
 	private void checkParametersValue(String number, String size) {
+		Map<String, String> incorrectParameters = new HashMap<>();
 		if (!number.matches(NUMBER_AND_SIZE_PATTERN)) {
-			Map<String, String> incorrectParameters = new HashMap<>();
 			incorrectParameters.put(MessageKey.PARAMETER_PAGE_NUMBER, number);
-			if (!size.matches(NUMBER_AND_SIZE_PATTERN)) {
-				incorrectParameters.put(MessageKey.PARAMETER_PAGE_SIZE, size);
-			}
+		}
+		if (!size.matches(NUMBER_AND_SIZE_PATTERN)) {
+			incorrectParameters.put(MessageKey.PARAMETER_PAGE_SIZE, size);
+		}
+
+		if (!incorrectParameters.isEmpty()) {
 			throw new IncorrectParameterValueException("error checking page parameters", incorrectParameters,
 					ErrorCode.DEFAULT.getCode());
 		}

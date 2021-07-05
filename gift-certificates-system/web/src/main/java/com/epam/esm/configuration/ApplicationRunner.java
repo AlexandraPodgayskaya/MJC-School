@@ -10,7 +10,7 @@ import org.springframework.boot.web.servlet.support.SpringBootServletInitializer
  * @author Aleksandra Podgayskaya
  * @version 1.0
  */
-@SpringBootApplication
+@SpringBootApplication(scanBasePackages = "com.epam.esm")
 public class ApplicationRunner extends SpringBootServletInitializer {
 
 	/**

@@ -3,6 +3,7 @@ package com.epam.esm.service.impl;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
@@ -140,23 +141,23 @@ public class GiftCertificateServiceImpl implements GiftCertificateService {
 
 	private void updateFields(GiftCertificateDto foundGiftCertificate, GiftCertificateDto receivedGiftCertificate) {
 		int fieldCounter = 0;
-		if (receivedGiftCertificate.getName() != null) {
+		if (Objects.nonNull(receivedGiftCertificate.getName())) {
 			foundGiftCertificate.setName(receivedGiftCertificate.getName());
 			fieldCounter++;
 		}
-		if (receivedGiftCertificate.getDescription() != null) {
+		if (Objects.nonNull(receivedGiftCertificate.getDescription())) {
 			foundGiftCertificate.setDescription(receivedGiftCertificate.getDescription());
 			fieldCounter++;
 		}
-		if (receivedGiftCertificate.getPrice() != null) {
+		if (Objects.nonNull(receivedGiftCertificate.getPrice())) {
 			foundGiftCertificate.setPrice(receivedGiftCertificate.getPrice());
 			fieldCounter++;
 		}
-		if (receivedGiftCertificate.getDuration() != null) {
+		if (Objects.nonNull(receivedGiftCertificate.getDuration())) {
 			foundGiftCertificate.setDuration(receivedGiftCertificate.getDuration());
 			fieldCounter++;
 		}
-		if (receivedGiftCertificate.getTags() != null) {
+		if (Objects.nonNull(receivedGiftCertificate.getTags())) {
 			foundGiftCertificate.setTags(receivedGiftCertificate.getTags());
 			fieldCounter++;
 		}

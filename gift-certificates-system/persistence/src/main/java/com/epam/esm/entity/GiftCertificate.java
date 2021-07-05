@@ -32,7 +32,7 @@ import com.epam.esm.entity.audit.GiftCertificateAudit;
 public class GiftCertificate {
 
 	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@GeneratedValue(strategy = GenerationType.AUTO)
 	@Column(name = "id")
 	private Long id;
 	@Column(name = "name")

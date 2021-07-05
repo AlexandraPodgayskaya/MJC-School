@@ -18,7 +18,7 @@ import com.fasterxml.jackson.databind.JsonDeserializer;
  */
 public class UserIdDeserializer extends JsonDeserializer<Long> {
 
-	private static final String ID_PATTERN = "^\\d+$";
+	private static final String ID_PATTERN = "^\\d{1,18}";
 
 	@Override
 	public Long deserialize(JsonParser p, DeserializationContext ctxt) throws IOException, JsonProcessingException {
