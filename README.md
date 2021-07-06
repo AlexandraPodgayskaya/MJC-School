@@ -1,3 +1,3 @@
 # MJC-School
-Module #3. REST API advanced task solution.
+Module #4. Authentication & Spring Security task solution.
 
