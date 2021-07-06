@@ -1,3 +1,3 @@
 # MJC-School
-Module #2. REST API basics task solution.
+Module #3. REST API advanced task solution.
 

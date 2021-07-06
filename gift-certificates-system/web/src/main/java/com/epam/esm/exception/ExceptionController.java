@@ -9,7 +9,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.MessageSource;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.converter.HttpMessageNotReadableException;
-import org.springframework.validation.BindException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
@@ -28,7 +27,7 @@ public class ExceptionController {
 
 	private static final Logger logger = LogManager.getLogger();
 	private static final String MESSAGE_KEY_SEPARATOR = "(";
-	private static final String DEFAULT_ERROR_CODE = "00";
+	private static final String PART_MESSAGE_KEY = "parameterType.";
 
 	private final MessageSource messageSource;
 
@@ -74,41 +73,42 @@ public class ExceptionController {
 	}
 
 	/**
-	 * Handle BindException
+	 * Handle MethodArgumentTypeMismatchException
 	 * 
 	 * @param exception the exception
 	 * @param locale    the locale of HTTP request
 	 * @return the exception details entity
 	 */
-	@ExceptionHandler(BindException.class)
+	@ExceptionHandler(MethodArgumentTypeMismatchException.class)
 	@ResponseStatus(HttpStatus.BAD_REQUEST)
-	public ExceptionDetails handleBindException(BindException exception, Locale locale) {
-		String errorMessage = messageSource.getMessage(MessageKey.INCORRECT_SORTING_PARAMETERS, new String[] {},
-				locale);
+	public ExceptionDetails handleMethodArgumentTypeMismatchException(MethodArgumentTypeMismatchException exception,
+			Locale locale) {
+		String metodArgument = messageSource.getMessage(MessageKey.TYPE_ID, new String[] {}, locale);
+		String errorMessage = messageSource.getMessage(MessageKey.INCORRECT_PARAMETER_TYPE,
+				new String[] { metodArgument }, locale);
 		logger.error(HttpStatus.BAD_REQUEST, exception);
-		return new ExceptionDetails(errorMessage,
-				HttpStatus.BAD_REQUEST.value() + ErrorCode.GIFT_CERTIFICATE.getCode());
+		return new ExceptionDetails(errorMessage, HttpStatus.BAD_REQUEST.value() + ErrorCode.DEFAULT.getCode());
 	}
 
 	/**
-	 * Handle MethodArgumentTypeMismatchException and
-	 * HttpMessageNotReadableException
+	 * Handle HttpMessageNotReadableException
 	 * 
 	 * @param exception the exception
 	 * @param locale    the locale of HTTP request
 	 * @return the exception details entity
 	 */
-	@ExceptionHandler({ MethodArgumentTypeMismatchException.class, HttpMessageNotReadableException.class })
+	@ExceptionHandler(HttpMessageNotReadableException.class)
 	@ResponseStatus(HttpStatus.BAD_REQUEST)
-	public ExceptionDetails handleParameterTypeException(Exception exception, Locale locale) {
-		String parameterKey = exception instanceof HttpMessageNotReadableException == Boolean.TRUE
+	public ExceptionDetails handleHttpMessageNotReadableException(HttpMessageNotReadableException exception,
+			Locale locale) {
+		String parameterKey = exception.getCause() != null && exception.getMessage().contains(PART_MESSAGE_KEY)
 				? StringUtils.substringBefore(exception.getCause().getMessage(), MESSAGE_KEY_SEPARATOR)
-				: MessageKey.TYPE_ID;
+				: MessageKey.BE_CAREFUL;
 		String parameter = messageSource.getMessage(parameterKey.strip(), new String[] {}, locale);
 		String errorMessage = messageSource.getMessage(MessageKey.INCORRECT_PARAMETER_TYPE, new String[] { parameter },
 				locale);
 		logger.error(HttpStatus.BAD_REQUEST, exception);
-		return new ExceptionDetails(errorMessage, HttpStatus.BAD_REQUEST.value() + DEFAULT_ERROR_CODE);
+		return new ExceptionDetails(errorMessage, HttpStatus.BAD_REQUEST.value() + ErrorCode.DEFAULT.getCode());
 	}
 
 	/**
@@ -123,6 +123,7 @@ public class ExceptionController {
 	public ExceptionDetails handleException(Exception exception, Locale locale) {
 		String errorMessage = messageSource.getMessage(MessageKey.INTERNAL_ERROR, new String[] {}, locale);
 		logger.error(HttpStatus.INTERNAL_SERVER_ERROR, exception);
-		return new ExceptionDetails(errorMessage, HttpStatus.INTERNAL_SERVER_ERROR.value() + DEFAULT_ERROR_CODE);
+		return new ExceptionDetails(errorMessage,
+				HttpStatus.INTERNAL_SERVER_ERROR.value() + ErrorCode.DEFAULT.getCode());
 	}
 }

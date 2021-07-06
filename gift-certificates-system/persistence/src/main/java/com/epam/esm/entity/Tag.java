@@ -1,15 +1,28 @@
 package com.epam.esm.entity;
 
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.Table;
+
 /**
  * Class represents tag entity
  *
  * @author Aleksandra Podgayskaya
  * @version 1.0
  */
+@Entity
+@Table(name = "tag")
 public class Tag {
 
+	@Id
+	@GeneratedValue(strategy = GenerationType.AUTO)
 	private Long id;
+	@Column(name = "name")
 	private String name;
+	@Column(name = "deleted")
 	private boolean deleted;
 
 	public Tag() {

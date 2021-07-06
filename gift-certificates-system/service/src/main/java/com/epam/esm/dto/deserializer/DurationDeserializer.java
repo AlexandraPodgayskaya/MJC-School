@@ -18,7 +18,7 @@ import com.fasterxml.jackson.databind.JsonDeserializer;
  */
 public class DurationDeserializer extends JsonDeserializer<Integer> {
 
-	private static final String DURATION_PATTERN = "^\\d+$";
+	private static final String DURATION_PATTERN = "^\\d{1,9}";
 	
 	@Override
 	public Integer deserialize(JsonParser p, DeserializationContext ctxt) throws IOException, JsonProcessingException {

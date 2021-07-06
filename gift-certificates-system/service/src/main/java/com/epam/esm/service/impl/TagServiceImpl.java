@@ -4,14 +4,17 @@ import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
+import org.apache.commons.lang3.StringUtils;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.epam.esm.dao.GiftCertificateTagDao;
 import com.epam.esm.dao.TagDao;
+import com.epam.esm.dto.PageDto;
+import com.epam.esm.dto.PaginationDto;
 import com.epam.esm.dto.TagDto;
+import com.epam.esm.entity.Pagination;
 import com.epam.esm.entity.Tag;
 import com.epam.esm.exception.ErrorCode;
 import com.epam.esm.exception.IncorrectParameterValueException;
@@ -31,19 +34,17 @@ import com.epam.esm.validator.TagValidator;
 public class TagServiceImpl implements TagService {
 
 	private final TagDao tagDao;
-	private final GiftCertificateTagDao giftCertificateTagDao;
 	private final TagValidator tagValidator;
 	private final ModelMapper modelMapper;
 
 	@Autowired
-	public TagServiceImpl(TagDao tagDao, GiftCertificateTagDao giftCertificateTagDao, TagValidator tagValidator,
-			ModelMapper modelMapper) {
+	public TagServiceImpl(TagDao tagDao, TagValidator tagValidator, ModelMapper modelMapper) {
 		this.tagDao = tagDao;
-		this.giftCertificateTagDao = giftCertificateTagDao;
 		this.tagValidator = tagValidator;
 		this.modelMapper = modelMapper;
 	}
 
+	@Transactional
 	@Override
 	public TagDto createTag(TagDto tagDto) throws IncorrectParameterValueException {
 		tagValidator.validateName(tagDto.getName());
@@ -53,9 +54,14 @@ public class TagServiceImpl implements TagService {
 	}
 
 	@Override
-	public List<TagDto> findAllTags() {
-		List<Tag> foundTags = tagDao.findAll();
-		return foundTags.stream().map(foundTag -> modelMapper.map(foundTag, TagDto.class)).collect(Collectors.toList());
+	public PageDto<TagDto> findAllTags(PaginationDto paginationDto) {
+		Pagination pagination = modelMapper.map(paginationDto, Pagination.class);
+		List<Tag> foundTags = tagDao.findAll(pagination);
+		List<TagDto> foundTagsDto = foundTags.stream().map(foundTag -> modelMapper.map(foundTag, TagDto.class))
+				.collect(Collectors.toList());
+		long totalNumberPositions = tagDao.getTotalNumber();
+		PageDto<TagDto> tagsPage = new PageDto<>(foundTagsDto, totalNumberPositions);
+		return tagsPage;
 	}
 
 	@Override
@@ -67,6 +73,15 @@ public class TagServiceImpl implements TagService {
 						String.valueOf(id), ErrorCode.TAG.getCode()));
 	}
 
+	@Override
+	public TagDto findMostPopularTagOfUserWithHighestCostOfAllOrders() {
+		Optional<Tag> foundTagOptional = tagDao.findMostPopularTagOfUserWithHighestCostOfAllOrders();
+		return foundTagOptional.map(foundTag -> modelMapper.map(foundTag, TagDto.class))
+				.orElseThrow(() -> new ResourceNotFoundException(
+						"most popular tag of user with highest cost of all orders not found", MessageKey.TAG_NOT_FOUND,
+						StringUtils.EMPTY, ErrorCode.TAG.getCode()));
+	}
+
 	@Transactional
 	@Override
 	public void deleteTag(long id) throws IncorrectParameterValueException, ResourceNotFoundException {
@@ -75,6 +90,6 @@ public class TagServiceImpl implements TagService {
 			throw new ResourceNotFoundException("no tag to remove by id", MessageKey.TAG_NOT_FOUND_BY_ID,
 					String.valueOf(id), ErrorCode.TAG.getCode());
 		}
-		giftCertificateTagDao.deleteConnectionByTagId(id);
+		tagDao.deleteConnectionByTagId(id);
 	}
 }

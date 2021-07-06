@@ -6,3 +6,5 @@ INSERT INTO tag (id, `name`) VALUES (2, 'gift');
 INSERT INTO gift_certificate_tag_connection (gift_certificate_id, tag_id) VALUES (1, 1);
 INSERT INTO gift_certificate_tag_connection (gift_certificate_id, tag_id) VALUES (1, 2);
 INSERT INTO gift_certificate_tag_connection (gift_certificate_id, tag_id) VALUES (2, 2);
+INSERT INTO user (id, `name`) VALUES (1, 'Alex');
+INSERT INTO user (id, `name`) VALUES (2, 'Tim');

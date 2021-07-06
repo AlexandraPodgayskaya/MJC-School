@@ -3,8 +3,9 @@ package com.epam.esm.dao;
 import java.util.List;
 import java.util.Optional;
 
+import com.epam.esm.dao.creator.GiftCertificateSearchParameters;
 import com.epam.esm.entity.GiftCertificate;
-import com.epam.esm.entity.GiftCertificateSearchParameters;
+import com.epam.esm.entity.Pagination;
 
 /**
  * Interface for working with gift_certificate table in database
@@ -25,11 +26,13 @@ public interface GiftCertificateDao {
 	/**
 	 * Find gift certificates by query parameters in database
 	 * 
+	 * @param pagination                      the information about pagination
 	 * @param giftCertificateSearchParameters the gift certificate query parameters
 	 * @return the list of found gift certificates if gift certificates are found,
 	 *         else emptyList
 	 */
-	List<GiftCertificate> findBySearchParameters(GiftCertificateSearchParameters giftCertificateSearchParameters);
+	List<GiftCertificate> findBySearchParameters(Pagination pagination,
+			GiftCertificateSearchParameters giftCertificateSearchParameters);
 
 	/**
 	 * Find gift certificate in database by id
@@ -62,4 +65,21 @@ public interface GiftCertificateDao {
 	 * @return boolean true if everything go correct, else false
 	 */
 	boolean delete(long id);
+
+	/**
+	 * Remove gift certificate and tag connection from database
+	 * 
+	 * @param id the id of gift certificate to remove connection
+	 * @return boolean true if everything go correct, else false
+	 */
+	boolean deleteConnectionByGiftCertificateId(long id);
+
+	/**
+	 * Get number of gift certificates by query parameters in database
+	 * 
+	 * 
+	 * @param searchParameters the gift certificate query parameters
+	 * @return the number of found gift certificates
+	 */
+	long getTotalNumber(GiftCertificateSearchParameters searchParameters);
 }

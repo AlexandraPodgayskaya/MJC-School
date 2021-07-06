@@ -38,6 +38,21 @@ public class IncorrectParameterValueException extends RuntimeException {
 	}
 
 	/**
+	 * Instantiates a new Incorrect parameter value exception
+	 * 
+	 * @param message    error message
+	 * @param parameters Map with parameter name key and parameter value
+	 * @param errorCode  code for building error code in a message to the client
+	 * @param exception  the exception
+	 */
+	public IncorrectParameterValueException(String message, Map<String, String> parameters, String errorCode,
+			Exception exception) {
+		super(message, exception);
+		this.parameters = parameters;
+		this.errorCode = errorCode;
+	}
+
+	/**
 	 * Get parameters
 	 * 
 	 * @return Map with parameter name key and parameter value
