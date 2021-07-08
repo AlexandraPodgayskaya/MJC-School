@@ -6,6 +6,9 @@ import java.util.stream.Collectors;
 
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
 import com.epam.esm.dao.UserDao;
@@ -29,7 +32,7 @@ import com.epam.esm.validator.UserValidator;
  * @version 1.0
  */
 @Service
-public class UserServiceImpl implements UserService {
+public class UserServiceImpl implements UserService, UserDetailsService {
 
 	private final UserDao userDao;
 	private final ModelMapper modelMapper;
@@ -60,5 +63,13 @@ public class UserServiceImpl implements UserService {
 		return foundUser.map(user -> modelMapper.map(user, UserDto.class))
 				.orElseThrow(() -> new ResourceNotFoundException("no user by id", MessageKey.USER_NOT_FOUND_BY_ID,
 						String.valueOf(id), ErrorCode.USER.getCode()));
+	}
+
+	@Override
+	public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
+		// TODO validate
+		Optional<User> foundUser = userDao.findByEmail(email);
+		return foundUser.map(user -> modelMapper.map(user, UserDetails.class))
+				.orElseThrow(() -> new UsernameNotFoundException("user doesn't exists"));
 	}
 }

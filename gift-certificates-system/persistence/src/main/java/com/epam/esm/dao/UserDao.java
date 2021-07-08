@@ -30,6 +30,8 @@ public interface UserDao {
 	 */
 	Optional<User> findById(long id);
 
+	Optional<User> findByEmail(String email);
+
 	/**
 	 * Get number of users in database
 	 * 

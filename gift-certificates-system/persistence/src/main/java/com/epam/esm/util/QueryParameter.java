@@ -20,6 +20,7 @@ public final class QueryParameter {
 	public static final String CREATE_DATE = "createDate";
 	public static final String LAST_UPDATE_DATE = "lastUpdateDate";
 	public static final String NUMBER = "number";
+	public static final String EMAIL = "email";
 
 	private QueryParameter() {
 	}

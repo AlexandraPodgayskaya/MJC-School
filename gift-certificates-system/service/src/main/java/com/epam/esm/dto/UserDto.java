@@ -2,6 +2,8 @@ package com.epam.esm.dto;
 
 import org.springframework.hateoas.RepresentationModel;
 
+import com.epam.esm.entity.Role;
+
 /**
  * Class is implementation of pattern DTO for transmission user entity between
  * service and controller
@@ -13,6 +15,10 @@ public class UserDto extends RepresentationModel<UserDto> {
 
 	private Long id;
 	private String name;
+	private String email;
+	//TODO JsonProperty
+	private String password;
+	private Role role;
 
 	public UserDto() {
 	}
@@ -38,12 +44,39 @@ public class UserDto extends RepresentationModel<UserDto> {
 		this.name = name;
 	}
 
+	public String getEmail() {
+		return email;
+	}
+
+	public void setEmail(String email) {
+		this.email = email;
+	}
+
+	public String getPassword() {
+		return password;
+	}
+
+	public void setPassword(String password) {
+		this.password = password;
+	}
+
+	public Role getRole() {
+		return role;
+	}
+
+	public void setRole(Role role) {
+		this.role = role;
+	}
+
 	@Override
 	public int hashCode() {
 		final int prime = 31;
-		int result = 1;
+		int result = super.hashCode();
+		result = prime * result + ((email == null) ? 0 : email.hashCode());
 		result = prime * result + ((id == null) ? 0 : id.hashCode());
 		result = prime * result + ((name == null) ? 0 : name.hashCode());
+		result = prime * result + ((password == null) ? 0 : password.hashCode());
+		result = prime * result + ((role == null) ? 0 : role.hashCode());
 		return result;
 	}
 
@@ -51,11 +84,16 @@ public class UserDto extends RepresentationModel<UserDto> {
 	public boolean equals(Object obj) {
 		if (this == obj)
 			return true;
-		if (obj == null)
+		if (!super.equals(obj))
 			return false;
 		if (getClass() != obj.getClass())
 			return false;
 		UserDto other = (UserDto) obj;
+		if (email == null) {
+			if (other.email != null)
+				return false;
+		} else if (!email.equals(other.email))
+			return false;
 		if (id == null) {
 			if (other.id != null)
 				return false;
@@ -66,12 +104,20 @@ public class UserDto extends RepresentationModel<UserDto> {
 				return false;
 		} else if (!name.equals(other.name))
 			return false;
+		if (password == null) {
+			if (other.password != null)
+				return false;
+		} else if (!password.equals(other.password))
+			return false;
+		if (role != other.role)
+			return false;
 		return true;
 	}
 
 	@Override
 	public String toString() {
-		return "UserDto [id=" + id + ", name=" + name + "]";
+		return "UserDto [id=" + id + ", name=" + name + ", email=" + email + ", password=" + password + ", role=" + role
+				+ "]";
 	}
 
 }
