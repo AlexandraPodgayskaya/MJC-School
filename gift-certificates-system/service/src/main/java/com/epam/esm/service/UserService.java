@@ -6,6 +6,8 @@ import com.epam.esm.dto.UserDto;
 
 public interface UserService {
 
+	UserDto createUser(UserDto userDto);
+
 	/**
 	 * Find all users
 	 *

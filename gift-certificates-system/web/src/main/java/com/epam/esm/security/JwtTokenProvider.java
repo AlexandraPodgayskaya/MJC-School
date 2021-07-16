@@ -33,13 +33,13 @@ public class JwtTokenProvider {
 	@Value("${jwt.secret}")
 	private String jwtSecret;
 	@Value("${jwt.header}")
-	private String authorizationHeader;
+	private String authorizationHeader;// TODO нужно ли?
 
-	private UserDetailsService userService;
+	private UserDetailsService userDetailsService;
 
 	@Autowired
-	public JwtTokenProvider(@Qualifier("userServiceImpl") UserDetailsService userService) {
-		this.userService = userService;
+	public JwtTokenProvider(@Qualifier("jwtUserDetailsService") UserDetailsService userDetailsService) {
+		this.userDetailsService = userDetailsService;
 	}
 
 	@PostConstruct
@@ -77,7 +77,8 @@ public class JwtTokenProvider {
 	}
 
 	public Authentication getAuthentication(String token) {
-		UserDetails userDetails = userService.loadUserByUsername(getUsername(token));
+		UserDetails userDetails = userDetailsService.loadUserByUsername(getUsername(token));
+		System.out.println("GET AUTHENTICATION" + userDetails.toString());// TODO
 		return new UsernamePasswordAuthenticationToken(userDetails, StringUtils.EMPTY, userDetails.getAuthorities());
 	}
 

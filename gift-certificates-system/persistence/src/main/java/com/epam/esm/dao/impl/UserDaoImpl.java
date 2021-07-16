@@ -5,6 +5,7 @@ import java.util.Optional;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import javax.persistence.TypedQuery;
 
 import org.springframework.stereotype.Repository;
 
@@ -32,6 +33,12 @@ public class UserDaoImpl implements UserDao {
 	private EntityManager entityManager;
 
 	@Override
+	public User create(User user) {
+		entityManager.persist(user);
+		return user;
+	}
+
+	@Override
 	public List<User> findAll(Pagination pagination) {
 		return entityManager.createQuery(SELECT_ALL_USERS_SQL, User.class).setFirstResult(pagination.getOffset())
 				.setMaxResults(pagination.getLimit()).getResultList();
@@ -45,8 +52,25 @@ public class UserDaoImpl implements UserDao {
 
 	@Override
 	public Optional<User> findByEmail(String email) {
-		return entityManager.createQuery(SELECT_USER_BY_EMAIL_SQL, User.class).setParameter(QueryParameter.EMAIL, email)
-				.getResultStream().findFirst();
+
+		System.out.println("GO TO DAO - " + email);// TODO 
+		TypedQuery<User> query = entityManager.createQuery(SELECT_USER_BY_EMAIL_SQL, User.class).setParameter(QueryParameter.EMAIL, email);
+		/*Optional <User> user = entityManager.createQuery(SELECT_USER_BY_EMAIL_SQL, User.class).setParameter(QueryParameter.EMAIL, email)
+				.getResultStream().findFirst();*/
+		System.out.println("Query is finished");
+		/*if (user.isPresent()) {// TODO
+			System.out.println("DAO" + user.get().toString());
+		} else {
+			System.out.println("NOT FOUND");
+		}*/
+		return query.getResultStream().findFirst();
+
+		/*
+		 * return entityManager.createQuery(SELECT_USER_BY_EMAIL_SQL,
+		 * User.class).setParameter(QueryParameter.EMAIL, email)
+		 * .getResultStream().findFirst();
+		 */
+
 	}
 
 	@Override

@@ -13,6 +13,8 @@ import com.epam.esm.entity.User;
  * @version 1.0
  */
 public interface UserDao {
+	
+	User create (User user);
 
 	/**
 	 * Find all users in database
