@@ -10,7 +10,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.epam.esm.dao.UserDao;
-import com.epam.esm.dto.SecurityUser;
+import com.epam.esm.dto.JwtUser;
 import com.epam.esm.entity.User;
 
 @Service("jwtUserDetailsService")
@@ -33,7 +33,7 @@ public class JwtUserDetailsService implements UserDetailsService {
 			throw new UsernameNotFoundException("user doesn't exists");
 		}
 		User user = foundUser.get();
-		return new SecurityUser(user.getId(), user.getName(), user.getEmail(), user.getPassword(), user.getRole());
+		return new JwtUser(user.getId(), user.getName(), user.getEmail(), user.getPassword(), user.getRole());
 	}
 
 }

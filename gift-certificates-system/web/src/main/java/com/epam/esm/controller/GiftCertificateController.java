@@ -8,6 +8,7 @@ import java.util.Map;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
@@ -90,6 +91,7 @@ public class GiftCertificateController {
 	 */
 	@PostMapping
 	@ResponseStatus(HttpStatus.CREATED)
+	@PreAuthorize("hasAuthority('authority:write')")
 	public GiftCertificateDto createGiftCertificate(@RequestBody GiftCertificateDto giftCertificateDto) {
 		GiftCertificateDto createdGiftCertificate = giftCertificateService.createGiftCertificate(giftCertificateDto);
 		addLinks(createdGiftCertificate);
@@ -104,6 +106,7 @@ public class GiftCertificateController {
 	 * @return the updated gift certificate dto
 	 */
 	@PatchMapping("/{id}")
+	@PreAuthorize("hasAuthority('authority:write')")
 	public GiftCertificateDto updateGiftCertificate(@PathVariable long id,
 			@RequestBody GiftCertificateDto giftCertificateDto) {
 		giftCertificateDto.setId(id);
@@ -120,6 +123,7 @@ public class GiftCertificateController {
 	 * @return void
 	 */
 	@DeleteMapping("/{id}")
+	@PreAuthorize("hasAuthority('authority:write')")
 	public ResponseEntity<Void> deleteGiftCertificate(@PathVariable long id) {
 		giftCertificateService.deleteGiftCertificate(id);
 		return new ResponseEntity<>(HttpStatus.NO_CONTENT);

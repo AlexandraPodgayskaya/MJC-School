@@ -7,7 +7,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 
 import com.epam.esm.entity.Role;
 
-public class SecurityUser implements UserDetails {
+public class JwtUser implements UserDetails {
 
 	private static final long serialVersionUID = 1L;
 	private final Long id;
@@ -16,7 +16,7 @@ public class SecurityUser implements UserDetails {
 	private final String password;
 	private final Role role;
 
-	public SecurityUser(Long id, String name, String email, String password, Role role) {
+	public JwtUser(Long id, String name, String email, String password, Role role) {
 		this.id = id;
 		this.name = name;
 		this.email = email;

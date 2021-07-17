@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.epam.esm.dto.AuthenticationDto;
-import com.epam.esm.dto.SecurityUser;
+import com.epam.esm.dto.JwtUser;
 import com.epam.esm.dto.UserDto;
 import com.epam.esm.security.JwtTokenProvider;
 import com.epam.esm.service.UserService;
@@ -43,7 +43,7 @@ public class AuthenticationController {
 			Authentication authentication = authenticationManager
 					.authenticate(new UsernamePasswordAuthenticationToken(email, request.getPassword()));
 			System.out.println("1");// TODO
-			SecurityUser user = (SecurityUser) authentication.getPrincipal();
+			JwtUser user = (JwtUser) authentication.getPrincipal();
 			String token = jwtTokenProvider.createToken(email);
 			return ResponseEntity.ok(Map.of("email", email, "token", token));// TODO
 		} catch (AuthenticationException e) {

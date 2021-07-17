@@ -7,6 +7,7 @@ import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -50,6 +51,7 @@ public class OrderController {
 	 * @return the found order dto
 	 */
 	@GetMapping("/{id}")
+	@PreAuthorize("hasAuthority('authority:read')")
 	public OrderDto getOrderById(@PathVariable long id) {
 		OrderDto foundOrderDto = orderService.findOrderById(id);
 		addLinks(foundOrderDto);
@@ -64,6 +66,7 @@ public class OrderController {
 	 * @return the page with found orders and total number of positions
 	 */
 	@GetMapping("/users/{userId}")
+	@PreAuthorize("hasAuthority('authority:read')")
 	public PageDto<OrderDto> getOrdersByUserId(@PathVariable long userId,
 			@RequestParam Map<String, String> pageParameters) {
 		PaginationDto pagination = parametersToDtoConverter.getPaginationDto(pageParameters);
@@ -80,6 +83,7 @@ public class OrderController {
 	 */
 	@PostMapping
 	@ResponseStatus(HttpStatus.CREATED)
+	@PreAuthorize("hasAuthority('authority:make_order')")
 	public OrderDto addOrder(@RequestBody OrderDto orderDto) {
 		OrderDto addedOrderDto = orderService.addOrder(orderDto);
 		addLinks(addedOrderDto);

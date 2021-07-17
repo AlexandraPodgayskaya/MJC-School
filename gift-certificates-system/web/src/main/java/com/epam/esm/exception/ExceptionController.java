@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.MessageSource;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.converter.HttpMessageNotReadableException;
+import org.springframework.security.access.AccessDeniedException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
@@ -70,6 +71,14 @@ public class ExceptionController {
 				(name, value) -> builder.append(messageSource.getMessage(name, new String[] { value }, locale)));
 		logger.error(HttpStatus.BAD_REQUEST + exception.getParameters().toString(), exception);
 		return new ExceptionDetails(builder.toString(), HttpStatus.BAD_REQUEST.value() + exception.getErrorCode());
+	}
+
+	@ExceptionHandler(AccessDeniedException.class)
+	@ResponseStatus(HttpStatus.FORBIDDEN) // TODO
+	public ExceptionDetails handleAccessDeniedException(AccessDeniedException exception, Locale locale) {
+		String errorMessage = messageSource.getMessage(MessageKey.ACCESS_DENIED, new String[] {}, locale);
+		logger.error(HttpStatus.NOT_FOUND, exception);
+		return new ExceptionDetails(errorMessage, HttpStatus.FORBIDDEN.value() + ErrorCode.DEFAULT.getCode());
 	}
 
 	/**

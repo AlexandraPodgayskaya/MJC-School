@@ -19,7 +19,7 @@ import org.springframework.transaction.annotation.Transactional;
 import com.epam.esm.dao.UserDao;
 import com.epam.esm.dto.PageDto;
 import com.epam.esm.dto.PaginationDto;
-import com.epam.esm.dto.SecurityUser;
+import com.epam.esm.dto.JwtUser;
 import com.epam.esm.dto.UserDto;
 import com.epam.esm.entity.Pagination;
 import com.epam.esm.entity.Role;

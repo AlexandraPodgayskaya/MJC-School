@@ -3,6 +3,8 @@ package com.epam.esm.dto;
 import org.springframework.hateoas.RepresentationModel;
 
 import com.epam.esm.entity.Role;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonProperty.Access;
 
 /**
  * Class is implementation of pattern DTO for transmission user entity between
@@ -13,11 +15,13 @@ import com.epam.esm.entity.Role;
  */
 public class UserDto extends RepresentationModel<UserDto> {
 
+	@JsonProperty(access = Access.READ_ONLY)
 	private Long id;
 	private String name;
 	private String email;
-	//TODO JsonProperty
+	@JsonProperty(access = Access.WRITE_ONLY)
 	private String password;
+	@JsonProperty(access = Access.READ_ONLY)
 	private Role role;
 
 	public UserDto() {
