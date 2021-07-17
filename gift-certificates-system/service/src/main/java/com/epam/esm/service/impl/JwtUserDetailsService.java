@@ -7,6 +7,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.epam.esm.dao.UserDao;
 import com.epam.esm.dto.SecurityUser;
@@ -22,6 +23,7 @@ public class JwtUserDetailsService implements UserDetailsService {
 		this.userDao = userDao;
 	}
 
+	@Transactional
 	@Override
 	public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
 		System.out.println("GO TO LOAD-USER");// TODO
