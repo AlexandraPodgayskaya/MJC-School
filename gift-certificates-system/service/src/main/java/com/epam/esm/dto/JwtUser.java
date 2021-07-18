@@ -51,7 +51,6 @@ public class JwtUser implements UserDetails {
 		return this.getRole().getAuthorities();
 	}
 
-	// TODO
 	@Override
 	public boolean isAccountNonExpired() {
 		return true;

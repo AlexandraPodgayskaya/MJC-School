@@ -8,10 +8,6 @@ import java.util.stream.Collectors;
 
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Lazy;
-import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.core.userdetails.UserDetailsService;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -19,7 +15,6 @@ import org.springframework.transaction.annotation.Transactional;
 import com.epam.esm.dao.UserDao;
 import com.epam.esm.dto.PageDto;
 import com.epam.esm.dto.PaginationDto;
-import com.epam.esm.dto.JwtUser;
 import com.epam.esm.dto.UserDto;
 import com.epam.esm.entity.Pagination;
 import com.epam.esm.entity.Role;
@@ -48,7 +43,7 @@ public class UserServiceImpl implements UserService {
 
 	@Autowired
 	public UserServiceImpl(UserDao userDao, ModelMapper modelMapper, UserValidator userValidator,
-			@Lazy PasswordEncoder passwordEncoder) {
+			PasswordEncoder passwordEncoder) {
 		this.userDao = userDao;
 		this.modelMapper = modelMapper;
 		this.userValidator = userValidator;
@@ -85,19 +80,6 @@ public class UserServiceImpl implements UserService {
 				.orElseThrow(() -> new ResourceNotFoundException("no user by id", MessageKey.USER_NOT_FOUND_BY_ID,
 						String.valueOf(id), ErrorCode.USER.getCode()));
 	}
-
-	/*@Override
-	public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
-		// TODO validate
-		System.out.println("GO TO LOAD-USER");//TODO
-		Optional<User> foundUser = userDao.findByEmail(email);
-		System.out.println("LOAD-USER" + foundUser.get().toString());// TODO
-		if (foundUser.isEmpty()) {
-			throw new UsernameNotFoundException("user doesn't exists");
-		}
-		User user = foundUser.get();
-		return new SecurityUser(user.getId(), user.getName(), user.getEmail(), user.getPassword(), user.getRole());
-	}*/
 
 	private void checkUniquenessEmail(String email) {
 		Optional<User> userOptional = userDao.findByEmail(email);

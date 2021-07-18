@@ -13,27 +13,24 @@ import com.epam.esm.dao.UserDao;
 import com.epam.esm.dto.JwtUser;
 import com.epam.esm.entity.User;
 
-@Service("jwtUserDetailsService")
-public class JwtUserDetailsService implements UserDetailsService {
+@Service
+public class UserDetailsServiceImpl implements UserDetailsService {
 
 	private final UserDao userDao;
 
 	@Autowired
-	public JwtUserDetailsService(UserDao userDao) {
+	public UserDetailsServiceImpl(UserDao userDao) {
 		this.userDao = userDao;
 	}
 
 	@Transactional
 	@Override
 	public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
-		System.out.println("GO TO LOAD-USER");// TODO
 		Optional<User> foundUser = userDao.findByEmail(email);
-		System.out.println("LOAD-USER" + foundUser.get().toString());// TODO
 		if (foundUser.isEmpty()) {
 			throw new UsernameNotFoundException("user doesn't exists");
 		}
 		User user = foundUser.get();
 		return new JwtUser(user.getId(), user.getName(), user.getEmail(), user.getPassword(), user.getRole());
 	}
-
 }

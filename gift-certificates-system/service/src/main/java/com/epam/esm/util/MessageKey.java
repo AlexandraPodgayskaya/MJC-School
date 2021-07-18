@@ -39,6 +39,7 @@ public final class MessageKey {
 	public static final String TYPE_NUMBER = "parameterType.number";
 	public static final String BE_CAREFUL = "beCareful";
 	public static final String ACCESS_DENIED = "accessDenied";
+	public static final String BAD_CREDENTIALS = "badCredentials";
 
 	private MessageKey() {
 	}

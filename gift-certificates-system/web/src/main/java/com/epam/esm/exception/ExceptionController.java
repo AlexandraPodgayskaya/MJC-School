@@ -10,6 +10,7 @@ import org.springframework.context.MessageSource;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.security.access.AccessDeniedException;
+import org.springframework.security.core.AuthenticationException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
@@ -74,11 +75,19 @@ public class ExceptionController {
 	}
 
 	@ExceptionHandler(AccessDeniedException.class)
-	@ResponseStatus(HttpStatus.FORBIDDEN) // TODO
+	@ResponseStatus(HttpStatus.FORBIDDEN)
 	public ExceptionDetails handleAccessDeniedException(AccessDeniedException exception, Locale locale) {
 		String errorMessage = messageSource.getMessage(MessageKey.ACCESS_DENIED, new String[] {}, locale);
-		logger.error(HttpStatus.NOT_FOUND, exception);
+		logger.error(HttpStatus.FORBIDDEN, exception);
 		return new ExceptionDetails(errorMessage, HttpStatus.FORBIDDEN.value() + ErrorCode.DEFAULT.getCode());
+	}
+
+	@ExceptionHandler(AuthenticationException.class)
+	@ResponseStatus(HttpStatus.UNAUTHORIZED) // или HttpStatus.BAD_REQUEST или HttpStatus.NOT_FOUND или HttpStatus.FORBIDDEN TODO
+	public ExceptionDetails handleAuthenticationException(AuthenticationException exception, Locale locale) {
+		String errorMessage = messageSource.getMessage(MessageKey.BAD_CREDENTIALS, new String[] {}, locale);
+		logger.error(HttpStatus.UNAUTHORIZED, exception);
+		return new ExceptionDetails(errorMessage, HttpStatus.UNAUTHORIZED.value() + ErrorCode.DEFAULT.getCode());
 	}
 
 	/**
