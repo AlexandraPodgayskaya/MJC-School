@@ -74,6 +74,13 @@ public class ExceptionController {
 		return new ExceptionDetails(builder.toString(), HttpStatus.BAD_REQUEST.value() + exception.getErrorCode());
 	}
 
+	/**
+	 * Handle AccessDeniedException
+	 * 
+	 * @param exception the exception
+	 * @param locale    the locale of HTTP request
+	 * @return the exception details entity
+	 */
 	@ExceptionHandler(AccessDeniedException.class)
 	@ResponseStatus(HttpStatus.FORBIDDEN)
 	public ExceptionDetails handleAccessDeniedException(AccessDeniedException exception, Locale locale) {
@@ -82,8 +89,15 @@ public class ExceptionController {
 		return new ExceptionDetails(errorMessage, HttpStatus.FORBIDDEN.value() + ErrorCode.DEFAULT.getCode());
 	}
 
+	/**
+	 * Handle AuthenticationException
+	 * 
+	 * @param exception the exception
+	 * @param locale    the locale of HTTP request
+	 * @return the exception details entity
+	 */
 	@ExceptionHandler(AuthenticationException.class)
-	@ResponseStatus(HttpStatus.UNAUTHORIZED) // или HttpStatus.BAD_REQUEST или HttpStatus.NOT_FOUND 
+	@ResponseStatus(HttpStatus.UNAUTHORIZED) // или HttpStatus.BAD_REQUEST или HttpStatus.NOT_FOUND
 	public ExceptionDetails handleAuthenticationException(AuthenticationException exception, Locale locale) {
 		String errorMessage = messageSource.getMessage(MessageKey.BAD_CREDENTIALS, new String[] {}, locale);
 		logger.error(HttpStatus.UNAUTHORIZED, exception);

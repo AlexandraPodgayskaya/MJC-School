@@ -2,8 +2,9 @@ package com.epam.esm.configuration;
 
 import org.modelmapper.ModelMapper;
 import org.modelmapper.convention.MatchingStrategies;
-import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.boot.SpringBootConfiguration;
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.ComponentScan;
 
 /**
  * Class contains service configuration
@@ -11,7 +12,8 @@ import org.springframework.context.annotation.Bean;
  * @author Aleksandra Podgayskaya
  * @version 1.0
  */
-@SpringBootApplication(scanBasePackages = "com.epam.esm")
+@SpringBootConfiguration
+@ComponentScan("com.epam.esm")
 public class ServiceConfiguration {
 
 	/**

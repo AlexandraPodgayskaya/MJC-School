@@ -7,6 +7,12 @@ import org.springframework.security.core.userdetails.UserDetails;
 
 import com.epam.esm.entity.Role;
 
+/**
+ * Class is implementation of interface UserDetails and contains user data
+ *
+ * @author Aleksandra Podgayskaya
+ * @version 1.0
+ */
 public class JwtUser implements UserDetails {
 
 	private static final long serialVersionUID = 1L;

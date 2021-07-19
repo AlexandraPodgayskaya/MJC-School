@@ -18,9 +18,16 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.stereotype.Component;
 
+import io.jsonwebtoken.JwtException;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 
+/**
+ * Class contains operations with JSON web tokens
+ * 
+ * @author Aleksandra Podgayskaya
+ * @version 1.0
+ */
 @Component
 public class JwtTokenProvider {
 
@@ -41,6 +48,12 @@ public class JwtTokenProvider {
 		jwtSecret = Base64.getEncoder().encodeToString(jwtSecret.getBytes());
 	}
 
+	/**
+	 * Create new token
+	 * 
+	 * @param email the user email
+	 * @return created token
+	 */
 	public String createToken(String email) {
 		LocalDateTime now = LocalDateTime.now();
 		LocalDateTime validity = now.plusMinutes(expirationInMinutes);
@@ -49,19 +62,46 @@ public class JwtTokenProvider {
 				.signWith(SignatureAlgorithm.HS256, jwtSecret).compact();
 	}
 
-	public void validateToken(String token) {
+	/**
+	 * Validate token
+	 * 
+	 * @param token the token for validation
+	 * @throws JwtException if the token is invalid
+	 * 
+	 */
+	public void validateToken(String token) throws JwtException {
 		Jwts.parser().setSigningKey(jwtSecret).parseClaimsJws(token);
 	}
 
-	public String getUsername(String token) {
+	/**
+	 * Get user name
+	 * 
+	 * @param token the token for getting user name
+	 * @return received user name
+	 * @throws JwtException if the token is invalid
+	 * 
+	 */
+	public String getUsername(String token) throws JwtException {
 		return Jwts.parser().setSigningKey(jwtSecret).parseClaimsJws(token).getBody().getSubject();
 	}
 
+	/**
+	 * Get authentication
+	 * 
+	 * @param token the token for getting authentication
+	 * @return authentication
+	 */
 	public Authentication getAuthentication(String token) {
 		UserDetails userDetails = userDetailsService.loadUserByUsername(getUsername(token));
 		return new UsernamePasswordAuthenticationToken(userDetails, StringUtils.EMPTY, userDetails.getAuthorities());
 	}
 
+	/**
+	 * Resolve token
+	 * 
+	 * @param request HttpServletRequest
+	 * @return token from Authorization header
+	 */
 	public String resolveToken(HttpServletRequest request) {
 		return request.getHeader(HttpHeaders.AUTHORIZATION);
 	}

@@ -1,6 +1,7 @@
 package com.epam.esm.controller;
 
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
+
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
 
 import java.util.Map;
@@ -20,6 +21,12 @@ import com.epam.esm.dto.UserDto;
 import com.epam.esm.security.JwtTokenProvider;
 import com.epam.esm.service.UserService;
 
+/**
+ * Class is an endpoint for user authentication and registration
+ * 
+ * @author Aleksandra Podgayskaya
+ * @version 1.0
+ */
 @RestController
 @RequestMapping("/auth")
 public class AuthenticationController {
@@ -40,6 +47,12 @@ public class AuthenticationController {
 		this.userService = userService;
 	}
 
+	/**
+	 * Authenticate, processes POST requests at /auth/login
+	 * 
+	 * @param request credentials for authenticate
+	 * @return the map of email and token value
+	 */
 	@PostMapping("/login")
 	public Map<String, String> authenticate(@RequestBody AuthenticationDto request) {
 		authenticationManager
@@ -48,9 +61,15 @@ public class AuthenticationController {
 		return Map.of(EMAIL, request.getEmail(), TOKEN, token);
 	}
 
+	/**
+	 * Register, processes POST requests at /auth/registration
+	 * 
+	 * @param userDto the new user which will be added
+	 * @return the added user dto
+	 */
 	@PostMapping("/registration")
 	@ResponseStatus(HttpStatus.CREATED)
-	public UserDto registaration(@RequestBody UserDto userDto) {
+	public UserDto register(@RequestBody UserDto userDto) {
 		UserDto newUser = userService.createUser(userDto);
 		addLinks(newUser);
 		return newUser;

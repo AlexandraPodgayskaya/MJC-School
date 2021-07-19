@@ -45,6 +45,13 @@ public class UserValidator {
 		}
 	}
 
+	/**
+	 * Validate user data
+	 * 
+	 * @param user the user for validation
+	 * @throws IncorrectParameterValueException in case incorrect name, email, or
+	 *                                          password
+	 */
 	public void validateUser(UserDto user) throws IncorrectParameterValueException {
 		Map<String, String> incorrectParameters = new LinkedHashMap<>();
 
@@ -72,5 +79,4 @@ public class UserValidator {
 					ErrorCode.USER.getCode());
 		}
 	}
-
 }

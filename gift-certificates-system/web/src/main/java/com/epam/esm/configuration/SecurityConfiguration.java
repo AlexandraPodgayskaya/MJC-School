@@ -16,6 +16,13 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 
 import com.epam.esm.security.JwtTokenFilter;
 
+/**
+ * Class contains spring security configuration
+ *
+ * @author Aleksandra Podgayskaya
+ * @version 1.0
+ * @see WebSecurityConfigurerAdapter
+ */
 @Configuration
 @EnableWebSecurity
 @EnableGlobalMethodSecurity(prePostEnabled = true)
@@ -44,6 +51,11 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 		return super.authenticationManagerBean();
 	}
 
+	/**
+	 * Create bean PasswordEncoder which will be used to encode the password
+	 *
+	 * @return the password encoder
+	 */
 	@Bean
 	public PasswordEncoder passwordEncoder() {
 		return new BCryptPasswordEncoder(BCRYPT_STRENGTH);

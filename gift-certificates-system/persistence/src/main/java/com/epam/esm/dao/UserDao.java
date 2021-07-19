@@ -13,8 +13,14 @@ import com.epam.esm.entity.User;
  * @version 1.0
  */
 public interface UserDao {
-	
-	User create (User user);
+
+	/**
+	 * Add user to database
+	 * 
+	 * @param user user to add
+	 * @return the added user
+	 */
+	User create(User user);
 
 	/**
 	 * Find all users in database
@@ -27,11 +33,17 @@ public interface UserDao {
 	/**
 	 * Find user in database by id
 	 * 
-	 * @param id - the id of user to find
+	 * @param id the id of user to find
 	 * @return the Optional of found user
 	 */
 	Optional<User> findById(long id);
 
+	/**
+	 * Find user in database by email
+	 * 
+	 * @param email the email of user to find
+	 * @return the Optional of found user
+	 */
 	Optional<User> findByEmail(String email);
 
 	/**

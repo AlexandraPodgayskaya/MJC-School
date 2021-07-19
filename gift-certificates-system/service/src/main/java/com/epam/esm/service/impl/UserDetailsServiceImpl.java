@@ -13,6 +13,13 @@ import com.epam.esm.dao.UserDao;
 import com.epam.esm.dto.JwtUser;
 import com.epam.esm.entity.User;
 
+/**
+ * Class is implementation of interface UserDetailsService and loads user data
+ *
+ * @author Aleksandra Podgayskaya
+ * @version 1.0
+ */
+
 @Service
 public class UserDetailsServiceImpl implements UserDetailsService {
 

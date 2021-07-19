@@ -27,6 +27,12 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 
 import io.jsonwebtoken.JwtException;
 
+/**
+ * Filter for token validation
+ * 
+ * @author Aleksandra Podgayskaya
+ * @version 1.0
+ */
 @Component
 public class JwtTokenFilter extends OncePerRequestFilter {
 
