@@ -7,6 +7,7 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.apache.commons.lang3.StringUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,6 +15,7 @@ import org.springframework.context.MessageSource;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Component;
 import org.springframework.util.MimeTypeUtils;
 import org.springframework.web.filter.OncePerRequestFilter;
@@ -31,6 +33,7 @@ public class JwtTokenFilter extends OncePerRequestFilter {
 	private static final Logger logger = LogManager.getLogger();
 	private static final String ENCODING = "UTF-8";
 	private static final String GIFT_CERTIFICATE = "/gift-certificates";
+	private static final String AUTH = "/auth";
 	private static final String METHOD_GET = "GET";
 	private final JwtTokenProvider jwtTokenProvider;
 	private final MessageSource messageSource;
@@ -44,23 +47,22 @@ public class JwtTokenFilter extends OncePerRequestFilter {
 	@Override
 	protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
 			throws ServletException, IOException {
-		String token = jwtTokenProvider.resolveToken((HttpServletRequest) request);
-		if (request.getRequestURI().contains(GIFT_CERTIFICATE) && request.getMethod().equals(METHOD_GET)) {
+		if (isAvailableWithoutToken(request)) {
 			filterChain.doFilter(request, response);
 			return;
 		}
+		String token = jwtTokenProvider.resolveToken((HttpServletRequest) request);
 		try {
-			if (token == null || !jwtTokenProvider.validateToken(token)) {
+			if (StringUtils.isBlank(token)) {
 				throw new JwtException("invalid token");
 			}
+			jwtTokenProvider.validateToken(token);
 			Authentication authentication = jwtTokenProvider.getAuthentication(token);
-			if (authentication != null) {
-				SecurityContextHolder.getContext().setAuthentication(authentication);
-			}
-		} catch (JwtException | IllegalArgumentException exception) {
+			SecurityContextHolder.getContext().setAuthentication(authentication);
+		} catch (JwtException | UsernameNotFoundException exception) {
 			SecurityContextHolder.clearContext();
 			sendError(request, response);
-			logger.error(HttpStatus.FORBIDDEN, exception);
+			logger.error(HttpStatus.UNAUTHORIZED, exception);
 			return;
 		}
 		filterChain.doFilter(request, response);
@@ -70,9 +72,13 @@ public class JwtTokenFilter extends OncePerRequestFilter {
 		String errorMessage = messageSource.getMessage(MessageKey.ACCESS_DENIED, new String[] {}, request.getLocale());
 		response.setContentType(MimeTypeUtils.APPLICATION_JSON_VALUE);
 		response.setCharacterEncoding(ENCODING);
-		response.setStatus(HttpStatus.FORBIDDEN.value());
+		response.setStatus(HttpStatus.UNAUTHORIZED.value());
 		response.getWriter().write(String.valueOf(new ObjectMapper().writeValueAsString(
-				new ExceptionDetails(errorMessage, HttpStatus.FORBIDDEN.value() + ErrorCode.DEFAULT.getCode()))));// TODO
-																													// status
+				new ExceptionDetails(errorMessage, HttpStatus.UNAUTHORIZED.value() + ErrorCode.DEFAULT.getCode()))));
+	}
+
+	private boolean isAvailableWithoutToken(HttpServletRequest request) {
+		return request.getRequestURI().contains(GIFT_CERTIFICATE) && request.getMethod().equals(METHOD_GET)
+				|| request.getRequestURI().contains(AUTH);
 	}
 }

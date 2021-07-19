@@ -18,8 +18,6 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.stereotype.Component;
 
-import io.jsonwebtoken.Claims;
-import io.jsonwebtoken.Jws;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 
@@ -51,9 +49,8 @@ public class JwtTokenProvider {
 				.signWith(SignatureAlgorithm.HS256, jwtSecret).compact();
 	}
 
-	public boolean validateToken(String token) {
-		Jws<Claims> claimsJws = Jwts.parser().setSigningKey(jwtSecret).parseClaimsJws(token);
-		return claimsJws.getBody().getExpiration().after(new Date());
+	public void validateToken(String token) {
+		Jwts.parser().setSigningKey(jwtSecret).parseClaimsJws(token);
 	}
 
 	public String getUsername(String token) {

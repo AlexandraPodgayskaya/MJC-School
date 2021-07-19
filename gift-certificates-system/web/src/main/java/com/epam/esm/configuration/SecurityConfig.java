@@ -15,6 +15,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 import com.epam.esm.security.JwtTokenFilter;
+import com.epam.esm.security.UserAccessFilter;
 
 @Configuration
 @EnableWebSecurity
@@ -24,10 +25,12 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 	private final int BCRYPT_STRENGTH = 12;
 
 	private final JwtTokenFilter jwtTokenFilter;
+	private final UserAccessFilter userAccessFilter;
 
 	@Autowired
-	public SecurityConfig(JwtTokenFilter jwtTokenFilter) {
+	public SecurityConfig(JwtTokenFilter jwtTokenFilter, UserAccessFilter userAccessFilter) {
 		this.jwtTokenFilter = jwtTokenFilter;
+		this.userAccessFilter = userAccessFilter;
 	}
 
 	@Override
@@ -35,7 +38,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 		http.csrf().disable().sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS).and()
 				.authorizeRequests().antMatchers(HttpMethod.GET, "/gift-certificates", "/gift-certificates/**")
 				.permitAll().antMatchers("/auth/**").permitAll().anyRequest().authenticated().and()
-				.addFilterBefore(jwtTokenFilter, UsernamePasswordAuthenticationFilter.class);
+				.addFilterBefore(jwtTokenFilter, UsernamePasswordAuthenticationFilter.class)
+				.addFilterAfter(userAccessFilter, JwtTokenFilter.class);
 	}
 
 	@Override

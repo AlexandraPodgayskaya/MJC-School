@@ -83,7 +83,7 @@ public class ExceptionController {
 	}
 
 	@ExceptionHandler(AuthenticationException.class)
-	@ResponseStatus(HttpStatus.UNAUTHORIZED) // или HttpStatus.BAD_REQUEST или HttpStatus.NOT_FOUND или HttpStatus.FORBIDDEN TODO
+	@ResponseStatus(HttpStatus.UNAUTHORIZED) // или HttpStatus.BAD_REQUEST или HttpStatus.NOT_FOUND 
 	public ExceptionDetails handleAuthenticationException(AuthenticationException exception, Locale locale) {
 		String errorMessage = messageSource.getMessage(MessageKey.BAD_CREDENTIALS, new String[] {}, locale);
 		logger.error(HttpStatus.UNAUTHORIZED, exception);
