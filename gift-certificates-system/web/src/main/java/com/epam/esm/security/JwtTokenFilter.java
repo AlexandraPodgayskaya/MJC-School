@@ -50,13 +50,12 @@ public class JwtTokenFilter extends OncePerRequestFilter {
 			return;
 		}
 		try {
-			if (token != null && jwtTokenProvider.validateToken(token)) {
-				Authentication authentication = jwtTokenProvider.getAuthentication(token);
-				if (authentication != null) {
-					SecurityContextHolder.getContext().setAuthentication(authentication);
-				}
-			} else {
-				throw new JwtException("no token");
+			if (token == null || !jwtTokenProvider.validateToken(token)) {
+				throw new JwtException("invalid token");
+			}
+			Authentication authentication = jwtTokenProvider.getAuthentication(token);
+			if (authentication != null) {
+				SecurityContextHolder.getContext().setAuthentication(authentication);
 			}
 		} catch (JwtException | IllegalArgumentException exception) {
 			SecurityContextHolder.clearContext();
