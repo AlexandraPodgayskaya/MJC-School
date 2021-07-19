@@ -53,7 +53,7 @@ public class UserServiceImpl implements UserService {
 	@Transactional
 	@Override
 	public UserDto createUser(UserDto userDto) {
-		// TODO validate
+		userValidator.validateUser(userDto);
 		checkUniquenessEmail(userDto.getEmail());
 		userDto.setPassword(passwordEncoder.encode(userDto.getPassword()));
 		userDto.setRole(Role.USER);

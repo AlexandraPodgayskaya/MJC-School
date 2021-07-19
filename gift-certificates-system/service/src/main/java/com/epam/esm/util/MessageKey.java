@@ -17,6 +17,8 @@ public final class MessageKey {
 	public static final String INCORRECT_PARAMETER_TYPE = "incorrectParameterType";
 	public static final String INTERNAL_ERROR = "internalError";
 	public static final String PARAMETER_NAME = "parameter.name";
+	public static final String PARAMETER_EMAIL = "parameter.email";
+	public static final String PARAMETER_PASSWORD = "parameter.password";
 	public static final String PARAMETER_REPEATED_NAME = "parameter.repeatedName";
 	public static final String PARAMETER_REPEATED_EMAIL = "parameter.repeatedEmail";
 	public static final String PARAMETER_ID = "parameter.id";

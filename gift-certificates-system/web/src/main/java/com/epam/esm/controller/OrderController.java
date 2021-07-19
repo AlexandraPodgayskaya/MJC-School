@@ -21,6 +21,7 @@ import com.epam.esm.converter.ParametersToDtoConverter;
 import com.epam.esm.dto.OrderDto;
 import com.epam.esm.dto.PageDto;
 import com.epam.esm.dto.PaginationDto;
+import com.epam.esm.security.AccessVerifier;
 import com.epam.esm.service.OrderService;
 
 /**
@@ -37,11 +38,14 @@ public class OrderController {
 	private static final String GIFT_CERTIFICATE = "gift-certificate";
 	private final OrderService orderService;
 	private final ParametersToDtoConverter parametersToDtoConverter;
+	private final AccessVerifier accessVerifier;
 
 	@Autowired
-	public OrderController(OrderService orderService, ParametersToDtoConverter parametersToDtoConverter) {
+	public OrderController(OrderService orderService, ParametersToDtoConverter parametersToDtoConverter,
+			AccessVerifier accessVerifier) {
 		this.orderService = orderService;
 		this.parametersToDtoConverter = parametersToDtoConverter;
+		this.accessVerifier = accessVerifier;
 	}
 
 	/**
@@ -54,6 +58,7 @@ public class OrderController {
 	@PreAuthorize("hasAuthority('authority:read')")
 	public OrderDto getOrderById(@PathVariable long id) {
 		OrderDto foundOrderDto = orderService.findOrderById(id);
+		accessVerifier.checkAccess(foundOrderDto.getUserId());
 		addLinks(foundOrderDto);
 		return foundOrderDto;
 	}
@@ -69,6 +74,7 @@ public class OrderController {
 	@PreAuthorize("hasAuthority('authority:read')")
 	public PageDto<OrderDto> getOrdersByUserId(@PathVariable long userId,
 			@RequestParam Map<String, String> pageParameters) {
+		accessVerifier.checkAccess(userId);
 		PaginationDto pagination = parametersToDtoConverter.getPaginationDto(pageParameters);
 		PageDto<OrderDto> page = orderService.findOrdersByUserId(userId, pagination);
 		page.getPagePositions().forEach(this::addLinks);
@@ -85,6 +91,7 @@ public class OrderController {
 	@ResponseStatus(HttpStatus.CREATED)
 	@PreAuthorize("hasAuthority('authority:make_order')")
 	public OrderDto addOrder(@RequestBody OrderDto orderDto) {
+		accessVerifier.checkAccess(orderDto.getUserId());
 		OrderDto addedOrderDto = orderService.addOrder(orderDto);
 		addLinks(addedOrderDto);
 		return addedOrderDto;

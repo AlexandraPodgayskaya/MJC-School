@@ -15,6 +15,7 @@ public class JwtUser implements UserDetails {
 	private final String email;
 	private final String password;
 	private final Role role;
+	private final boolean isAdmin;
 
 	public JwtUser(Long id, String name, String email, String password, Role role) {
 		this.id = id;
@@ -22,6 +23,7 @@ public class JwtUser implements UserDetails {
 		this.email = email;
 		this.password = password;
 		this.role = role;
+		this.isAdmin = role.equals(Role.ADMIN);
 	}
 
 	public Long getId() {
@@ -44,6 +46,10 @@ public class JwtUser implements UserDetails {
 
 	public Role getRole() {
 		return role;
+	}
+
+	public boolean isAdmin() {
+		return isAdmin;
 	}
 
 	@Override

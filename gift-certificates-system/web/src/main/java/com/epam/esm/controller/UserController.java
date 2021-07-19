@@ -18,6 +18,7 @@ import com.epam.esm.converter.ParametersToDtoConverter;
 import com.epam.esm.dto.PageDto;
 import com.epam.esm.dto.PaginationDto;
 import com.epam.esm.dto.UserDto;
+import com.epam.esm.security.AccessVerifier;
 import com.epam.esm.service.UserService;
 
 /**
@@ -32,11 +33,14 @@ public class UserController {
 	private static final String ORDERS = "orders";
 	private final UserService userService;
 	private final ParametersToDtoConverter parametersToDtoConverter;
+	private final AccessVerifier accessVerifier;
 
 	@Autowired
-	public UserController(UserService userService, ParametersToDtoConverter parametersToDtoConverter) {
+	public UserController(UserService userService, ParametersToDtoConverter parametersToDtoConverter,
+			AccessVerifier accessVerifier) {
 		this.userService = userService;
 		this.parametersToDtoConverter = parametersToDtoConverter;
+		this.accessVerifier = accessVerifier;
 	}
 
 	/**
@@ -46,7 +50,7 @@ public class UserController {
 	 * @return the page with found users and total number of positions
 	 */
 	@GetMapping
-	@PreAuthorize("hasAuthority('authority:read')")
+	@PreAuthorize("hasAuthority('authority:read_all')")
 	public PageDto<UserDto> getUsers(@RequestParam Map<String, String> pageParameters) {
 		PaginationDto pagination = parametersToDtoConverter.getPaginationDto(pageParameters);
 		PageDto<UserDto> page = userService.findAllUsers(pagination);
@@ -63,6 +67,7 @@ public class UserController {
 	@GetMapping("/{id}")
 	@PreAuthorize("hasAuthority('authority:read')")
 	public UserDto getUserById(@PathVariable long id) {
+		accessVerifier.checkAccess(id);
 		UserDto user = userService.findUserById(id);
 		addLinks(user);
 		return user;
