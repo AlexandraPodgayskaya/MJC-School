@@ -52,7 +52,7 @@ public class UserServiceImpl implements UserService {
 
 	@Transactional
 	@Override
-	public UserDto createUser(UserDto userDto) {
+	public UserDto createUser(UserDto userDto) throws IncorrectParameterValueException {
 		userValidator.validateUser(userDto);
 		checkUniquenessEmail(userDto.getEmail());
 		userDto.setPassword(passwordEncoder.encode(userDto.getPassword()));
@@ -81,7 +81,7 @@ public class UserServiceImpl implements UserService {
 						String.valueOf(id), ErrorCode.USER.getCode()));
 	}
 
-	private void checkUniquenessEmail(String email) {
+	private void checkUniquenessEmail(String email) throws IncorrectParameterValueException {
 		Optional<User> userOptional = userDao.findByEmail(email);
 		if (userOptional.isPresent()) {
 			Map<String, String> incorrectParameter = new HashMap<>();

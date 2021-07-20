@@ -44,6 +44,15 @@ public class User {
 		this.deleted = deleted;
 	}
 
+	public User(Long id, String name, String email, String password, Role role, boolean deleted) {
+		this.id = id;
+		this.name = name;
+		this.email = email;
+		this.password = password;
+		this.role = role;
+		this.deleted = deleted;
+	}
+
 	public Long getId() {
 		return id;
 	}

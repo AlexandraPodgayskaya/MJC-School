@@ -32,6 +32,20 @@ public class UserDto extends RepresentationModel<UserDto> {
 		this.name = name;
 	}
 
+	public UserDto(String name, String email, String password) {
+		this.name = name;
+		this.email = email;
+		this.password = password;
+	}
+
+	public UserDto(Long id, String name, String email, String password, Role role) {
+		this.id = id;
+		this.name = name;
+		this.email = email;
+		this.password = password;
+		this.role = role;
+	}
+
 	public Long getId() {
 		return id;
 	}
