@@ -42,6 +42,7 @@ public final class MessageKey {
 	public static final String BE_CAREFUL = "beCareful";
 	public static final String ACCESS_DENIED = "accessDenied";
 	public static final String BAD_CREDENTIALS = "badCredentials";
+	public static final String NO_RIGHTS = "noRights";
 
 	private MessageKey() {
 	}

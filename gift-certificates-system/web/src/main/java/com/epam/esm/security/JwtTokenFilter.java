@@ -65,17 +65,21 @@ public class JwtTokenFilter extends OncePerRequestFilter {
 			jwtTokenProvider.validateToken(token);
 			Authentication authentication = jwtTokenProvider.getAuthentication(token);
 			SecurityContextHolder.getContext().setAuthentication(authentication);
+			filterChain.doFilter(request, response);
 		} catch (JwtException | UsernameNotFoundException exception) {
 			SecurityContextHolder.clearContext();
 			sendError(request, response);
 			logger.error(HttpStatus.UNAUTHORIZED, exception);
-			return;
 		}
-		filterChain.doFilter(request, response);
+	}
+
+	private boolean isAvailableWithoutToken(HttpServletRequest request) {
+		return request.getRequestURI().contains(GIFT_CERTIFICATE) && request.getMethod().equals(METHOD_GET)
+				|| request.getRequestURI().contains(AUTH);
 	}
 
 	private void sendError(HttpServletRequest request, HttpServletResponse response) throws IOException {
-		String errorMessage = messageSource.getMessage(MessageKey.ACCESS_DENIED, new String[] {}, request.getLocale());
+		String errorMessage = messageSource.getMessage(MessageKey.NO_RIGHTS, new String[] {}, request.getLocale());
 		response.setContentType(MimeTypeUtils.APPLICATION_JSON_VALUE);
 		response.setCharacterEncoding(ENCODING);
 		response.setStatus(HttpStatus.UNAUTHORIZED.value());
@@ -83,8 +87,4 @@ public class JwtTokenFilter extends OncePerRequestFilter {
 				new ExceptionDetails(errorMessage, HttpStatus.UNAUTHORIZED.value() + ErrorCode.DEFAULT.getCode()))));
 	}
 
-	private boolean isAvailableWithoutToken(HttpServletRequest request) {
-		return request.getRequestURI().contains(GIFT_CERTIFICATE) && request.getMethod().equals(METHOD_GET)
-				|| request.getRequestURI().contains(AUTH);
-	}
 }
