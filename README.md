@@ -1,3 +1,3 @@
 # MJC-School
-Module #4. Authentication & Spring Security task solution.
+Module #5. AWS task solution.
 
