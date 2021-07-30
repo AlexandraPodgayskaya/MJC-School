@@ -1,5 +1,5 @@
 
-CREATE TABLE gift_certificate (
+CREATE TABLE IF NOT EXISTS gift_certificate (
   id BIGINT NOT NULL AUTO_INCREMENT PRIMARY KEY,
   name VARCHAR(100) NOT NULL,
   description VARCHAR(1000) NOT NULL,
@@ -10,25 +10,25 @@ CREATE TABLE gift_certificate (
   deleted BOOLEAN DEFAULT FALSE
   );
 
-CREATE TABLE tag (
+CREATE TABLE IF NOT EXISTS tag (
   id BIGINT NOT NULL AUTO_INCREMENT PRIMARY KEY,
   name VARCHAR(100) NOT NULL,
   deleted BOOLEAN DEFAULT FALSE
   );
 
-CREATE TABLE gift_certificate_tag_connection (
+CREATE TABLE IF NOT EXISTS gift_certificate_tag_connection (
   gift_certificate_id BIGINT NOT NULL,
   tag_id BIGINT NOT NULL,
   PRIMARY KEY (`gift_certificate_id`, `tag_id`)
   );
   
-  CREATE TABLE user (
+  CREATE TABLE IF NOT EXISTS user (
   id BIGINT NOT NULL AUTO_INCREMENT PRIMARY KEY,
   name VARCHAR(100) NOT NULL,
   deleted BOOLEAN DEFAULT FALSE
 );
 
-CREATE TABLE item_order (
+CREATE TABLE IF NOT EXISTS item_order (
   id BIGINT NOT NULL AUTO_INCREMENT PRIMARY KEY,
   cost DECIMAL(10,2) NOT NULL,
   user_id BIGINT NOT NULL,
@@ -36,7 +36,7 @@ CREATE TABLE item_order (
   deleted BOOLEAN DEFAULT FALSE
  );
  
- CREATE TABLE ordered_gift_certificate (
+ CREATE TABLE IF NOT EXISTS ordered_gift_certificate (
   order_id BIGINT NOT NULL,
   gift_certificate_id BIGINT NOT NULL,
   name VARCHAR(100) NOT NULL,
