@@ -17,7 +17,10 @@ public final class MessageKey {
 	public static final String INCORRECT_PARAMETER_TYPE = "incorrectParameterType";
 	public static final String INTERNAL_ERROR = "internalError";
 	public static final String PARAMETER_NAME = "parameter.name";
+	public static final String PARAMETER_EMAIL = "parameter.email";
+	public static final String PARAMETER_PASSWORD = "parameter.password";
 	public static final String PARAMETER_REPEATED_NAME = "parameter.repeatedName";
+	public static final String PARAMETER_REPEATED_EMAIL = "parameter.repeatedEmail";
 	public static final String PARAMETER_ID = "parameter.id";
 	public static final String PARAMETER_DESCRIPTION = "parameter.description";
 	public static final String PARAMETER_PRICE = "parameter.price";
@@ -37,6 +40,9 @@ public final class MessageKey {
 	public static final String TYPE_DURATION = "parameterType.duration";
 	public static final String TYPE_NUMBER = "parameterType.number";
 	public static final String BE_CAREFUL = "beCareful";
+	public static final String ACCESS_DENIED = "accessDenied";
+	public static final String BAD_CREDENTIALS = "badCredentials";
+	public static final String NO_RIGHTS = "noRights";
 
 	private MessageKey() {
 	}

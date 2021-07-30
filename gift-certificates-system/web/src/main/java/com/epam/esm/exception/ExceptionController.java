@@ -9,6 +9,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.MessageSource;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.converter.HttpMessageNotReadableException;
+import org.springframework.security.access.AccessDeniedException;
+import org.springframework.security.core.AuthenticationException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
@@ -70,6 +72,36 @@ public class ExceptionController {
 				(name, value) -> builder.append(messageSource.getMessage(name, new String[] { value }, locale)));
 		logger.error(HttpStatus.BAD_REQUEST + exception.getParameters().toString(), exception);
 		return new ExceptionDetails(builder.toString(), HttpStatus.BAD_REQUEST.value() + exception.getErrorCode());
+	}
+
+	/**
+	 * Handle AccessDeniedException
+	 * 
+	 * @param exception the exception
+	 * @param locale    the locale of HTTP request
+	 * @return the exception details entity
+	 */
+	@ExceptionHandler(AccessDeniedException.class)
+	@ResponseStatus(HttpStatus.FORBIDDEN)
+	public ExceptionDetails handleAccessDeniedException(AccessDeniedException exception, Locale locale) {
+		String errorMessage = messageSource.getMessage(MessageKey.ACCESS_DENIED, new String[] {}, locale);
+		logger.error(HttpStatus.FORBIDDEN, exception);
+		return new ExceptionDetails(errorMessage, HttpStatus.FORBIDDEN.value() + ErrorCode.DEFAULT.getCode());
+	}
+
+	/**
+	 * Handle AuthenticationException
+	 * 
+	 * @param exception the exception
+	 * @param locale    the locale of HTTP request
+	 * @return the exception details entity
+	 */
+	@ExceptionHandler(AuthenticationException.class)
+	@ResponseStatus(HttpStatus.UNAUTHORIZED) // или HttpStatus.BAD_REQUEST или HttpStatus.NOT_FOUND
+	public ExceptionDetails handleAuthenticationException(AuthenticationException exception, Locale locale) {
+		String errorMessage = messageSource.getMessage(MessageKey.BAD_CREDENTIALS, new String[] {}, locale);
+		logger.error(HttpStatus.UNAUTHORIZED, exception);
+		return new ExceptionDetails(errorMessage, HttpStatus.UNAUTHORIZED.value() + ErrorCode.DEFAULT.getCode());
 	}
 
 	/**

@@ -16,7 +16,7 @@ public interface TagService {
 	 * Add new tag, if tag with such name already exists it will be returns
 	 * 
 	 * @param tagDto the tag dto which will be added
-	 * @return he added tag dto
+	 * @return the added tag dto
 	 */
 	TagDto createTag(TagDto tagDto);
 

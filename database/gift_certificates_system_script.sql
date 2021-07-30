@@ -72,10 +72,12 @@ ENGINE = InnoDB;
 CREATE TABLE IF NOT EXISTS `gift_certificates_system`.`user` (
   `id` BIGINT NOT NULL AUTO_INCREMENT,
   `name` VARCHAR(100) NOT NULL,
+  `email` VARCHAR(45) NULL,
+  `password` VARCHAR(60) NULL,
+  `role` ENUM('USER', 'ADMIN') NULL,
   `deleted` BOOLEAN DEFAULT FALSE,
   PRIMARY KEY (`id`))
 ENGINE = InnoDB;
-
 
 -- -----------------------------------------------------
 -- Table `gift_certificates_system`.`item_order`
