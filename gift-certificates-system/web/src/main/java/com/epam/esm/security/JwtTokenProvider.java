@@ -103,6 +103,7 @@ public class JwtTokenProvider {
 	 * @return token from Authorization header
 	 */
 	public String resolveToken(HttpServletRequest request) {
+		System.out.println("AUTHORIZATION" + request.getHeader(HttpHeaders.AUTHORIZATION)); //TODO
 		return request.getHeader(HttpHeaders.AUTHORIZATION);
 	}
 }

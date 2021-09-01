@@ -32,11 +32,11 @@ public class GiftCertificateDto extends RepresentationModel<UserDto> {
 	private BigDecimal price;
 	@JsonDeserialize(using = DurationDeserializer.class)
 	private Integer duration;
-	@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd'T'HH:mm:ss")
+	@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm")
 	@JsonProperty(access = Access.READ_ONLY)
 	private LocalDateTime createDate;
 	@JsonProperty(access = Access.READ_ONLY)
-	@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd'T'HH:mm:ss")
+	@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm")
 	private LocalDateTime lastUpdateDate;
 	private List<TagDto> tags;
 
