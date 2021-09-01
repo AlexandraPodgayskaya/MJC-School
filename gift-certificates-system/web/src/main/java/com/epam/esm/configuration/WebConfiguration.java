@@ -20,23 +20,23 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 @EnableTransactionManagement
 @EntityScan(basePackages = "com.epam.esm")
 public class WebConfiguration implements WebMvcConfigurer {
-	@Value("UTF-8")
-	private String encoding;
-	@Value("localization/exception")
-	private String fileName;
+    @Value("UTF-8")
+    private String encoding;
+    @Value("localization/exception")
+    private String fileName;
 
-	/**
-	 * Create bean MessageSource which will be used to get info from properties
-	 * files
-	 *
-	 * @return the message source
-	 */
-	@Bean
-	public MessageSource messageSource() {
-		ResourceBundleMessageSource messageSource = new ResourceBundleMessageSource();
-		messageSource.setBasename(fileName);
-		messageSource.setUseCodeAsDefaultMessage(true);
-		messageSource.setDefaultEncoding(encoding);
-		return messageSource;
-	}
+    /**
+     * Create bean MessageSource which will be used to get info from properties
+     * files
+     *
+     * @return the message source
+     */
+    @Bean
+    public MessageSource messageSource() {
+        ResourceBundleMessageSource messageSource = new ResourceBundleMessageSource();
+        messageSource.setBasename(fileName);
+        messageSource.setUseCodeAsDefaultMessage(true);
+        messageSource.setDefaultEncoding(encoding);
+        return messageSource;
+    }
 }
