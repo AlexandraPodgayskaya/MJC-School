@@ -41,8 +41,8 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
     protected void configure(HttpSecurity http) throws Exception {
         http.csrf().disable().sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS).and()
                 .authorizeRequests().antMatchers(HttpMethod.GET, "/gift-certificates", "/gift-certificates/**")
-                .permitAll().antMatchers("/auth/**").permitAll().anyRequest().authenticated().and()
-                .addFilterBefore(jwtTokenFilter, UsernamePasswordAuthenticationFilter.class).addFilterAfter(corsFilter, UsernamePasswordAuthenticationFilter.class);
+                .permitAll().antMatchers("/auth/**").permitAll().antMatchers(HttpMethod.OPTIONS).permitAll().anyRequest().authenticated().and()
+                .addFilterBefore(corsFilter, UsernamePasswordAuthenticationFilter.class).addFilterAfter(jwtTokenFilter, UsernamePasswordAuthenticationFilter.class);
     }
 
     @Override
