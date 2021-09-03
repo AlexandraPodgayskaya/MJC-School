@@ -6,10 +6,13 @@ import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
 
 import java.util.Map;
 
+import com.epam.esm.dto.AuthorizedUserDto;
+import com.epam.esm.dto.JwtUser;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -23,7 +26,7 @@ import com.epam.esm.service.UserService;
 
 /**
  * Class is an endpoint for user authentication and registration
- * 
+ *
  * @author Aleksandra Podgayskaya
  * @version 1.0
  */
@@ -31,52 +34,51 @@ import com.epam.esm.service.UserService;
 @RequestMapping("/auth")
 public class AuthenticationController {
 
-	private static final String EMAIL = "email";
-	private static final String TOKEN = "token";
-	private static final String AUTHENTICATE = "authenticate";
+    private static final String AUTHENTICATE = "authenticate";
 
-	private final AuthenticationManager authenticationManager;
-	private final JwtTokenProvider jwtTokenProvider;
-	private final UserService userService;
+    private final AuthenticationManager authenticationManager;
+    private final JwtTokenProvider jwtTokenProvider;
+    private final UserService userService;
 
-	@Autowired
-	public AuthenticationController(AuthenticationManager authenticationManager, JwtTokenProvider jwtTokenProvider,
-			UserService userService) {
-		this.authenticationManager = authenticationManager;
-		this.jwtTokenProvider = jwtTokenProvider;
-		this.userService = userService;
-	}
+    @Autowired
+    public AuthenticationController(AuthenticationManager authenticationManager, JwtTokenProvider jwtTokenProvider,
+                                    UserService userService) {
+        this.authenticationManager = authenticationManager;
+        this.jwtTokenProvider = jwtTokenProvider;
+        this.userService = userService;
+    }
 
-	/**
-	 * Authenticate, processes POST requests at /auth/login
-	 * 
-	 * @param request credentials for authenticate
-	 * @return the map of email and token value
-	 */
-	@PostMapping("/login")
-	public Map<String, String> authenticate(@RequestBody AuthenticationDto request) {
-		authenticationManager
-				.authenticate(new UsernamePasswordAuthenticationToken(request.getEmail(), request.getPassword()));
-		String token = jwtTokenProvider.createToken(request.getEmail());
-		return Map.of(EMAIL, request.getEmail(), TOKEN, token);
-	}
+    /**
+     * Authenticate, processes POST requests at /auth/login
+     *
+     * @param request credentials for authenticate
+     * @return the map of email and token value
+     */
+    @PostMapping("/login")
+    public AuthorizedUserDto authenticate(@RequestBody AuthenticationDto request) {
+        Authentication authentication = authenticationManager
+                .authenticate(new UsernamePasswordAuthenticationToken(request.getEmail(), request.getPassword()));
+        JwtUser user = (JwtUser) authentication.getPrincipal();
+        String token = jwtTokenProvider.createToken(request.getEmail());
+        return new AuthorizedUserDto(request.getEmail(), token, user.isAdmin());
+    }
 
-	/**
-	 * Register, processes POST requests at /auth/registration
-	 * 
-	 * @param userDto the new user which will be added
-	 * @return the added user dto
-	 */
-	@PostMapping("/registration")
-	@ResponseStatus(HttpStatus.CREATED)
-	public UserDto register(@RequestBody UserDto userDto) {
-		UserDto newUser = userService.createUser(userDto);
-		addLinks(newUser);
-		return newUser;
-	}
+    /**
+     * Register, processes POST requests at /auth/registration
+     *
+     * @param userDto the new user which will be added
+     * @return the added user dto
+     */
+    @PostMapping("/registration")
+    @ResponseStatus(HttpStatus.CREATED)
+    public UserDto register(@RequestBody UserDto userDto) {
+        UserDto newUser = userService.createUser(userDto);
+        addLinks(newUser);
+        return newUser;
+    }
 
-	private void addLinks(UserDto userDto) {
-		userDto.add(linkTo(methodOn(AuthenticationController.class)
-				.authenticate(new AuthenticationDto(userDto.getEmail(), userDto.getPassword()))).withRel(AUTHENTICATE));
-	}
+    private void addLinks(UserDto userDto) {
+        userDto.add(linkTo(methodOn(AuthenticationController.class)
+                .authenticate(new AuthenticationDto(userDto.getEmail(), userDto.getPassword()))).withRel(AUTHENTICATE));
+    }
 }
